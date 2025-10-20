@@ -122,7 +122,7 @@ class HeaderFooterMapper extends BaseDataMapper {
             const rooms = this.safeGet(this.data, 'rooms');
             if (rooms && rooms.length > 0) {
                 spacesMenu.onclick = () => {
-                    window.location.href = `../pages/room.html?id=${rooms[0].id}`;
+                    window.location.href = `room.html?id=${rooms[0].id}`;
                 };
             }
         }
@@ -133,7 +133,7 @@ class HeaderFooterMapper extends BaseDataMapper {
             const facilities = this.safeGet(this.data, 'property.facilities');
             if (facilities && facilities.length > 0) {
                 specialsMenu.onclick = () => {
-                    window.location.href = `../pages/facility.html?id=${facilities[0].id}`;
+                    window.location.href = `facility.html?id=${facilities[0].id}`;
                 };
             }
         }
@@ -186,7 +186,7 @@ class HeaderFooterMapper extends BaseDataMapper {
                     if (customClickHandler) {
                         customClickHandler(item.id);
                     } else {
-                        window.location.href = `../pages/${urlTemplate}?id=${item.id}`;
+                        window.location.href = `${urlTemplate}?id=${item.id}`;
                     }
                 });
 
@@ -231,7 +231,7 @@ class HeaderFooterMapper extends BaseDataMapper {
                     if (customClickHandler) {
                         customClickHandler(item.id);
                     } else {
-                        window.location.href = `../pages/${urlTemplate}?id=${item.id}`;
+                        window.location.href = `${urlTemplate}?id=${item.id}`;
                     }
                 });
 
@@ -251,7 +251,7 @@ class HeaderFooterMapper extends BaseDataMapper {
             if (window.propertyDataMapper?.navigateToRoom) {
                 window.propertyDataMapper.navigateToRoom(roomId);
             } else {
-                window.location.href = `../pages/room.html?id=${roomId}`;
+                window.location.href = `room.html?id=${roomId}`;
             }
         };
 
