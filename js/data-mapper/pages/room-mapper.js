@@ -482,10 +482,13 @@ class RoomMapper extends BaseDataMapper {
 
 
     /**
-     * OG 이미지 업데이트 (객실 이미지 사용)
+     * OG 이미지 업데이트 (객실 이미지 사용, 없으면 로고)
      */
     updateOGImage() {
         if (!this.isDataLoaded || !this.currentRoom) return;
+
+        const ogImage = this.safeSelect('meta[property="og:image"]');
+        if (!ogImage) return;
 
         const room = this.currentRoom;
 
@@ -494,19 +497,22 @@ class RoomMapper extends BaseDataMapper {
         let imageUrl = null;
 
         if (images) {
-            if (images.thumbnail && images.thumbnail.length > 0) {
+            if (images.thumbnail && images.thumbnail.length > 0 && images.thumbnail[0]?.url) {
                 imageUrl = images.thumbnail[0].url;
-            } else if (images.interior && images.interior.length > 0) {
+            } else if (images.interior && images.interior.length > 0 && images.interior[0]?.url) {
                 imageUrl = images.interior[0].url;
-            } else if (images.exterior && images.exterior.length > 0) {
+            } else if (images.exterior && images.exterior.length > 0 && images.exterior[0]?.url) {
                 imageUrl = images.exterior[0].url;
             }
         }
 
+        // 우선순위: 객실 이미지 > 로고 이미지
         if (imageUrl) {
-            const ogImage = this.safeSelect('meta[property="og:image"]');
-            if (ogImage) {
-                ogImage.setAttribute('content', imageUrl);
+            ogImage.setAttribute('content', imageUrl);
+        } else {
+            const defaultImage = this.getDefaultOGImage();
+            if (defaultImage) {
+                ogImage.setAttribute('content', defaultImage);
             }
         }
     }

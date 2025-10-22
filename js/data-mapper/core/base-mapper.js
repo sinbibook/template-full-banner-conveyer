@@ -234,6 +234,20 @@ class BaseDataMapper {
         if (ogUrl) ogUrl.setAttribute('content', window.location.href);
     }
 
+    /**
+     * 기본 OG 이미지 가져오기 (로고 이미지 사용)
+     */
+    getDefaultOGImage() {
+        if (!this.isDataLoaded) return null;
+
+        const logoImages = this.safeGet(this.data, 'homepage.images.0.logo');
+        if (logoImages && logoImages.length > 0 && logoImages[0]?.url) {
+            return logoImages[0].url;
+        }
+
+        return null;
+    }
+
     // ============================================================================
     // 🔄 TEMPLATE METHODS (서브클래스에서 구현)
     // ============================================================================

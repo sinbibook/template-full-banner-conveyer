@@ -353,18 +353,23 @@ class FacilityMapper extends BaseDataMapper {
     }
 
     /**
-     * OG 이미지 업데이트 (시설 이미지 사용)
+     * OG 이미지 업데이트 (시설 이미지 사용, 없으면 로고)
      */
     updateOGImage() {
         if (!this.isDataLoaded || !this.currentFacility) return;
 
+        const ogImage = this.safeSelect('meta[property="og:image"]');
+        if (!ogImage) return;
+
         const facility = this.currentFacility;
 
-        // facility.images는 배열 형태
-        if (facility.images && facility.images.length > 0) {
-            const ogImage = this.safeSelect('meta[property="og:image"]');
-            if (ogImage) {
-                ogImage.setAttribute('content', facility.images[0].url);
+        // 우선순위: 시설 이미지 > 로고 이미지
+        if (facility.images && facility.images.length > 0 && facility.images[0]?.url) {
+            ogImage.setAttribute('content', facility.images[0].url);
+        } else {
+            const defaultImage = this.getDefaultOGImage();
+            if (defaultImage) {
+                ogImage.setAttribute('content', defaultImage);
             }
         }
     }

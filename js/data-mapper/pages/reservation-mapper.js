@@ -349,17 +349,23 @@ class ReservationMapper extends BaseDataMapper {
     }
 
     /**
-     * OG 이미지 업데이트 (reservation hero 이미지 사용)
+     * OG 이미지 업데이트 (reservation hero 이미지 사용, 없으면 로고)
      */
     updateOGImage() {
         if (!this.isDataLoaded) return;
 
+        const ogImage = this.safeSelect('meta[property="og:image"]');
+        if (!ogImage) return;
+
         const reservationData = this.safeGet(this.data, 'homepage.customFields.pages.reservation.sections.0.hero');
 
-        if (reservationData?.images && reservationData.images.length > 0) {
-            const ogImage = this.safeSelect('meta[property="og:image"]');
-            if (ogImage) {
-                ogImage.setAttribute('content', reservationData.images[0].url);
+        // 우선순위: hero 이미지 > 로고 이미지
+        if (reservationData?.images && reservationData.images.length > 0 && reservationData.images[0]?.url) {
+            ogImage.setAttribute('content', reservationData.images[0].url);
+        } else {
+            const defaultImage = this.getDefaultOGImage();
+            if (defaultImage) {
+                ogImage.setAttribute('content', defaultImage);
             }
         }
     }

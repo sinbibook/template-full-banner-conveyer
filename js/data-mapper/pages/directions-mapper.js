@@ -275,17 +275,23 @@ class DirectionsMapper extends BaseDataMapper {
     }
 
     /**
-     * OG 이미지 업데이트 (directions hero 이미지 사용)
+     * OG 이미지 업데이트 (directions hero 이미지 사용, 없으면 로고)
      */
     updateOGImage() {
         if (!this.isDataLoaded) return;
 
+        const ogImage = this.safeSelect('meta[property="og:image"]');
+        if (!ogImage) return;
+
         const directionsData = this.safeGet(this.data, 'homepage.customFields.pages.directions.sections.0.hero');
 
-        if (directionsData?.images && directionsData.images.length > 0) {
-            const ogImage = this.safeSelect('meta[property="og:image"]');
-            if (ogImage) {
-                ogImage.setAttribute('content', directionsData.images[0].url);
+        // 우선순위: hero 이미지 > 로고 이미지
+        if (directionsData?.images && directionsData.images.length > 0 && directionsData.images[0]?.url) {
+            ogImage.setAttribute('content', directionsData.images[0].url);
+        } else {
+            const defaultImage = this.getDefaultOGImage();
+            if (defaultImage) {
+                ogImage.setAttribute('content', defaultImage);
             }
         }
     }

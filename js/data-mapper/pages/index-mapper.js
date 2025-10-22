@@ -351,17 +351,23 @@ class IndexMapper extends BaseDataMapper {
     }
 
     /**
-     * OG 이미지 업데이트 (hero 섹션 이미지 사용)
+     * OG 이미지 업데이트 (hero 섹션 이미지 사용, 없으면 로고)
      */
     updateOGImage() {
         if (!this.isDataLoaded) return;
 
+        const ogImage = this.safeSelect('meta[property="og:image"]');
+        if (!ogImage) return;
+
         const heroData = this.safeGet(this.data, 'homepage.customFields.pages.index.sections.0.hero');
 
-        if (heroData?.images && heroData.images.length > 0) {
-            const ogImage = this.safeSelect('meta[property="og:image"]');
-            if (ogImage) {
-                ogImage.setAttribute('content', heroData.images[0].url);
+        // 우선순위: hero 이미지 > 로고 이미지
+        if (heroData?.images && heroData.images.length > 0 && heroData.images[0]?.url) {
+            ogImage.setAttribute('content', heroData.images[0].url);
+        } else {
+            const defaultImage = this.getDefaultOGImage();
+            if (defaultImage) {
+                ogImage.setAttribute('content', defaultImage);
             }
         }
     }
