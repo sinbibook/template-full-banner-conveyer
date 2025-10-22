@@ -55,7 +55,7 @@
   backdrop-filter: blur(12px);
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  display: none; /* 모바일에서 숨김 */
+  display: none; /* 숨김 */
   align-items: center;
   justify-content: center;
   color: white;
@@ -333,7 +333,7 @@
   }
 
   .nav-button {
-    display: flex;
+    display: flex; /* 데스크톱에서 표시 */
   }
 
   .back-button {
