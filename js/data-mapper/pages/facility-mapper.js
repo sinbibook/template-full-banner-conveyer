@@ -339,11 +339,34 @@ class FacilityMapper extends BaseDataMapper {
 
         // 메타 태그 업데이트 (페이지별 SEO 적용)
         const property = this.data.property;
-        const pageSEO = (facility?.name && property?.name) ? { title: `${facility.name} - ${property.name}` } : null;
+        const pageSEO = {
+            title: (facility?.name && property?.name) ? `${facility.name} - ${property.name}` : 'SEO 타이틀',
+            description: facility?.description || property?.description || 'SEO 설명'
+        };
         this.updateMetaTags(pageSEO);
+
+        // OG 이미지 업데이트 (시설 이미지 사용)
+        this.updateOGImage();
 
         // E-commerce registration 매핑
         this.mapEcommerceRegistration();
+    }
+
+    /**
+     * OG 이미지 업데이트 (시설 이미지 사용)
+     */
+    updateOGImage() {
+        if (!this.isDataLoaded || !this.currentFacility) return;
+
+        const facility = this.currentFacility;
+
+        // facility.images는 배열 형태
+        if (facility.images && facility.images.length > 0) {
+            const ogImage = this.safeSelect('meta[property="og:image"]');
+            if (ogImage) {
+                ogImage.setAttribute('content', facility.images[0].url);
+            }
+        }
     }
 
     /**
