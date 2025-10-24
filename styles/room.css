@@ -394,6 +394,7 @@
 .gallery-right {
     display: flex;
     flex-direction: column;
+    gap: 0.75rem;
 }
 
 .room-gallery .gallery-item {
@@ -404,9 +405,7 @@
 }
 
 .room-gallery .gallery-right .gallery-item {
-    aspect-ratio: 2/3;
     flex: 1;
-    opacity: 1;
 }
 
 .gallery-right {
