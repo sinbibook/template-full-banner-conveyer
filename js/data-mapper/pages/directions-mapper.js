@@ -94,11 +94,11 @@ class DirectionsMapper extends BaseDataMapper {
             roadAddressElement.textContent = property.address;
         }
 
-        // 지번 주소 매핑 (동일하게 address 사용)
-        const lotAddressElement = this.safeSelect('[data-directions-lot-address]');
-        if (lotAddressElement && property.address) {
-            lotAddressElement.textContent = property.address;
-        }
+        // 지번 주소 매핑 - 향후 요구사항 변경 시 활성화 예정
+        // const lotAddressElement = this.safeSelect('[data-directions-lot-address]');
+        // if (lotAddressElement && property.address) {
+        //     lotAddressElement.textContent = property.address;
+        // }
 
         // 안내사항 매핑
         const noticeElement = this.safeSelect('[data-directions-notice]');
@@ -205,11 +205,11 @@ class DirectionsMapper extends BaseDataMapper {
             roadAddressElement.textContent = property.address;
         }
 
-        // 지번 주소 매핑 (마지막 주소 항목)
-        const lotAddressElement = this.safeSelect('.address-item:last-of-type .address-details p:last-child');
-        if (lotAddressElement && property.address) {
-            lotAddressElement.textContent = property.address;
-        }
+        // 지번 주소 매핑 - 향후 요구사항 변경 시 활성화 예정
+        // const lotAddressElement = this.safeSelect('.address-item:last-of-type .address-details p:last-child');
+        // if (lotAddressElement && property.address) {
+        //     lotAddressElement.textContent = property.address;
+        // }
 
         // 지도 콘텐츠 영역 주소 매핑
         const mapAddressElement = this.safeSelect('.map-content .address');
