@@ -216,7 +216,7 @@ class IndexMapper extends BaseDataMapper {
             <img data-image-fallback src="${imageUrl}" alt="${title}" loading="lazy">
             <div class="signature-item-overlay"></div>
             <div class="signature-item-text">
-                <h5 class="signature-item-title">${title}</h5>
+                <h5 class="signature-item-title${title && title.trim() ? ' has-text' : ''}">${title || ''}</h5>
             </div>
         `;
         return div;
@@ -312,7 +312,7 @@ class IndexMapper extends BaseDataMapper {
                  loading="lazy">
             <div class="signature-item-overlay"></div>
             <div class="signature-item-text">
-                <h5 class="signature-item-title">${experience.title}</h5>
+                <h5 class="signature-item-title${experience.title && experience.title.trim() ? ' has-text' : ''}">${experience.title || ''}</h5>
             </div>
         `;
         return div;
@@ -350,27 +350,6 @@ class IndexMapper extends BaseDataMapper {
         ImageHelpers.applyImageOrPlaceholder(closingImage, closingData?.images);
     }
 
-    /**
-     * OG 이미지 업데이트 (hero 섹션 이미지 사용, 없으면 로고)
-     * @param {Object} heroData - index hero 섹션 데이터
-     */
-    updateOGImage(heroData) {
-        if (!this.isDataLoaded) return;
-
-        const ogImage = this.safeSelect('meta[property="og:image"]');
-        if (!ogImage) return;
-
-        // 우선순위: hero 이미지 > 로고 이미지
-        if (heroData?.images && heroData.images.length > 0 && heroData.images[0]?.url) {
-            ogImage.setAttribute('content', heroData.images[0].url);
-        } else {
-            const defaultImage = this.getDefaultOGImage();
-            if (defaultImage) {
-                ogImage.setAttribute('content', defaultImage);
-            }
-        }
-    }
-
 
     // ============================================================================
     // 🔄 TEMPLATE METHODS IMPLEMENTATION
@@ -402,7 +381,17 @@ class IndexMapper extends BaseDataMapper {
         this.updateMetaTags(pageSEO);
 
         // OG 이미지 업데이트 (hero 이미지 사용)
-        this.updateOGImage(heroData);
+        const ogImage = this.safeSelect('meta[property="og:image"]');
+        if (ogImage) {
+            if (heroData?.images && heroData.images.length > 0 && heroData.images[0]?.url) {
+                ogImage.setAttribute('content', heroData.images[0].url);
+            } else {
+                const defaultImage = this.getDefaultOGImage();
+                if (defaultImage) {
+                    ogImage.setAttribute('content', defaultImage);
+                }
+            }
+        }
 
         // 애니메이션 재초기화
         this.reinitializeScrollAnimations();

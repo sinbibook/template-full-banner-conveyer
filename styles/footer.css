@@ -120,11 +120,11 @@
     }
 
     .footer-logo-text {
-        font-size: 0.875rem; /* sm:text-sm */
+        font-size: 1rem; /* sm:text-sm */
     }
 
     .footer-info-item {
-        font-size: 0.875rem; /* sm:text-sm */
+        font-size: 1rem; /* sm:text-sm */
     }
 
     /* Small screens - 가로 배열 시작 */
@@ -138,7 +138,7 @@
     }
 
     .footer-copyright {
-        font-size: 0.875rem; /* sm:text-sm */
+        font-size: 1rem; /* sm:text-sm */
     }
 }
 

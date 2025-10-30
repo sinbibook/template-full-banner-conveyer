@@ -190,8 +190,9 @@ class RoomMapper extends BaseDataMapper {
         slidesContainer.innerHTML = '';
         if (heroOverlay) heroOverlay.style.display = '';
 
-        // sortOrder로 정렬
+        // isSelected가 true인 이미지만 필터링하고 sortOrder로 정렬
         const sortedImages = interiorImages
+            .filter(img => img.isSelected)
             .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
         // 슬라이드 생성
@@ -400,9 +401,9 @@ class RoomMapper extends BaseDataMapper {
         // room.images[0].interior 배열에서 이미지 가져오기 (hero 슬라이더와 동일한 소스)
         const interiorImages = room.images?.[0]?.interior;
 
-        // sortOrder로 정렬
+        // isSelected가 true인 이미지만 필터링하고 sortOrder로 정렬
         const sortedImages = interiorImages && interiorImages.length > 0
-            ? interiorImages.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
+            ? interiorImages.filter(img => img.isSelected).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
             : [];
 
         // 첫 4개 이미지(0,1,2,3번째)를 2:2 그리드 구조로 배치
