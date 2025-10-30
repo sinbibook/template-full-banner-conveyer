@@ -110,12 +110,6 @@
     display: block;
 }
 
-/* Elegant Overlay */
-.slider-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
-}
 
 /* Content Overlay */
 .slider-content {
