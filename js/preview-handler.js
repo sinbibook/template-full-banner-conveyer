@@ -359,6 +359,34 @@ class PreviewHandler {
     }
 
     /**
+     * Footer DOM 로드 대기 후 소셜 링크 매핑
+     */
+    waitForFooterAndMapSocialLinks(retryCount = 0) {
+        const maxRetries = 10;
+        const retryDelay = 100; // 100ms
+
+        // Footer DOM 확인
+        const footerElement = document.querySelector('footer.footer') ||
+                            document.querySelector('.footer') ||
+                            document.getElementById('footer-container');
+
+        if (footerElement) {
+            // Footer DOM이 로드됨 → 소셜 링크 매핑 실행
+            if (window.HeaderFooterMapper) {
+                const mapper = this.createMapper(HeaderFooterMapper);
+                mapper.mapSocialLinks();
+            }
+        } else if (retryCount < maxRetries) {
+            // Footer DOM이 아직 없음 → 재시도
+            setTimeout(() => {
+                this.waitForFooterAndMapSocialLinks(retryCount + 1);
+            }, retryDelay);
+        } else {
+            console.warn('⚠️ Footer DOM 로드 실패: 소셜 링크 업데이트 불가');
+        }
+    }
+
+    /**
      * 엔티티 페이지(room/facility) 섹션 데이터 업데이트
      */
     updateEntityPageSection(page, section, data) {
@@ -423,6 +451,15 @@ class PreviewHandler {
             return;
         }
 
+        // socialLinks 섹션 특별 처리 (모든 페이지 공통)
+        if (section === 'socialLinks') {
+            if (!this.currentData.homepage) this.currentData.homepage = {};
+            this.currentData.homepage.socialLinks = data || {};
+            this.updateSpecificSection(page, section);
+            this.notifyRenderComplete('SECTION_UPDATE_COMPLETE');
+            return;
+        }
+
         // 지원하는 페이지 확인
         const supportedPages = ['index', 'main', 'room', 'facility', 'reservation', 'directions'];
         if (!supportedPages.includes(page)) {
@@ -459,6 +496,13 @@ class PreviewHandler {
             const mapper = this.createMapper(HeaderFooterMapper);
             mapper.mapHeaderLogo();
             mapper.mapFooterLogo();
+            return;
+        }
+
+        // socialLinks 섹션 업데이트 (모든 페이지 공통)
+        if (section === 'socialLinks' && window.HeaderFooterMapper) {
+            // Footer DOM 로드 대기 후 실행
+            this.waitForFooterAndMapSocialLinks();
             return;
         }
 

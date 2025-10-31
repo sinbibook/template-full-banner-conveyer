@@ -214,8 +214,12 @@ class DirectionsMapper extends BaseDataMapper {
                 });
                 kakao.maps.event.addListener(marker, 'click', openKakaoMap);
 
-                // 인포윈도우 생성 및 표시
-                const infowindowContent = `<div onclick="window.open('${kakaoMapUrl}', '_blank')" style="padding:5px;font-size:14px;cursor:pointer;">${property.name}<br/><small style="color:#666;">클릭하면 카카오맵으로 이동</small></div>`;
+                // 인포윈도우 콘텐츠 DOM 생성 및 이벤트 핸들러 연결
+                const infowindowContent = document.createElement('div');
+                infowindowContent.style.cssText = 'padding:5px; font-size:14px; cursor:pointer;';
+                infowindowContent.innerHTML = `${property.name}<br/><small style="color:#666;">클릭하면 카카오맵으로 이동</small>`;
+                infowindowContent.addEventListener('click', openKakaoMap);
+
                 const infowindow = new kakao.maps.InfoWindow({
                     content: infowindowContent
                 });
@@ -226,13 +230,16 @@ class DirectionsMapper extends BaseDataMapper {
         };
 
         // SDK 로드 확인 및 지도 생성
-        const checkSdkAndLoad = () => {
+        const checkSdkAndLoad = (retryCount = 0) => {
+            const MAX_RETRIES = 20; // 20 * 100ms = 2초
             if (window.kakao && window.kakao.maps && window.kakao.maps.load) {
                 // kakao.maps.load() 공식 API 사용
                 window.kakao.maps.load(createMap);
-            } else {
+            } else if (retryCount < MAX_RETRIES) {
                 // SDK가 아직 로드되지 않았으면 대기
-                setTimeout(checkSdkAndLoad, DirectionsMapper.SDK_WAIT_INTERVAL);
+                setTimeout(() => checkSdkAndLoad(retryCount + 1), DirectionsMapper.SDK_WAIT_INTERVAL);
+            } else {
+                console.error('Failed to load Kakao Map SDK after multiple retries.');
             }
         };
 

@@ -12,7 +12,6 @@
     "description": "숙소 설명",
     "subtitle": "숙소 부제목",
     "address": "숙소 주소",
-    "gpension_id": "",
     "latitude": 0,
     "longitude": 0,
     "contactPhone": "연락처 전화번호",
@@ -53,7 +52,7 @@
       "businessEmail": "사업장 이메일",
       "businessType": "individual",
       "businessCategory": null,
-      "eCommerceRegistrationNumber": "통신판매업신고번호"
+      "eCommerceRegistrationNumber": ""
     },
     "contractInfo": {
       "contractStartDate": "2025-09-10T00:00:00.000Z",
@@ -173,12 +172,7 @@
       "description": "SEO 설명",
       "keywords": "SEO 키워드"
     },
-    "socialLinks": {
-      "facebook": "페이스북 링크",
-      "instagram": "인스타그램 링크",
-      "blog": "블로그 링크",
-      "youtube": "유튜브 링크"
-    },
+    "socialLinks": {},
     "customFields": {
       "pages": {
         "index": {
