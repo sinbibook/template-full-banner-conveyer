@@ -117,7 +117,10 @@
         "exterior": [],
         "commonArea": []
       }
-    ]
+    ],
+    "nameEn": "숙소 영문명",
+    "domain": "도메인",
+    "gpensionId": "지펜션ID"
   },
   "rooms": [
     {

@@ -96,10 +96,8 @@ class HeaderFooterMapper extends BaseDataMapper {
             return;
         }
 
-        // gpension_id 찾기 (여러 경로 시도)
-        const gpensionId = this.data.property.gpension_id ||
-                          this.data.property.gpensionId ||
-                          this.data.gpension_id;
+        // gpension_id 찾기
+        const gpensionId = this.data.property.gpensionId;
 
         if (!gpensionId) {
             return;
