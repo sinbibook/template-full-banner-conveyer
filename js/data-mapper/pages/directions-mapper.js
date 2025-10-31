@@ -178,31 +178,17 @@ class DirectionsMapper extends BaseDataMapper {
         const property = this.data.property;
         const mapContainer = document.getElementById('kakao-map');
 
-        if (!mapContainer) {
+        if (!mapContainer || !property.latitude || !property.longitude) {
             return;
         }
 
-        if (!property.latitude || !property.longitude) {
-            return;
-        }
-
-        // kakao SDK가 로드될 때까지 대기
-        const waitForKakaoSDK = () => {
-            if (typeof kakao === 'undefined') {
-                setTimeout(waitForKakaoSDK, DirectionsMapper.SDK_WAIT_INTERVAL);
-                return;
-            }
-
-            // kakao.maps가 준비될 때까지 대기
-            const initMap = () => {
-                if (!kakao.maps) {
-                    setTimeout(initMap, DirectionsMapper.SDK_WAIT_INTERVAL);
-                    return;
-                }
-
+        // 지도 생성 함수
+        const createMap = () => {
             try {
-                // 검색 쿼리 설정 (주소 우선, 없으면 숙소명)
+                // 검색 쿼리 및 URL 생성 (한 번만)
                 const searchQuery = property.address || property.name || '선택한 위치';
+                const kakaoMapUrl = `https://map.kakao.com/?q=${encodeURIComponent(searchQuery)}`;
+                const openKakaoMap = () => window.open(kakaoMapUrl, '_blank');
 
                 // 지도 중심 좌표
                 const mapCenter = new kakao.maps.LatLng(property.latitude, property.longitude);
@@ -221,12 +207,6 @@ class DirectionsMapper extends BaseDataMapper {
                 const map = new kakao.maps.Map(mapContainer, mapOptions);
                 map.setZoomable(false);
 
-                // 카카오맵으로 이동하는 함수
-                const openKakaoMap = () => {
-                    const kakaoMapUrl = `https://map.kakao.com/?q=${encodeURIComponent(searchQuery)}`;
-                    window.open(kakaoMapUrl, '_blank');
-                };
-
                 // 마커 생성 및 클릭 이벤트
                 const marker = new kakao.maps.Marker({
                     position: mapCenter,
@@ -235,20 +215,28 @@ class DirectionsMapper extends BaseDataMapper {
                 kakao.maps.event.addListener(marker, 'click', openKakaoMap);
 
                 // 인포윈도우 생성 및 표시
-                const infowindowContent = `<div onclick="window.open('https://map.kakao.com/?q=${encodeURIComponent(searchQuery)}', '_blank')" style="padding:5px;font-size:14px;cursor:pointer;">${property.name}<br/><small style="color:#666;">클릭하면 카카오맵으로 이동</small></div>`;
+                const infowindowContent = `<div onclick="window.open('${kakaoMapUrl}', '_blank')" style="padding:5px;font-size:14px;cursor:pointer;">${property.name}<br/><small style="color:#666;">클릭하면 카카오맵으로 이동</small></div>`;
                 const infowindow = new kakao.maps.InfoWindow({
                     content: infowindowContent
                 });
                 infowindow.open(map, marker);
             } catch (error) {
-                // 지도 생성 실패 시 무시
+                console.error('Failed to create Kakao Map:', error);
             }
         };
 
-        initMap();
+        // SDK 로드 확인 및 지도 생성
+        const checkSdkAndLoad = () => {
+            if (window.kakao && window.kakao.maps && window.kakao.maps.load) {
+                // kakao.maps.load() 공식 API 사용
+                window.kakao.maps.load(createMap);
+            } else {
+                // SDK가 아직 로드되지 않았으면 대기
+                setTimeout(checkSdkAndLoad, DirectionsMapper.SDK_WAIT_INTERVAL);
+            }
         };
 
-        waitForKakaoSDK();
+        checkSdkAndLoad();
     }
 
     /**
