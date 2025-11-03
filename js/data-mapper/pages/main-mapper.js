@@ -57,7 +57,6 @@ class MainMapper extends BaseDataMapper {
         // main.html 페이지의 hero_section 데이터 가져오기
         const heroData = this.safeGet(this.data, 'homepage.customFields.pages.main.sections.0.hero');
         const heroContainer = document.getElementById('hero-slides-container');
-        const heroOverlay = document.querySelector('.hero-overlay');
 
         if (!heroContainer) return;
 
@@ -75,7 +74,7 @@ class MainMapper extends BaseDataMapper {
                 </div>
             `;
             const img = heroContainer.querySelector('img');
-            ImageHelpers.applyPlaceholder(img, heroOverlay);
+            ImageHelpers.applyPlaceholder(img);
 
             // indicator 업데이트
             const indicatorTotal = document.getElementById('indicator-total');
@@ -87,7 +86,6 @@ class MainMapper extends BaseDataMapper {
 
         // Hero Slides Container에 슬라이드들 생성
         heroContainer.innerHTML = '';
-        if (heroOverlay) heroOverlay.style.display = '';
 
         selectedImages.forEach((image, index) => {
             const heroSlideDiv = document.createElement('div');

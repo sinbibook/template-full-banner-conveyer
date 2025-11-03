@@ -50,23 +50,7 @@ class IndexMapper extends BaseDataMapper {
 
         // Hero 배경 이미지 매핑
         const heroImage = this.safeSelect('[data-index-hero-image]');
-        const heroOverlay = this.safeSelect('.hero-overlay');
-        const heroVignette = this.safeSelect('.hero-vignette');
-
-        // 오버레이를 하나의 배열로 관리
-        const overlays = [heroOverlay, heroVignette].filter(Boolean);
-        const overlayHandler = {
-            style: {
-                display: overlays.length > 0 ? overlays[0].style : null
-            }
-        };
-
-        // 커스텀 오버레이 핸들러로 두 개의 오버레이 동시 제어
-        Object.defineProperty(overlayHandler.style, 'display', {
-            set: (value) => overlays.forEach(el => el.style.display = value)
-        });
-
-        ImageHelpers.applyImageOrPlaceholder(heroImage, heroData?.images, overlayHandler);
+        ImageHelpers.applyImageOrPlaceholder(heroImage, heroData?.images);
     }
 
     /**
