@@ -537,7 +537,7 @@ class PreviewHandler {
 
                 switch (section) {
                     case 'hero':
-                        mapper.mapRoomInfoSection();
+                        mapper.mapBasicInfo();
                         break;
                     case 'gallery':
                         mapper.mapExteriorGallery();

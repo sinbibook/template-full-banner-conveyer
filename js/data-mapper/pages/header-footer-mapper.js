@@ -19,18 +19,7 @@ class HeaderFooterMapper extends BaseDataMapper {
         if (!this.isDataLoaded) return;
 
         // 로고 URL 추출
-        const logoImages = this.safeGet(this.data, 'homepage.images.0.logo');
-        let logoUrl = null;
-
-        if (logoImages && Array.isArray(logoImages)) {
-            const selectedLogo = logoImages
-                .filter(img => img.isSelected === true)
-                .sort((a, b) => a.sortOrder - b.sortOrder)[0];
-
-            if (selectedLogo && selectedLogo.url) {
-                logoUrl = selectedLogo.url;
-            }
-        }
+        const logoUrl = ImageHelpers.extractLogoUrl(this.data);
 
         if (logoUrl) {
             // 기존 favicon 링크 찾기
@@ -68,18 +57,7 @@ class HeaderFooterMapper extends BaseDataMapper {
         const logoImage = this.safeSelect('[data-logo]');
         if (logoImage) {
             // 로고 URL 추출
-            const logoImages = this.safeGet(this.data, 'homepage.images.0.logo');
-            let logoUrl = null;
-
-            if (logoImages && Array.isArray(logoImages)) {
-                const selectedLogo = logoImages
-                    .filter(img => img.isSelected === true)
-                    .sort((a, b) => a.sortOrder - b.sortOrder)[0];
-
-                if (selectedLogo && selectedLogo.url) {
-                    logoUrl = selectedLogo.url;
-                }
-            }
+            const logoUrl = ImageHelpers.extractLogoUrl(this.data);
 
             if (logoUrl) {
                 logoImage.onerror = () => {
@@ -377,18 +355,7 @@ class HeaderFooterMapper extends BaseDataMapper {
         const footerLogoImage = this.safeSelect('[data-footer-logo]');
         if (footerLogoImage) {
             // 로고 URL 추출
-            const logoImages = this.safeGet(this.data, 'homepage.images.0.logo');
-            let logoUrl = null;
-
-            if (logoImages && Array.isArray(logoImages)) {
-                const selectedLogo = logoImages
-                    .filter(img => img.isSelected === true)
-                    .sort((a, b) => a.sortOrder - b.sortOrder)[0];
-
-                if (selectedLogo && selectedLogo.url) {
-                    logoUrl = selectedLogo.url;
-                }
-            }
+            const logoUrl = ImageHelpers.extractLogoUrl(this.data);
 
             if (logoUrl) {
                 footerLogoImage.onerror = () => {

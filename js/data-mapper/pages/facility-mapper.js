@@ -160,11 +160,8 @@ class FacilityMapper extends BaseDataMapper {
             .filter(img => img.isSelected)
             .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
-        // 슬라이더 이미지 개수 확인
-        const sliderImageCount = sortedImages.length;
-
-        // 슬라이더에 사용되지 않은 이미지 찾기 (슬라이더 이미지 다음 이미지)
-        const nextImage = sortedImages[sliderImageCount] || sortedImages[0];
+        // 슬라이더 첫 두 장과 중복 방지 (3번째 이미지 사용, 없으면 마지막)
+        const nextImage = sortedImages[2] || sortedImages[sortedImages.length - 1];
 
         if (nextImage) {
             infoImage.src = nextImage.url;
