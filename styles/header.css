@@ -48,10 +48,79 @@
     font-style: italic;
 }
 
-.book-now-btn {
+/* Booking Buttons Container */
+.booking-buttons {
+    display: flex;
+    gap: 10px;
     position: fixed;
     top: 20px;
     right: 20px;
+    z-index: 1000;
+}
+
+/* YBS Button Styles */
+.ybs-btn {
+    padding: 10px 15px;
+    background: transparent;
+    color: #7a8471 !important;
+    border: 1px solid #7a8471;
+    border-radius: 0;
+    font-family: 'Chosunilbo', serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    text-decoration: none;
+    display: none; /* 기본적으로 숨김 */
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    position: relative;
+}
+
+.ybs-btn::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 1px solid #7a8471;
+    border-radius: 0;
+    transition: border-color 0.3s ease;
+}
+
+.ybs-btn::after {
+    content: '→';
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-weight: 300;
+}
+
+.ybs-btn:hover {
+    background: #7a8471 !important;
+    color: white !important;
+    border-color: #7a8471;
+    transform: translateX(2px) translateY(-1px);
+}
+
+.ybs-btn:hover::before {
+    border-color: #7a8471;
+}
+
+.ybs-btn:hover::after {
+    transform: translateX(3px);
+}
+
+.ybs-btn.scrolled {
+    background: #7a8471;
+    color: white !important;
+    border: 1px solid #7a8471;
+}
+
+.book-now-btn {
+    position: relative;
+    padding: 10px 15px;
     z-index: 1000;
     padding: 10px 15px;
     background: transparent;
@@ -500,7 +569,85 @@
     }
 
     .logo-text {
-        font-size: 26px;
+        display: none; /* 모바일에서 숨김 */
+    }
+
+    /* YBS Button - Mobile */
+    .ybs-btn {
+        width: 45px;
+        height: 45px;
+        padding: 0;
+        font-size: 0;
+        display: none; /* 기본적으로 숨김 */
+        align-items: center;
+        justify-content: center;
+        position: fixed !important;
+        top: 20px !important;
+        right: 75px !important;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    .ybs-btn::before {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        border: 1px solid #7a8471;
+        border-radius: 0;
+        transition: border-color 0.3s ease;
+    }
+
+    .ybs-btn::after {
+        content: 'Y';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        font-weight: 700;
+        color: #333;
+        pointer-events: none;
+    }
+
+    .ybs-btn:hover::before,
+    .ybs-btn:active::before {
+        border-color: #7a8471 !important;
+    }
+
+    .ybs-btn:hover,
+    .ybs-btn:active {
+        background: #7a8471 !important;
+        border-color: #7a8471 !important;
+        transform: none !important;
+        position: fixed !important;
+        top: 20px !important;
+        right: 75px !important;
+    }
+
+    .ybs-btn:hover::after,
+    .ybs-btn:active::after {
+        color: white !important;
+    }
+
+    .ybs-btn.scrolled {
+        background: #7a8471 !important;
+        border-color: #7a8471 !important;
+    }
+
+    .ybs-btn.scrolled::before {
+        border-color: #7a8471 !important;
+    }
+
+    .ybs-btn.scrolled::after {
+        color: white !important;
     }
 
     .book-now-btn {

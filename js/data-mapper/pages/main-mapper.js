@@ -176,7 +176,17 @@ class MainMapper extends BaseDataMapper {
         // 기존 gallery-wrap 제거
         introContainer.innerHTML = '';
 
-        if (!aboutBlocks || !Array.isArray(aboutBlocks) || aboutBlocks.length === 0) return;
+        // aboutBlocks가 없거나 빈 배열일 때 기본 블록 하나 생성
+        if (!aboutBlocks || !Array.isArray(aboutBlocks) || aboutBlocks.length === 0) {
+            const defaultBlock = {
+                title: '소개 섹션 타이틀',
+                description: '소개 섹션 설명',
+                images: []
+            };
+            const galleryWrap = this.createIntroductionBlock(defaultBlock);
+            introContainer.appendChild(galleryWrap);
+            return;
+        }
 
         // 각 about 블록에 대해 gallery-wrap 생성
         aboutBlocks.forEach((block) => {

@@ -15,6 +15,24 @@ class BaseDataMapper {
     // ============================================================================
 
     /**
+     * 스네이크 케이스를 카멜 케이스로 변환
+     * API 데이터(snake_case) → JavaScript 표준(camelCase)
+     */
+    convertToCamelCase(obj) {
+        if (Array.isArray(obj)) {
+            return obj.map(item => this.convertToCamelCase(item));
+        } else if (obj !== null && typeof obj === 'object') {
+            return Object.keys(obj).reduce((result, key) => {
+                // 스네이크 케이스를 카멜 케이스로 변환
+                const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+                result[camelKey] = this.convertToCamelCase(obj[key]);
+                return result;
+            }, {});
+        }
+        return obj;
+    }
+
+    /**
      * JSON 데이터 로드
      */
     async loadData() {
@@ -22,7 +40,10 @@ class BaseDataMapper {
             // 캐시 방지를 위한 타임스탬프 추가
             const timestamp = new Date().getTime();
             const response = await fetch(`./standard-template-data.json?t=${timestamp}`);
-            this.data = await response.json();
+            const rawData = await response.json();
+
+            // 스네이크 케이스를 카멜 케이스로 자동 변환
+            this.data = this.convertToCamelCase(rawData);
             this.isDataLoaded = true;
             return this.data;
         } catch (error) {

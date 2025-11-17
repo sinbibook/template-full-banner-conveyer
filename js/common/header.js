@@ -44,6 +44,16 @@
             }
         }
 
+        // YBS Button scroll effect
+        const ybsBtn = document.querySelector('.ybs-btn');
+        if (ybsBtn) {
+            if (window.scrollY > 50) {
+                ybsBtn.classList.add('scrolled');
+            } else {
+                ybsBtn.classList.remove('scrolled');
+            }
+        }
+
         // Hamburger Button scroll effect
         if (hamburgerBtn) {
             if (window.scrollY > 50) {

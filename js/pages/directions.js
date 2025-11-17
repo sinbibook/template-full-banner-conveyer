@@ -28,9 +28,6 @@ window.initializeLocationNotes = function initializeLocationNotes() {
         const delay = 1.0 + (index * 0.15); // 1.0s, 1.15s, 1.3s 순차 지연
         return `
             <div class="note-item animate-element" style="transition-delay: ${delay}s;">
-                <svg class="note-icon" viewBox="0 0 24 24">
-                    <path d="M9 18l6-6-6-6"></path>
-                </svg>
                 ${line.trim()}
             </div>
         `;
