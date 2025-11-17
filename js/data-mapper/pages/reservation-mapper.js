@@ -277,7 +277,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         await reservationMapper.loadData();
         await reservationMapper.mapPage();
-        console.log('Reservation page mapping completed successfully');
     } catch (error) {
         console.error('Error initializing reservation mapper:', error);
     }

@@ -169,32 +169,5 @@
     <!-- Page-specific script -->
     <script src="js/pages/room.js"></script>
 
-    <!-- 테스트용 디버깅 스크립트 -->
-    <script>
-        // 개발자도구에서 테스트할 수 있는 함수들
-        window.testGallery = {
-            show1: () => changeGalleryCount(1),
-            show2: () => changeGalleryCount(2),
-            show3: () => changeGalleryCount(3),
-            show4: () => changeGalleryCount(4),
-            show5: () => changeGalleryCount(5),
-            showAll: () => {
-                const gallery = document.querySelector('.dynamic-gallery');
-                const items = gallery.querySelectorAll('.gallery-item');
-                items.forEach(item => item.style.display = 'block');
-                gallery.setAttribute('data-count', items.length);
-            },
-            getCount: () => {
-                const gallery = document.querySelector('.dynamic-gallery');
-                return gallery.getAttribute('data-count');
-            }
-        };
-
-        console.log('갤러리 테스트 함수 사용법:');
-        console.log('testGallery.show1() ~ testGallery.show5() - 원하는 개수만큼 표시');
-        console.log('testGallery.showAll() - 모든 이미지 표시');
-        console.log('testGallery.getCount() - 현재 data-count 확인');
-    </script>
-
 </body>
 </html>

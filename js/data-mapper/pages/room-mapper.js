@@ -679,8 +679,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 페이지 매핑 실행
         await roomMapper.mapPage();
-
-        console.log('Room page mapping completed successfully');
     } catch (error) {
         console.error('Error initializing room mapper:', error);
     }

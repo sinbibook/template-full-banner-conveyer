@@ -347,7 +347,6 @@ function setupScrollAnimations() {
     }
 
     function enhancedToggleSideHeader() {
-        console.log('Enhanced toggleSideHeader called');
         const sideHeader = document.getElementById('side-header');
         const hamburgerButton = document.getElementById('hamburger-button');
 
@@ -375,8 +374,6 @@ function setupScrollAnimations() {
                 // 사이드 헤더 닫기
                 closeSideHeader();
             }
-
-            console.log('Side header expanded:', sideHeader.classList.contains('expanded'));
         }
     }
 
@@ -385,7 +382,6 @@ function setupScrollAnimations() {
         if (typeof window.toggleSideHeader === 'function') {
             originalToggleSideHeader = window.toggleSideHeader;
             window.toggleSideHeader = enhancedToggleSideHeader;
-            console.log('Overrode toggleSideHeader function');
 
             // 외부 클릭 기능도 제거 - 햄버거 버튼으로만 컨트롤
 

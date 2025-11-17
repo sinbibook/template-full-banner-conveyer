@@ -206,14 +206,12 @@
 
     // Side Header Toggle
     window.toggleSideHeader = function() {
-        console.log('toggleSideHeader called'); // Debug log
         const sideHeader = document.getElementById('side-header');
         const hamburgerButton = document.getElementById('hamburger-button');
         const overlay = document.getElementById('side-header-overlay');
         const body = document.body;
         const html = document.documentElement;
 
-        console.log('sideHeader element:', sideHeader); // Debug log
         if (sideHeader && hamburgerButton) {
             const isExpanded = sideHeader.classList.contains('expanded');
 
@@ -246,10 +244,6 @@
                 body.style.top = `-${scrollY}px`;
                 html.style.overflow = 'hidden';
             }
-
-            console.log('toggled expanded class, has expanded:', sideHeader.classList.contains('expanded')); // Debug log
-        } else {
-            console.log('side-header or hamburger-button element not found'); // Debug log
         }
     };
 
@@ -313,12 +307,8 @@
 
         // Initialize hamburger button toggle
         const hamburgerButton = document.getElementById('hamburger-button');
-        console.log('hamburgerButton element:', hamburgerButton); // Debug log
         if (hamburgerButton) {
             hamburgerButton.addEventListener('click', toggleSideHeader);
-            console.log('hamburger button event listener added'); // Debug log
-        } else {
-            console.log('hamburger-button element not found during initialization'); // Debug log
         }
 
         // Initialize overlay click event

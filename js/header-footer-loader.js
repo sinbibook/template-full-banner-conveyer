@@ -43,34 +43,26 @@
 
             // Extract body content from the loaded HTML
             const bodyContent = temp.querySelector('body');
-            console.log('bodyContent:', bodyContent); // Debug
 
             if (bodyContent) {
                 // Insert top header first
                 const topHeader = bodyContent.querySelector('.top-header');
-                console.log('topHeader found:', topHeader); // Debug
                 if (topHeader) {
                     document.body.insertBefore(topHeader, document.body.firstChild);
-                    console.log('topHeader inserted'); // Debug
                 }
 
                 // Insert hamburger button
                 const hamburgerButton = bodyContent.querySelector('.hamburger-button');
-                console.log('hamburgerButton found:', hamburgerButton); // Debug
                 if (hamburgerButton) {
                     document.body.insertBefore(hamburgerButton, document.body.firstChild);
-                    console.log('hamburgerButton inserted'); // Debug
                 }
 
                 // Insert side header
                 const sideHeader = bodyContent.querySelector('.side-header');
-                console.log('sideHeader found:', sideHeader); // Debug
                 if (sideHeader) {
                     document.body.insertBefore(sideHeader, document.body.firstChild);
-                    console.log('sideHeader inserted'); // Debug
                 }
             } else {
-                console.log('No body content found, trying direct method'); // Debug
                 // Fallback: Insert HTML directly
                 const headerHTML = html.replace(/<\/?(!DOCTYPE|html|head|title|link)[^>]*>/g, '');
                 const cleanHTML = headerHTML.replace(/<\/?body[^>]*>/g, '');
@@ -92,7 +84,6 @@
                     const hamburgerButton = document.getElementById('hamburger-button');
                     if (hamburgerButton && window.toggleSideHeader) {
                         hamburgerButton.addEventListener('click', window.toggleSideHeader);
-                        console.log('hamburger button event listener re-added after script load');
                     }
                 }, 100);
             };

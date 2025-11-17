@@ -131,7 +131,6 @@ function initializeDynamicGallery() {
         const count = visibleItems.length;
         galleryContainer.setAttribute('data-count', count.toString());
 
-        console.log(`갤러리 아이템 개수 설정: ${count}`);
         return count;
     }
 

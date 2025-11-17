@@ -567,7 +567,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         await facilityMapper.loadData();
         await facilityMapper.mapPage();
-        console.log('Facility page mapping completed successfully');
     } catch (error) {
         console.error('Error initializing facility mapper:', error);
     }
