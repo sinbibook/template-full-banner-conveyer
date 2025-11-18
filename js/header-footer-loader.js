@@ -22,10 +22,7 @@
                 await mapper.initialize();
 
                 // 매핑 완료 후 헤더/사이드바 표시
-                const topHeader = document.querySelector('.top-header');
-                const sideHeader = document.querySelector('.side-header');
-                if (topHeader) topHeader.classList.remove('fouc-hidden');
-                if (sideHeader) sideHeader.classList.remove('fouc-hidden');
+                if (window.showHeaders) window.showHeaders();
             }
             // 프리뷰 환경: PreviewHandler가 처리하므로 여기서는 매핑하지 않음
         }
@@ -45,8 +42,7 @@
             // Load header CSS first
             loadCSS('styles/header.css');
 
-            const timestamp = new Date().getTime();
-            const response = await fetch(`common/header.html?t=${timestamp}`);
+            const response = await fetch('common/header.html', { cache: 'no-cache' });
             const html = await response.text();
 
             // Create a temporary container
@@ -100,8 +96,7 @@
     // Load Footer
     async function loadFooter() {
         try {
-            const timestamp = new Date().getTime();
-            const response = await fetch(`common/footer.html?t=${timestamp}`);
+            const response = await fetch('common/footer.html', { cache: 'no-cache' });
             if (response.ok) {
                 // Load footer CSS
                 loadCSS('styles/footer.css');

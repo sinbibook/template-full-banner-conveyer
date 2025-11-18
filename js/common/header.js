@@ -374,4 +374,11 @@
     // Immediate check for page refresh scenarios
     checkInitialScroll();
 
+    // FOUC Prevention: Show headers after data mapping complete
+    window.showHeaders = function() {
+        document.querySelectorAll('.top-header, .side-header').forEach(el => {
+            el.classList.remove('fouc-hidden');
+        });
+    };
+
 })();

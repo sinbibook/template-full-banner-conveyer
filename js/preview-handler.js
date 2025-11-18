@@ -363,10 +363,7 @@ class PreviewHandler {
             await headerFooterMapper.mapHeaderFooter();
 
             // 매핑 완료 후 헤더 표시 (FOUC 방지)
-            const topHeader = document.querySelector('.top-header');
-            const sideHeader = document.querySelector('.side-header');
-            if (topHeader) topHeader.classList.remove('fouc-hidden');
-            if (sideHeader) sideHeader.classList.remove('fouc-hidden');
+            if (window.showHeaders) window.showHeaders();
         }
 
         // Logo 매핑 (모든 페이지에서 공통 실행)
@@ -720,10 +717,7 @@ class PreviewHandler {
             await headerFooterMapper.initialize(); // 데이터 로드 후 매핑
 
             // 매핑 완료 후 헤더 표시 (FOUC 방지)
-            const topHeader = document.querySelector('.top-header');
-            const sideHeader = document.querySelector('.side-header');
-            if (topHeader) topHeader.classList.remove('fouc-hidden');
-            if (sideHeader) sideHeader.classList.remove('fouc-hidden');
+            if (window.showHeaders) window.showHeaders();
         }
     }
 }
