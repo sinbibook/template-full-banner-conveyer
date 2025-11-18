@@ -13,17 +13,12 @@
     // Initialize mapper after both header and footer are loaded
     async function tryInitializeMapper() {
         if (headerLoaded && footerLoaded && window.HeaderFooterMapper) {
-            // Hide header to prevent FOUC
-            const header = document.querySelector('.top-header');
-            if (header) {
-                header.style.opacity = '0';
-            }
-
             // Initialize mapper immediately
             const mapper = new window.HeaderFooterMapper();
             await mapper.initialize();
 
             // Show header after mapping is complete
+            const header = document.querySelector('.top-header');
             if (header) {
                 header.style.transition = 'opacity 0.2s ease';
                 header.style.opacity = '1';
@@ -59,6 +54,8 @@
                 // Insert top header first
                 const topHeader = bodyContent.querySelector('.top-header');
                 if (topHeader) {
+                    // Hide immediately to prevent FOUC
+                    topHeader.style.opacity = '0';
                     document.body.insertBefore(topHeader, document.body.firstChild);
                 }
 
