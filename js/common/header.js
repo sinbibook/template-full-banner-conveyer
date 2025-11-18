@@ -15,7 +15,7 @@
 
     // Scroll Effect for Header
     window.addEventListener('scroll', function() {
-        const header = document.querySelector('.header');
+        const header = document.querySelector('.top-header');
         const bookNowBtn = document.querySelector('.book-now-btn');
         const hamburgerBtn = document.querySelector('.hamburger-button');
 
@@ -186,7 +186,7 @@
 
     // Check and set header state based on scroll position
     function checkInitialScroll() {
-        const header = document.querySelector('.header');
+        const header = document.querySelector('.top-header');
         if (header) {
             // Check if we're on main.html - always keep scrolled state
             const isMainPage = window.location.pathname.includes('main.html') ||
