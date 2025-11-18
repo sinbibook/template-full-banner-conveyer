@@ -1,7 +1,6 @@
-/* Main Content */
+/* Main Content - 헤더 높이만큼 마진 추가 */
 .main-content {
-    margin-left: 0;
-    transition: margin-left 0.3s ease;
+    margin-top: 80px;
 }
 
 /* Overlay mode - no push for all screen sizes */
