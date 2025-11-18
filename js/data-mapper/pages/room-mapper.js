@@ -263,9 +263,9 @@ class RoomMapper extends BaseDataMapper {
             ?.filter(img => img.isSelected)
             .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)) || [];
 
-        // 마지막 4개 이미지 중 첫 번째 (썸네일 0번째와 동일)
-        const lastFourImages = sortedImages.slice(-4);
-        const mainImage = lastFourImages[0]; // 썸네일 0번째와 동일
+        // 인덱스 2번부터 4개 이미지 (2, 3, 4, 5번)
+        const selectedImages = sortedImages.slice(2, 6);
+        const mainImage = selectedImages[0]; // 2번 인덱스 이미지
 
         if (mainImage) {
             mainImg.src = mainImage.url;
@@ -277,7 +277,7 @@ class RoomMapper extends BaseDataMapper {
     }
 
     /**
-     * 썸네일 이미지들 매핑 (마지막 4개 interior 이미지)
+     * 썸네일 이미지들 매핑 (인덱스 2번부터 4개 interior 이미지)
      */
     mapRoomThumbnails() {
         const room = this.getCurrentRoom();
@@ -291,8 +291,8 @@ class RoomMapper extends BaseDataMapper {
             ?.filter(img => img.isSelected)
             .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)) || [];
 
-        // 마지막 4개 이미지 가져오기
-        let lastFourImages = sortedImages.slice(-4);
+        // 인덱스 2번부터 4개 이미지 가져오기 (2, 3, 4, 5번)
+        let lastFourImages = sortedImages.slice(2, 6);
 
         // 4개가 안 되면 null로 채움 (UI 구조 유지 위해)
         while (lastFourImages.length < 4) {
