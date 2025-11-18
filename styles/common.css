@@ -238,6 +238,7 @@ img {
         font-size: 2rem;
         letter-spacing: 2px;
         font-weight: bold;
+        animation: marquee 40s linear infinite;
     }
 
     .marquee-text span {

@@ -914,6 +914,8 @@
     .signature-right {
         max-width: 100%;
         height: auto;
+        margin: 0 auto;
+        padding: 0 20px;
     }
 
     .signature-main-image {

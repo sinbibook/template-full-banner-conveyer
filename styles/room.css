@@ -537,7 +537,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    height: 500px;
+    height: auto;
 }
 
 .dynamic-gallery[data-count="5"] .gallery-item:first-child {
