@@ -460,7 +460,7 @@
 .dynamic-gallery[data-count="2"] {
     display: grid;
     grid-template-columns: 3fr 2fr;
-    height: 400px;
+    height: auto;
 }
 
 .dynamic-gallery[data-count="2"] .gallery-item:first-child {
@@ -480,7 +480,7 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr 1fr;
-    height: 500px;
+    height: auto;
 }
 
 .dynamic-gallery[data-count="3"] .gallery-item:first-child {
@@ -504,7 +504,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    height: 500px;
+    height: auto;
     gap: 10px;
 }
 
