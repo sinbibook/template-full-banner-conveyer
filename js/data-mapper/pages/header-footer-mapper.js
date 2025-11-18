@@ -414,10 +414,10 @@ class HeaderFooterMapper extends BaseDataMapper {
             return;
         }
 
-        // 전화번호 매핑
+        // 전화번호 매핑 - 디자인상 레이블 없이 전화번호만 표시 (푸터 왼쪽 영역에 숙소명과 연락처를 크게 강조하기 위함)
         const footerPhone = this.safeSelect('[data-footer-phone]');
         if (footerPhone && property.contactPhone) {
-            footerPhone.textContent = `숙소 전화번호 : ${property.contactPhone}`;
+            footerPhone.textContent = `${property.contactPhone}`;
         }
 
         // 대표자명 매핑

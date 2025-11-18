@@ -45,9 +45,9 @@
     font-style: italic;
 }
 
-/* Right Section - 70% */
+/* Right Section - 60% */
 .footer-right {
-    flex: 1;
+    flex: 0 0 60%;
     display: flex;
     flex-direction: column;
 }
@@ -63,7 +63,7 @@
 
 .footer-phone-text {
     font-family: 'Chosunilbo', serif;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     color: white;
 }
