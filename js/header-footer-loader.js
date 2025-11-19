@@ -74,6 +74,10 @@
                         hamburgerButton.addEventListener('click', window.toggleSideHeader);
                     }
                 }, 100);
+
+                // Mark header as loaded after script is fully loaded
+                headerLoaded = true;
+                tryInitializeMapper();
             };
             document.body.appendChild(script);
 
@@ -84,10 +88,6 @@
                     header.classList.add('scrolled');
                 }
             }
-
-            // Mark header as loaded and try to initialize mapper
-            headerLoaded = true;
-            tryInitializeMapper();
         } catch (error) {
             console.error('Error loading header:', error);
         }

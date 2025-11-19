@@ -20,18 +20,10 @@
         const hamburgerBtn = document.querySelector('.hamburger-button');
 
         if (header) {
-            // Check if we're on main.html - always keep scrolled state
-            const isMainPage = window.location.pathname.includes('main.html') ||
-                              window.location.pathname.endsWith('/main');
-
-            if (isMainPage) {
+            if (window.scrollY > 50) {
                 header.classList.add('scrolled');
             } else {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                header.classList.remove('scrolled');
             }
         }
 
@@ -187,19 +179,12 @@
     // Check and set header state based on scroll position
     function checkInitialScroll() {
         const header = document.querySelector('.top-header');
-        if (header) {
-            // Check if we're on main.html - always keep scrolled state
-            const isMainPage = window.location.pathname.includes('main.html') ||
-                              window.location.pathname.endsWith('/main');
 
-            if (isMainPage) {
+        if (header) {
+            if (window.scrollY > 50 || window.pageYOffset > 50) {
                 header.classList.add('scrolled');
             } else {
-                if (window.scrollY > 50 || window.pageYOffset > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                header.classList.remove('scrolled');
             }
         }
     }
@@ -373,12 +358,5 @@
 
     // Immediate check for page refresh scenarios
     checkInitialScroll();
-
-    // FOUC Prevention: Show headers after data mapping complete
-    window.showHeaders = function() {
-        document.querySelectorAll('.top-header, .side-header').forEach(el => {
-            el.classList.remove('fouc-hidden');
-        });
-    };
 
 })();

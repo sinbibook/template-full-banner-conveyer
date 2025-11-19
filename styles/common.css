@@ -126,7 +126,6 @@ img {
     position: relative;
     overflow: hidden;
     z-index: 990; /* 헤더(z-index: 999) 아래 - 헤더가 슬라이더 위에 오버레이됨 */
-    margin-top: -80px; /* 헤더 높이만큼 위로 올려서 겹치게 */
 }
 
 .content-wrap {
