@@ -76,6 +76,12 @@
     align-items: center;
     padding-bottom: 80px;
     z-index: 10;
+    pointer-events: none; /* 터치 이벤트가 슬라이더로 전달되도록 */
+}
+
+/* 버튼과 텍스트는 클릭/터치 가능하도록 */
+.facility-hero-content-overlay * {
+    pointer-events: auto;
 }
 
 .facility-hero-content-container {
@@ -1147,5 +1153,32 @@
         font-size: 28px;
         left: 20px;
         bottom: 20px;
+    }
+
+    /* Facility Special Section 모바일 표시 */
+    .facility-special-section {
+        display: block !important;
+        min-height: auto;
+        padding: 40px 0;
+    }
+    .facility-special-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .facility-special-left,
+    .facility-special-right {
+        width: 100%;
+    }
+    .facility-special-image-left,
+    .facility-special-image-right {
+        width: 100%;
+        height: 200px;
+        margin: 10px 0;
+    }
+    .facility-special-title {
+        font-size: 32px;
+    }
+    .facility-special-subtitle {
+        font-size: 18px;
     }
 }

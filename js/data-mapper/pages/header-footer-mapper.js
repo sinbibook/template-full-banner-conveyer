@@ -432,49 +432,47 @@ class HeaderFooterMapper extends BaseDataMapper {
 
         const property = this.data.property;
         const businessInfo = property.businessInfo;
-        // 전화번호 매핑 - property.contact.phone 사용
+        // 전화번호 매핑 - property.contactPhone 사용
         const footerPhone = this.safeSelect('[data-footer-phone]');
         if (footerPhone) {
-            const contact = this.safeGet(this.data, 'property.contact');
-            const phoneNumber = contact && contact.phone;
+            const phoneNumber = this.safeGet(this.data, 'property.contactPhone');
             if (phoneNumber) {
                 footerPhone.textContent = phoneNumber;
             }
         }
 
-        // 대표자명 매핑 - property.businessInfo.ownerName 사용
+        // 대표자명 매핑 - property.businessInfo.representativeName 사용
         const representativeNameElement = this.safeSelect('[data-footer-representative-name]');
         if (representativeNameElement) {
-            const representative = businessInfo && businessInfo.ownerName;
+            const representative = businessInfo && businessInfo.representativeName;
             if (representative) {
                 representativeNameElement.textContent = `대표자명 : ${representative}`;
             }
         }
 
-        // 주소 매핑 - property.location.address 사용
+        // 주소 매핑 - property.address 사용
         const addressElement = this.safeSelect('[data-footer-address]');
         if (addressElement) {
-            const location = this.safeGet(this.data, 'property.location');
-            const address = location && location.address;
+            const address = this.safeGet(this.data, 'property.address');
             if (address) {
                 addressElement.textContent = `주소 : ${address}`;
             }
         }
 
-        // 사업자번호 매핑 - property.businessInfo.registrationNumber 사용
+        // 사업자번호 매핑 - property.businessInfo.businessNumber 사용
         const businessNumberElement = this.safeSelect('[data-footer-business-number]');
         if (businessNumberElement) {
-            const businessNumber = businessInfo && businessInfo.registrationNumber;
+            const businessNumber = businessInfo && businessInfo.businessNumber;
             if (businessNumber) {
                 businessNumberElement.textContent = `사업자번호 : ${businessNumber}`;
             }
         }
 
-        // 통신판매업신고번호 - property.businessInfo.ecommerceLicense 사용
+        // 통신판매업신고번호 - property.businessInfo.eCommerceRegistrationNumber 사용
         const ecommerceElement = this.safeSelect('[data-footer-ecommerce]');
         if (ecommerceElement) {
-            if (businessInfo && businessInfo.ecommerceLicense) {
-                ecommerceElement.textContent = `통신판매업신고번호 : ${businessInfo.ecommerceLicense}`;
+            if (businessInfo && businessInfo.eCommerceRegistrationNumber) {
+                ecommerceElement.textContent = `통신판매업신고번호 : ${businessInfo.eCommerceRegistrationNumber}`;
             } else {
                 // 통신판매업신고번호가 없으면 부모 라인 전체 숨김
                 const parentLine = ecommerceElement.closest('.footer-info-line');

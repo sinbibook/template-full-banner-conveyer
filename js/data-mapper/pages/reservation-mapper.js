@@ -65,7 +65,8 @@ class ReservationMapper extends BaseDataMapper {
             const slide = document.createElement('div');
             slide.className = 'fullscreen-slide active';
             const img = document.createElement('img');
-            ImageHelpers.applyPlaceholder(img);
+            img.src = './images/hero.jpg'; // 기본 placeholder 이미지
+            img.alt = '예약안내';
             slide.appendChild(img);
             sliderInner.appendChild(slide);
             return;
@@ -159,57 +160,63 @@ class ReservationMapper extends BaseDataMapper {
      * 환불규정 섹션 매핑 (data-refund-notes)
      */
     mapRefundSection() {
-        if (!this.isDataLoaded || !this.data.property) return;
+        if (!this.isDataLoaded) return;
 
-        const property = this.data.property;
+        const cancellation = this.safeGet(this.data, 'reservation.rules.cancellation');
         const refundNotesElement = this.safeSelect('[data-refund-notes]');
         const refundTextSection = this.safeSelect('.refund-text-section');
 
+        // 기본 환불 안내 텍스트 설정
         if (refundNotesElement) {
-            if (property.refundSettings?.customerRefundNotice) {
-                refundNotesElement.innerHTML = this._formatTextWithLineBreaks(property.refundSettings.customerRefundNotice);
-                if (refundTextSection) refundTextSection.style.display = '';
-            } else {
-                if (refundTextSection) refundTextSection.style.display = 'none';
-            }
+            const defaultText = "예약 취소 시 아래 환불 규정이 적용됩니다.<br>성수기 및 특별 기간에는 별도 규정이 적용될 수 있습니다.";
+            refundNotesElement.innerHTML = defaultText;
+            if (refundTextSection) refundTextSection.style.display = '';
         }
 
-        // property.refundPolicies를 취소 수수료 테이블로 매핑
-        if (property.refundPolicies) {
-            this.mapRefundPolicies(property.refundPolicies);
+        // reservation.rules.cancellation.penalty를 취소 수수료 테이블로 매핑
+        if (cancellation?.penalty) {
+            this.mapCancellationPenalty(cancellation.penalty);
         }
     }
 
     /**
-     * 환불 정책 테이블 매핑
+     * 취소 수수료 테이블 매핑 (penalty 객체 사용)
      */
-    mapRefundPolicies(refundPolicies) {
+    mapCancellationPenalty(penalty) {
         const tableBody = this.safeSelect('.refund-table-body');
-        if (!tableBody || !refundPolicies || !Array.isArray(refundPolicies)) return;
+        if (!tableBody || !penalty) return;
 
         tableBody.innerHTML = '';
-        refundPolicies.forEach(policy => {
-            const row = document.createElement('tr');
 
-            // refundProcessingDays를 기반으로 취소 시점 텍스트 생성
-            let period;
-            if (policy.refundProcessingDays === 0) {
-                period = '이용일 당일';
-            } else if (policy.refundProcessingDays === 1) {
-                period = '이용일 1일 전';
-            } else {
-                period = `이용일 ${policy.refundProcessingDays}일 전`;
+        // penalty 객체를 배열로 변환하여 처리
+        const penaltyData = [
+            { days: '7days', label: '이용일 7일 전', value: penalty['7days'] },
+            { days: '3days', label: '이용일 3일 전', value: penalty['3days'] },
+            { days: '1day', label: '이용일 1일 전', value: penalty['1day'] },
+            { days: 'noShow', label: '노쇼 (당일 취소)', value: penalty.noShow }
+        ];
+
+        penaltyData.forEach(item => {
+            if (item.value !== undefined) {
+                const row = document.createElement('tr');
+                const refundRate = 100 - item.value; // penalty는 수수료율이므로 환불율로 변환
+                const refundRateText = refundRate === 0 ? '환불 불가' : `${refundRate}% 환불`;
+
+                row.innerHTML = `
+                    <td>${item.label}</td>
+                    <td class="${refundRate === 0 ? 'no-refund' : ''}">${refundRateText}</td>
+                `;
+                tableBody.appendChild(row);
             }
-
-            // refundRate를 기반으로 환불율 텍스트 생성
-            const refundRateText = policy.refundRate === 0 ? '환불 불가' : `${policy.refundRate}% 환불`;
-
-            row.innerHTML = `
-                <td>${period}</td>
-                <td class="${policy.refundRate === 0 ? 'no-refund' : ''}">${refundRateText}</td>
-            `;
-            tableBody.appendChild(row);
         });
+    }
+
+    /**
+     * 환불 정책 테이블 매핑 (구 버전 - 사용하지 않음)
+     */
+    mapRefundPolicies() {
+        // 이 함수는 더 이상 사용하지 않음
+        // mapCancellationPenalty로 대체
     }
 
     /**
@@ -220,7 +227,7 @@ class ReservationMapper extends BaseDataMapper {
         if (!this.isDataLoaded) return;
 
         const propertyImages = this.safeGet(this.data, 'property.images');
-        const exteriorImages = propertyImages && propertyImages.length > 0 ? propertyImages[0].exterior : null;
+        const exteriorImages = propertyImages?.exterior;
         const bannerElement = this.safeSelect('[data-main-banner]');
 
         if (!bannerElement) {

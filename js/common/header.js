@@ -436,6 +436,12 @@
 
     // Mobile Accordion Toggle
     window.toggleMobileAccordion = function(header) {
+        // 모바일에서는 아코디언 기능 비활성화
+        if (window.innerWidth <= 768) {
+            return; // 아무것도 하지 않음
+        }
+
+        // 데스크톱에서만 작동
         const content = header.nextElementSibling;
 
         // Toggle current accordion

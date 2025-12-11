@@ -525,29 +525,35 @@
 
     .header-opened.expanded {
         height: 100vh !important;
-        max-height: none !important;
+        max-height: 100vh !important;
+        overflow: hidden;
     }
 
     .header-opened-content {
         padding: 0;
         flex-direction: column;
         gap: 0;
-        height: 100vh;
+        height: 100%;
+        max-height: 100vh;
         position: relative;
         display: flex;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        flex-direction: column;
+        overflow: hidden;
     }
 
     .dropdown-menu-grid {
         flex-direction: column;
         gap: 20px;
         align-items: flex-start;
-        padding: 40px 20px 120px 20px;
-        overflow-y: auto;
-        flex: 1;
+        padding: 40px 20px 80px 20px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        flex: 1 1 auto;
         min-height: 0;
         box-sizing: border-box;
+        height: 100%;
+        position: relative;
     }
 
     .dropdown-section {
@@ -568,32 +574,26 @@
         position: relative;
     }
 
+    /* 모바일에서 아코디언 제거 - 항상 열려있음 */
     .dropdown-section-title.expandable::after {
-        content: '+';
-        font-size: 20px;
-        transition: transform 0.3s ease;
-        line-height: 1;
+        display: none !important; /* 아코디언 버튼 숨김 */
     }
 
-    .dropdown-section-title.expandable.active::after {
-        transform: rotate(45deg);
+    .dropdown-section-title {
+        cursor: default !important; /* 클릭 불가능 */
+        pointer-events: none !important; /* 클릭 이벤트 비활성화 */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important; /* 구분선 유지 */
     }
 
     .dropdown-section-list {
         align-items: flex-start;
         text-align: left;
-        margin-bottom: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
+        margin-bottom: 20px;
+        max-height: none !important; /* 항상 열림 */
+        overflow: visible !important;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
-    }
-
-    .dropdown-section-list.active {
-        max-height: none;
-        overflow: visible;
     }
 
     .dropdown-section-list li {
@@ -627,7 +627,7 @@
     /* Mobile Menu Reservation Button - 모바일에서만 표시 */
     .mobile-menu-reservation {
         display: block;
-        position: absolute;
+        position: sticky;
         bottom: 0;
         left: 0;
         right: 0;
@@ -635,6 +635,8 @@
         background: rgba(101, 131, 153, 0.95);
         backdrop-filter: blur(10px);
         border-top: 1px solid rgba(255, 255, 255, 0.2);
+        margin-top: auto;
+        z-index: 10;
     }
 
     .mobile-menu-reservation .reservation-btn {

@@ -1,51 +1,64 @@
 {
+  "metadata": {
+    "version": "1.0",
+    "generatedAt": "2024-01-15T10:30:00Z",
+    "templateType": "gamseong_template",
+    "propertyId": "propertyId",
+    "homepageId": "homepageId"
+  },
   "property": {
-    "id": "property-id",
+    "id": "id",
     "name": "숙소명",
-    "nameEn": "Property Name",
-    "type": "숙소 타입",
-    "subtitle": "숙소 서브타이틀",
     "description": "숙소 설명",
-    "location": {
-      "address": "전체 주소",
-      "city": "도시명",
-      "state": "시/도",
-      "country": "국가",
-      "zipCode": "우편번호",
-      "latitude": 0,
-      "longitude": 0
-    },
-    "contact": {
-      "phone": "전화번호",
-      "email": "이메일"
-    },
-    "images": {
-      "logo": "로고 이미지 URL",
-      "main": [
-        {
-          "url": "메인 이미지 URL",
-          "description": "메인 이미지 설명",
-          "isVisible": true,
-          "sortOrder": 0
-        }
-      ],
-      "exterior": [
-        {
-          "url": "외관 이미지 URL",
-          "description": "외관 이미지 설명",
-          "isVisible": true,
-          "sortOrder": 0
-        }
-      ]
-    },
-    "socialMedia": {
-      "instagram": "인스타그램 URL",
-      "facebook": "페이스북 URL"
-    },
+    "subtitle": "숙소 부제목",
+    "address": "숙소 주소",
+    "latitude": 0,
+    "longitude": 0,
+    "contactPhone": "연락처 전화번호",
+    "contactEmail": "연락처 이메일",
+    "checkin": "15:00:00",
+    "checkout": "11:00:00",
+    "checkInOutInfo": "체크인/체크아웃 안내",
+    "usageGuide": "이용안내",
+    "reservationGuide": "예약안내",
+    "province": "도/시",
+    "city": "시/군/구",
+    "amenities": [
+      "편의시설1",
+      "편의시설2",
+      "편의시설3"
+    ],
+    "nearbyAttractions": [
+      "주변명소1",
+      "주변명소2"
+    ],
+    "services": [
+      "제공서비스1",
+      "제공서비스2"
+    ],
+    "propertyThemes": [
+      "숙소테마1",
+      "숙소테마2"
+    ],
+    "propertyTypes": [
+      "숙소유형"
+    ],
     "businessInfo": {
-      "registrationNumber": "사업자등록번호",
-      "ecommerceLicense": "통신판매업 신고번호",
-      "ownerName": "대표자명",
+      "businessName": "사업자명",
+      "businessNumber": "사업자번호",
+      "representativeName": "대표자명",
+      "businessAddress": "사업장 주소",
+      "businessPhone": "사업장 전화번호",
+      "businessEmail": "사업장 이메일",
+      "businessType": "individual",
+      "businessCategory": null,
+      "eCommerceRegistrationNumber": ""
+    },
+    "contractInfo": {
+      "contractStartDate": "2025-09-10T00:00:00.000Z",
+      "contractEndDate": "2025-09-12T00:00:00.000Z",
+      "contractStatus": "active",
+      "contactName": "담당자명",
       "contactEmail": "담당자 이메일",
       "contactPhone": "담당자 전화번호",
       "paymentTerms": null,
@@ -60,153 +73,154 @@
       {
         "id": "facility-001",
         "name": "시설명",
-        "subtitle": "시설 서브타이틀",
-        "nameEn": "Facility Name",
         "displayOrder": 0,
         "description": "시설 설명",
-        "details": "시설 상세 정보",
-        "usageGuide": [
-          "이용 안내 1"
-        ],
+        "usageGuide": "시설 이용안내",
         "images": [
           {
-            "main": [
-              {
-                "url": "시설 이미지 URL",
-                "description": "시설 이미지 설명",
-                "isVisible": true,
-                "sortOrder": 0
-              }
-            ]
+            "main": []
           }
-        ],
-        "features": [],
-        "additionalInfo": [],
-        "benefits": []
+        ]
       }
     ],
-    "amenities": {
-      "categories": [
-        {
-          "id": "amenity-cat-001",
-          "name": "카테고리명",
-          "nameEn": "Category Name",
-          "items": [
-            {
-              "id": "amenity-001",
-              "name": "편의시설명",
-              "nameEn": "Amenity Name",
-              "icon": "아이콘 URL",
-              "available": true,
-              "description": "편의시설 설명"
-            }
-          ]
-        }
-      ]
-    }
+    "refundPolicies": [
+      {
+        "refundProcessingDays": 7,
+        "refundRate": 100
+      },
+      {
+        "refundProcessingDays": 5,
+        "refundRate": 80
+      },
+      {
+        "refundProcessingDays": 3,
+        "refundRate": 50
+      },
+      {
+        "refundProcessingDays": 1,
+        "refundRate": 30
+      },
+      {
+        "refundProcessingDays": 0,
+        "refundRate": 0
+      }
+    ],
+    "refundSettings": {
+      "customerRefundNotice": "환불 규정 안내",
+      "immediateRefundEnabled": false,
+      "immediateRefundTimeLimit": "60"
+    },
+    "images": [
+      {
+        "thumbnail": [],
+        "surrounding": [],
+        "exterior": [],
+        "commonArea": []
+      }
+    ],
+    "nameEn": "숙소 영문명",
+    "domain": "도메인",
+    "realtimeBookingId": "지펜션ID",
+    "ybsId": "YBS ID"
   },
   "rooms": [
     {
       "id": "room-001",
-      "name": "룸 이름",
-      "nameEn": "Room Name",
-      "type": "룸 타입",
-      "capacity": {
-        "standard": 2,
-        "maximum": 4
+      "name": "객실명",
+      "group": null,
+      "description": "객실 설명",
+      "roomInfo": "객실 이용안내",
+      "size": 25,
+      "baseOccupancy": 2,
+      "maxOccupancy": 4,
+      "totalRoomCount": {
+        "bedroom": 1,
+        "bathroom": 1,
+        "livingRoom": 1
       },
-      "price": {
-        "weekday": 0,
-        "weekend": 0,
-        "peak": 0
-      },
-      "size": "면적",
-      "description": "룸 설명",
-      "amenities": [],
+      "bedTypes": [
+        "침대타입"
+      ],
+      "amenities": [
+        "객실편의시설1",
+        "객실편의시설2"
+      ],
+      "roomViews": [
+        "객실전망1",
+        "객실전망2"
+      ],
+      "roomStructures": [
+        "객실구조1",
+        "객실구조2"
+      ],
       "images": [
         {
-          "url": "룸 이미지 URL",
-          "description": "룸 이미지 설명",
-          "isMain": true,
-          "sortOrder": 0
+          "thumbnail": [],
+          "interior": [],
+          "exterior": [],
+          "surrounding": [],
+          "commonArea": []
         }
-      ],
-      "features": [],
-      "checkIn": "15:00",
-      "checkOut": "11:00"
+      ]
     }
   ],
   "homepage": {
+    "domain": "도메인주소",
+    "templateType": "gamseong",
+    "images": [
+      {
+        "logo": []
+      }
+    ],
+    "seo": {
+      "title": "SEO 타이틀",
+      "description": "SEO 설명",
+      "keywords": "SEO 키워드"
+    },
+    "socialLinks": {},
     "customFields": {
       "pages": {
         "index": {
           "sections": [
             {
               "hero": {
-                "title": "메인 소개 타이틀",
-                "description": "메인 소개 설명",
-                "images": [
-                  {
-                    "url": "히어로 이미지 URL",
-                    "description": "히어로 이미지 설명",
-                    "isSelected": true,
-                    "sortOrder": 0
-                  }
-                ]
+                "title": "메인 히어로 타이틀",
+                "description": "메인 히어로 설명",
+                "images": []
               },
               "essence": {
-                "title": "핵심 메시지 타이틀",
-                "description": "핵심 메시지 설명",
-                "images": [
-                  {
-                    "url": "핵심 이미지 URL 1",
-                    "description": "핵심 이미지 설명 1",
-                    "isSelected": true,
-                    "sortOrder": 0
-                  },
-                  {
-                    "url": "핵심 이미지 URL 2",
-                    "description": "핵심 이미지 설명 2",
-                    "isSelected": true,
-                    "sortOrder": 1
-                  },
-                  {
-                    "url": "핵심 이미지 URL 3",
-                    "description": "핵심 이미지 설명 3",
-                    "isSelected": true,
-                    "sortOrder": 2
-                  }
-                ]
-              },
-              "signature": {
-                "title": "시그니처 타이틀",
-                "subtitle": "시그니처 서브타이틀",
-                "description": "시그니처 설명",
-                "images": [
-                  {
-                    "url": "시그니처 이미지 URL",
-                    "description": "시그니처 이미지 설명",
-                    "isSelected": true,
-                    "sortOrder": 0
-                  }
-                ]
+                "title": "특징 섹션 타이틀",
+                "description": "특징 섹션 설명",
+                "images": []
               },
               "gallery": {
-                "title": "갤러리 타이틀",
-                "description": "갤러리 설명",
-                "images": [
-                  {
-                    "url": "갤러리 이미지 URL",
-                    "description": "갤러리 이미지 설명",
-                    "isSelected": true,
-                    "sortOrder": 0
-                  }
-                ]
+                "title": "갤러리 섹션 타이틀",
+                "description": "갤러리 섹션 설명",
+                "images": []
+              },
+              "signature": {
+                "title": "시그니처 섹션 타이틀",
+                "description": "시그니처 섹션 설명",
+                "images": []
               },
               "closing": {
-                "title": "마무리 타이틀",
-                "description": "마무리 설명",
-                "backgroundImage": "마무리 배경 이미지 URL"
+                "title": "마무리 섹션 타이틀",
+                "description": "마무리 섹션 설명",
+                "images": []
+              }
+            }
+          ]
+        },
+        "directions": {
+          "sections": [
+            {
+              "hero": {
+                "title": "오시는길 히어로 타이틀",
+                "images": []
+              },
+              "notice": {
+                "title": "",
+                "description": ""
               }
             }
           ]
@@ -215,39 +229,89 @@
           "sections": [
             {
               "hero": {
-                "image": "메인 페이지 히어로 이미지 URL"
+                "title": "소개 페이지 히어로 타이틀",
+                "description": "소개 페이지 히어로 설명",
+                "images": []
               },
-              "about": {
-                "title": "소개 타이틀",
-                "description": "소개 설명"
-              },
-              "introduction": [
+              "about": [
                 {
-                  "image": "소개 이미지 URL",
-                  "title": "소개 블록 타이틀",
-                  "description": "소개 블록 설명"
+                  "title": "소개 섹션 타이틀",
+                  "description": "소개 섹션 설명",
+                  "images": []
                 }
               ]
             }
           ]
-        }
-      }
-    }
-  },
-  "reservation": {
-    "rules": {
-      "checkIn": "15:00",
-      "checkOut": "11:00",
-      "minimumStay": 1,
-      "advanceBooking": 90,
-      "cancellation": {
-        "policy": "flexible",
-        "freeCancellationDays": 7,
-        "penalty": {
-          "7days": 0,
-          "3days": 30,
-          "1day": 50,
-          "noShow": 100
+        },
+        "room": [
+          {
+            "id": "room-001",
+            "sections": [
+              {
+                "hero": {
+                  "title": "객실 히어로 타이틀",
+                  "images": []
+                },
+                "gallery": {
+                  "title": "객실 갤러리 타이틀",
+                  "images": []
+                }
+              }
+            ]
+          }
+        ],
+        "facility": [
+          {
+            "id": "facility-001",
+            "sections": [
+              {
+                "hero": {
+                  "title": "시설 히어로 타이틀",
+                  "images": []
+                },
+                "about": {
+                  "title": "시설 소개 타이틀",
+                  "images": []
+                },
+                "experience": {
+                  "features": [
+                    {
+                      "title": "특징 타이틀",
+                      "description": "특징 설명"
+                    }
+                  ],
+                  "additionalInfos": [
+                    {
+                      "title": "추가정보 타이틀",
+                      "description": "추가정보 설명"
+                    }
+                  ],
+                  "benefits": [
+                    {
+                      "title": "혜택 타이틀",
+                      "description": "혜택 설명"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "reservation": {
+          "sections": [
+            {
+              "hero": {
+                "title": "예약안내 히어로 타이틀",
+                "description": "예약안내 히어로 설명",
+                "images": []
+              },
+              "about": {
+                "title": "예약정보 타이틀",
+                "description": "예약정보 설명",
+                "images": []
+              }
+            }
+          ]
         }
       }
     }

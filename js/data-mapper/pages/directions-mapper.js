@@ -169,7 +169,7 @@ class DirectionsMapper extends BaseDataMapper {
         if (!this.isDataLoaded) return;
 
         const propertyImages = this.safeGet(this.data, 'property.images');
-        const exteriorImages = propertyImages?.exterior; // images는 객체이고 그 안에 exterior 배열이 있음
+        const exteriorImages = propertyImages?.exterior;
         const bannerElement = this.safeSelect('[data-main-banner]');
 
         if (!bannerElement) {

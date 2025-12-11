@@ -23,9 +23,14 @@
             return;
         }
 
+        // 이미 초기화되었는지 확인 (중복 방지)
+        if (slider.dataset.sliderInitialized === 'true') {
+            return;
+        }
+
         const slides = slider.querySelectorAll('.slide');
-        const prevBtn = document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.next-btn');
+        const prevBtn = document.querySelector('.slider-btn.prev');
+        const nextBtn = document.querySelector('.slider-btn.next');
         const progressBar = document.querySelector('.progress-bar');
 
 
@@ -118,37 +123,63 @@
         let touchStartX = 0;
         let touchEndX = 0;
         let isSwiping = false;
+        let touchStartY = 0;
+        let touchEndY = 0;
 
+        // 이벤트 위임을 사용하여 동적으로 추가된 슬라이드도 처리
         slider.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            touchEndX = touchStartX; // 초기화
+            touchEndY = touchStartY; // 초기화
             isSwiping = true;
             stopAutoSlide();
-        }, { passive: true });
+
+            // 모바일 디버깅용
+            e.preventDefault(); // 기본 스크롤 방지
+        }, { passive: false });
 
         slider.addEventListener('touchmove', (e) => {
             if (!isSwiping) return;
-            touchEndX = e.touches[0].clientX;
-        }, { passive: true });
 
-        slider.addEventListener('touchend', () => {
+            touchEndX = e.touches[0].clientX;
+            touchEndY = e.touches[0].clientY;
+
+            // 수평 스와이프인 경우만 기본 동작 방지
+            const diffX = Math.abs(touchStartX - touchEndX);
+            const diffY = Math.abs(touchStartY - touchEndY);
+
+            if (diffX > diffY) {
+                e.preventDefault(); // 수평 스와이프시 스크롤 방지
+            }
+        }, { passive: false });
+
+        const handleTouchEnd = (e) => {
             if (!isSwiping) return;
             isSwiping = false;
 
-            const swipeDistance = touchStartX - touchEndX;
-            const threshold = 50; // Minimum distance for swipe
+            const swipeDistanceX = touchStartX - touchEndX;
+            const swipeDistanceY = touchStartY - touchEndY;
+            const threshold = 30; // 더 낮은 threshold로 민감도 증가
 
-            if (Math.abs(swipeDistance) > threshold) {
-                if (swipeDistance > 0) {
+            // 수평 스와이프가 수직보다 큰 경우만 처리
+            if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY) &&
+                Math.abs(swipeDistanceX) > threshold) {
+                if (swipeDistanceX > 0) {
                     // Swiped left - next slide
                     nextSlide();
                 } else {
                     // Swiped right - previous slide
                     prevSlide();
                 }
+                e.preventDefault();
             }
 
             startAutoSlide();
-        }, { passive: true });
+        };
+
+        slider.addEventListener('touchend', handleTouchEnd, { passive: false });
+        slider.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
@@ -166,6 +197,9 @@
         // Start the slider
         showSlide(0);
         startAutoSlide();
+
+        // 초기화 완료 표시
+        slider.dataset.sliderInitialized = 'true';
 
     }
 
