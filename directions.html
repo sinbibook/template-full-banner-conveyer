@@ -7,59 +7,70 @@
     <meta name="keywords" content="SEO 키워드">
     <title>오시는길 - 숙소명</title>
 
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles/common.css" as="style">
+    <link rel="preload" href="styles/directions.css" as="style">
     <link rel="stylesheet" href="styles/common.css">
-    <link rel="stylesheet" href="styles/slider.css">
     <link rel="stylesheet" href="styles/directions.css">
 </head>
 <body>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <section class="main-section fullscreen-slider">
-          <div class="fullscreen-slider-container">
-            <div class="fullscreen-slider-inner" data-directions-slider>
-              <!-- 동적으로 슬라이드가 생성됩니다 -->
-            </div>
-            <div class="fullscreen-slider-content">
-              <h2 class="fullscreen-slider-title centered">Location</h2>
+    <section class="page-hero-section animate-hero">
+        <!-- CUSTOM FIELD : 메인 소개 섹션 이미지 매핑 1장 -->
+        <div class="hero-background">
+            <img data-main-hero-img src="./images/hero4.jpg" alt="Main Hero Image">
+        </div>
+        <!-- 페이지 제목 하드코딩 fixed -->
+        <div class="page-title">
+            <span class="property-name-kr" data-main-property-name-kr></span>
+            <h1 class="typing-text" data-text="Location" style="--text-length: 8;">Location</h1>
+        </div>
+        <!-- Scroll Down Icon -->
+        <div class="scroll-down-icon" onclick="scrollToContent()">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10L12 15L17 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </section>
+
+    <main class="directions-content scroll-target">
+        <div class="main-container">
+            <div class="logo-line-container animate-element">
+                <!-- 숙소 영문명 매핑 fixed -->
+                <span class="logo-text-line" data-main-property-name-en></span>
+                <div class="horizontal-line"></div>
             </div>
 
-            <div class="fullscreen-slider-nav">
-              <span class="nav-arrow nav-prev">‹</span>
-              <span class="nav-current">01</span>
-              <span class="nav-divider">|</span>
-              <span class="nav-total">03</span>
-              <span class="nav-arrow nav-next">›</span>
-            </div>
-          </div>
-        </section>
-        <div class="content-wrap">
-           <div class="about-description-wrap">
             <!-- CUSTOM FIELD : 메인 소개 섹션 타이틀 매핑 -->
-            <h2 class="about-title animate-element" data-directions-title></h2>
+            <div class="hero-content animate-element">
+                <h2 class="hero-title" data-directions-title></h2>
+            </div>
+
+            <!-- 지도 섹션 -->
+            <section class="map-section animate-element">
+                <div class="map-container">
+                    <div id="kakao-map"></div>
+                </div>
+            </section>
 
             <div class="location-details animate-element">
-                <div class="location-address-wrapper animate-element">
-                    <svg class="location-icon" viewBox="0 0 24 24">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
+                <div class="location-address-wrapper">
+                    <svg class="location-icon" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#658399"/>
+                        <circle cx="12" cy="9" r="2.5" fill="white"/>
                     </svg>
                     <!-- 숙소 주소 매핑 -->
                     <p class="location-address" data-directions-address></p>
                 </div>
             </div>
+
             <!-- CUSTOM FIELD : 안내사항 섹션 매핑, 없으면 display none -->
-             <div class="location-note animate-element" data-directions-notes></div>
-           </div>
-
-           <!-- 지도 섹션 -->
-           <section class="map-section animate-element">
-
-               <div class="map-container animate-element">
-                   <div id="kakao-map"></div>
-               </div>
-           </section>
+            <div class="location-note-section animate-element" data-directions-notes></div>
         </div>
+        <!-- 숙소 외경이미지 1번째 fixed -->
+        <section class="full-banner animate-element" data-main-banner>
+            <div class="closing-property-name" data-closing-property-name></div>
+        </section>
     </main>
 
     <!-- Kakao Map SDK -->
@@ -72,7 +83,7 @@
     <script src="js/common.js"></script>
 
     <!-- Image Helpers -->
-    <script src="js/image-helpers.js"></script>
+    <!-- <script src="js/image-helpers.js"></script> -->
 
     <!-- Base Data Mapper -->
     <script src="js/data-mapper/core/base-mapper.js"></script>
@@ -89,11 +100,37 @@
     <!-- Header and Footer Loader -->
     <script src="js/header-footer-loader.js"></script>
 
-    <!-- Fullscreen Slider Component -->
-    <script src="js/components/fullscreen-slider.js"></script>
+    <!-- Scroll Animations -->
+    <script src="js/common/scroll-animations.js"></script>
+
+    <!-- Data Mapper -->
+    <script src="js/data-mapper/core/base-mapper.js"></script>
+    <script src="js/data-mapper/core/image-helpers.js"></script>
+    <script src="js/data-mapper/pages/directions-mapper.js"></script>
 
     <!-- Page-specific script -->
     <script src="js/pages/directions.js"></script>
+
+    <!-- Initialize Data Mapper -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const directionsMapper = new DirectionsMapper();
+            await directionsMapper.initialize();
+        });
+    </script>
+
+    <script>
+        // 타이핑 애니메이션 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 타이핑 애니메이션 완료 후 처리
+            const typingText = document.querySelector('.typing-text');
+            if (typingText) {
+                setTimeout(() => {
+                    typingText.classList.add('typed');
+                }, 3200); // 1.2s delay + 2s animation
+            }
+        });
+    </script>
 
 </body>
 </html>

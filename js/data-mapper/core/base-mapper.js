@@ -8,6 +8,14 @@ class BaseDataMapper {
         this.data = null;
         this.isDataLoaded = false;
         this.animationObserver = null;
+
+        // ========================================
+        // 📌 전역 JSON 파일 설정 (한 곳에서만 변경)
+        // ========================================
+        // 테스트할 때: 'demo-filled.json' (실제 데이터가 들어있는 파일)
+        // 실제 상용할 때: 'standard-template-data.json' (빈 템플릿)
+
+        this.dataSource = 'demo-filled.json';  // ← 여기만 변경하면 전체 페이지 적용!
     }
 
     // ============================================================================
@@ -33,21 +41,46 @@ class BaseDataMapper {
     }
 
     /**
+     * JSON 파일 소스 설정
+     * @param {string} source - 'standard-template-data.json' 또는 'demo-filled.json'
+     */
+    setDataSource(source) {
+        if (source === 'standard-template-data.json' || source === 'demo-filled.json') {
+            this.dataSource = source;
+        } else {
+            console.warn(`Invalid data source: ${source}. Using default: ${this.dataSource}`);
+        }
+    }
+
+    /**
      * JSON 데이터 로드
      */
     async loadData() {
         try {
             // 캐시 방지를 위한 타임스탬프 추가
             const timestamp = new Date().getTime();
-            const response = await fetch(`./standard-template-data.json?t=${timestamp}`);
+            const response = await fetch(`./${this.dataSource}?t=${timestamp}`);
             const rawData = await response.json();
 
             // 스네이크 케이스를 카멜 케이스로 자동 변환
             this.data = this.convertToCamelCase(rawData);
             this.isDataLoaded = true;
+            console.log(`Data loaded from: ${this.dataSource}`);
+
+            // 데이터 소스에 따라 이미지 폴백 처리 설정
+            // demo-filled.json: JSON 이미지만 사용 (폴백 없음)
+            // standard-template-data.json: image-helpers의 폴백 이미지 사용
+            if (this.dataSource === 'demo-filled.json') {
+                window.useImageHelpersFallback = false;
+                console.log('Image fallback disabled - using demo data images only');
+            } else {
+                window.useImageHelpersFallback = true;
+                console.log('Image fallback enabled - using image-helpers for empty data');
+            }
+
             return this.data;
         } catch (error) {
-            console.error('Failed to load property data:', error);
+            console.error(`Failed to load property data from ${this.dataSource}:`, error);
             this.isDataLoaded = false;
             throw error;
         }
@@ -158,14 +191,21 @@ class BaseDataMapper {
 
     /**
      * Feature 코드에 따른 고품질 이미지 URL 반환
+     * @deprecated demo-filled.json 사용 시에는 JSON의 이미지만 사용
      */
     getFeatureImage(code) {
+        // demo-filled.json 사용 시에는 null 반환 (JSON 데이터만 사용)
+        if (this.dataSource === 'demo-filled.json') {
+            return null;
+        }
+
+        // standard-template-data.json 사용 시 폴백 이미지 제공
         const imageMap = {
-            'WIFI': 'https://images.unsplash.com/photo-1606868306217-dbf5046868d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aWZpJTIwY29ubmVjdGlvbiUyMG1vZGVybnxlbnwwfHx8fDE3NTUwNjU4OTh8MA&ixlib=rb-4.1.0&q=80&w=800',
-            'LAUNDRY': 'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXVuZHJ5JTIwZmFjaWxpdHklMjBtb2Rlcm58ZW58MHx8fHwxNzU1MDY1ODk4fDA&ixlib=rb-4.1.0&q=80&w=800',
-            'KITCHEN': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraXRjaGVuJTIwbW9kZXJuJTIwZGVzaWduJTIwcGVuc2lvbnxlbnwwfHx8fDE3NTUwNjU4OTh8MA&ixlib=rb-4.1.0&q=80&w=800',
-            'BARBECUE': 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYXJiZWN1ZSUyMGdyaWxsJTIwb3V0ZG9vciUyMGdyaWxsaW5nfGVufDB8fHx8MTc1NTA2NTg5OHww&ixlib=rb-4.1.0&q=80&w=800',
-            'SPA': 'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcGElMjByZWxheCUyMGx1eHVyeSUyMHdlbGxuZXNzfGVufDB8fHx8MTc1NTA2NTg5OHww&ixlib=rb-4.1.0&q=80&w=800'
+            'WIFI': './images/wifi.jpg',
+            'LAUNDRY': './images/laundry.jpg',
+            'KITCHEN': './images/kitchen.jpg',
+            'BARBECUE': './images/bbq.jpg',
+            'SPA': './images/pool.jpg'
         };
         return imageMap[code] || null;
     }

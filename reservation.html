@@ -11,122 +11,144 @@
     <link rel="preload" href="styles/common.css" as="style">
     <link rel="preload" href="styles/reservation.css" as="style">
     <link rel="stylesheet" href="styles/common.css">
-    <link rel="stylesheet" href="styles/slider.css">
     <link rel="stylesheet" href="styles/reservation.css">
 
 </head>
 <body>
 
-    <!-- Main Content -->
-    <main class="main-content">
+    <section class="page-hero-section">
+        <!-- CUSTOM FIELD : 메인 소개 섹션 이미지 매핑 1장 -->
+        <div class="hero-background">
+            <img data-main-hero-img src="./images/hero5.jpg" alt="Main Hero Image">
+        </div>
+        <!-- 페이지 제목 하드코딩 fixed -->
+        <div class="page-title">
+            <span class="property-name-kr" data-main-property-name-kr></span>
+            <h1 class="typing-text" data-text="Reservation" style="--text-length: 11;">Reservation</h1>
+        </div>
+        <!-- Scroll Down Icon -->
+        <div class="scroll-down-icon" onclick="scrollToContent()">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 10L12 15L17 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </section>
 
-        <!-- CUSTOM FIELD : 메인 소개 섹션 -->
-        <section class="main-section fullscreen-slider">
-          <div class="fullscreen-slider-container">
-            <div class="fullscreen-slider-inner">
-              <!-- 메인 소개 섹션 업로드 이미지 전체 순서대로 매핑 -->
-            </div>
+    <div class="reservation-page scroll-target">
 
-            <!-- 하드코딩 fix! -->
-            <div class="fullscreen-slider-content">
-              <h2 class="fullscreen-slider-title centered">Reservation</h2>
-            </div>
-
-            <div class="fullscreen-slider-nav">
-              <span class="nav-arrow nav-prev">‹</span>
-              <span class="nav-current">01</span>
-              <span class="nav-divider">|</span>
-              <span class="nav-total">03</span>
-              <span class="nav-arrow nav-next">›</span>
-            </div>
-          </div>
-        </section>
-
-    </main>
-
-    <div class="reservation-page">
-
-        <section class="reservation-info-section main-content-fade-in">
+        <section class="reservation-info-section">
             <div class="reservation-intro-section">
-                <div class="reservation-intro-content">
-                    <div class="reservation-label">
-                        <!-- CUSTOM FIELD : 이용안내 섹션 타이틀 매핑 -->
-                        <span class="reservation-number" data-reservation-title></span>
-                    </div>
-                    <!-- CUSTOM FIELD : 이용안내 섹션 설명 매핑 -->
-                    <p class="reservation-description" data-reservation-description></p>
+                <!-- 숙소 영문명 매핑 fixed -->
+                <div class="logo-line-container animate-element animate-fade-in">
+                    <span class="logo-text-line" data-main-property-name-en></span>
+                    <div class="horizontal-line"></div>
                 </div>
-            </div>
 
-            <div class="reservation-book-now">
-                <a href="#" class="reservation-book-btn">BOOK NOW</a>
+                <div class="hero-content animate-element animate-slide-up">
+                    <div class="reservation-content-wrapper">
+                        <div class="reservation-title-section">
+                            <!-- CUSTOM FIELD : 이용안내 섹션 타이틀 매핑 -->
+                            <h2 class="reservation-hero-title" data-reservation-title></h2>
+                        </div>
+                        <div class="reservation-description-section">
+                            <!-- CUSTOM FIELD : 이용안내 섹션 설명 매핑 -->
+                            <p class="reservation-description" data-reservation-description></p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="reservation-content-layout">
                 <div class="reservation-info-content">
-                    <div class="reservation-details-section">
-                        <!-- 숙소 이용안내 매핑 -->
-                        <div class="reservation-box animate-element">
-                            <div class="reservation-box-image">
-                                <img src="images/beach.jpg" alt="이용안내 이미지">
-                            </div>
-                            <h3 class="reservation-box-title">이용안내</h3>
-                            <!-- 숙소 이용안내 텍스트 매핑 -->
-                            <div class="reservation-box-content reservation-text-content" data-usage-guide></div>
-                        </div>
-
-                        <!-- 숙소 운영정보 매핑 -->
-                        <div class="reservation-box animate-element">
-                            <div class="reservation-box-image">
-                                <img src="images/sky.jpg" alt="입퇴실 안내 이미지">
-                            </div>
-                            <h3 class="reservation-box-title">입/퇴실 안내</h3>
-                            <div class="reservation-box-content">
-                                <!-- 체크인/체크아웃 시간 -->
-                                <div class="checkin-checkout-times">
-                                    <div class="detail-item">
-                                        <span class="detail-label">체크인</span>
-                                        <span class="detail-value" data-checkin-time></span>
-                                    </div>
-                                    <div class="detail-item">
-                                        <span class="detail-label">체크아웃</span>
-                                        <span class="detail-value" data-checkout-time></span>
-                                    </div>
+                    <div class="reservation-section">
+                        <div class="reservation-section-grid">
+                            <div class="reservation-image-panel">
+                                <div class="reservation-panel-image">
+                                    <img src="images/beach.jpg" alt="이용안내 이미지">
                                 </div>
-                                <!-- 운영정보 텍스트 -->
-                                <div class="operation-info-section">
-                                    <div class="reservation-text-content operation-info-text" data-operation-info></div>
+                                <!-- 하드코딩 Fixed -->
+                                <div class="reservation-panel-title">Usage Guide</div>
+                            </div>
+                            <div class="reservation-content-area">
+                                <div class="reservation-box animate-element" data-section="usage-guide">
+                                    <!-- 숙소 이용안내 타이틀 매핑 -->
+                                    <h3 class="reservation-box-title">이용안내</h3>
+                                    <!-- 숙소 이용안내 내용 매핑 -->
+                                    <div class="reservation-box-content reservation-text-content" data-usage-guide></div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- 숙소 환불정책 매핑 -->
-                        <div class="reservation-box refund-box animate-element">
-                            <div class="reservation-box-image">
-                                <img src="images/flower.jpg" alt="환불 안내 이미지">
+                    <div class="reservation-section">
+                        <div class="reservation-section-grid">
+                            <div class="reservation-image-panel">
+                                <div class="reservation-panel-image">
+                                    <img src="images/sky.jpg" alt="입퇴실 안내 이미지">
+                                </div>
+                                <!-- 하드코딩 Fixed -->
+                                <div class="reservation-panel-title">Check In/Out</div>
                             </div>
-                            <h3 class="reservation-box-title">환불/취소수수료</h3>
-                            <div class="refund-content">
-                                <div class="refund-table-section">
-                                    <h4 class="refund-section-title">환불 규정표</h4>
-                                    <div class="refund-table-wrapper">
-                                        <!-- 환불 정책 테이블 매핑 -->
-                                        <table class="refund-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>취소 시점</th>
-                                                    <th>환불율</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="refund-table-body">
-                                            </tbody>
-                                        </table>
+                            <div class="reservation-content-area">
+                                <div class="reservation-box animate-element" data-section="checkin-info">
+                                    <!-- 숙소 입퇴실 안내 타이틀 매핑 -->
+                                    <h3 class="reservation-box-title">입/퇴실 안내</h3>
+                                    <!-- 숙소 입퇴실 안내 내용 매핑 -->
+                                    <div class="reservation-box-content">
+                                        <div class="checkin-checkout-times">
+                                            <div class="detail-item">
+                                                <span class="detail-label">체크인</span>
+                                                <span class="detail-value" data-checkin-time></span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <span class="detail-label">체크아웃</span>
+                                                <span class="detail-value" data-checkout-time></span>
+                                            </div>
+                                        </div>
+                                        <div class="operation-info-section">
+                                            <div class="reservation-text-content operation-info-text" data-operation-info></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="refund-text-section">
-                                    <h4 class="refund-section-title">취소 및 환불 안내</h4>
-                                    <!-- 환불 정책 안내문 텍스트 매핑 : 없을 시 display : none -->
-                                    <div class="refund-notes reservation-text-content" data-refund-notes></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reservation-section">
+                        <div class="reservation-section-grid">
+                            <div class="reservation-image-panel">
+                                <div class="reservation-panel-image">
+                                    <img src="images/flower.jpg" alt="환불 안내 이미지">
+                                </div>
+                                <!-- 하드코딩 Fixed -->
+                                <div class="reservation-panel-title">Refund Policy</div>
+                            </div>
+                            <div class="reservation-content-area">
+                                <div class="reservation-box refund-box animate-element" data-section="refund-policy">
+                                    <!-- 숙소 환불/취소수수료 타이틀 매핑 -->
+                                    <h3 class="reservation-box-title">환불/취소수수료</h3>
+                                <div class="refund-content">
+                                    <div class="refund-table-section">
+                                        <h4 class="refund-section-title">환불 규정표</h4>
+                                        <div class="refund-table-wrapper">
+                                            <!-- 환불 정책 테이블 매핑 -->
+                                            <table class="refund-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>취소 시점</th>
+                                                        <th>환불율</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="refund-table-body">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="refund-text-section">
+                                        <h4 class="refund-section-title">취소 및 환불 안내</h4>
+                                        <!-- 환불 정책 안내문 텍스트 매핑 : 없을 시 display : none -->
+                                        <div class="refund-notes reservation-text-content" data-refund-notes></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -136,13 +158,21 @@
             </div>
 
         </section>
+        <!-- 숙소 외경이미지 2번째 fixed -->
+        <section class="full-banner animate-element" data-main-banner>
+            <!-- 숙소 영문명 매핑 fixed -->
+            <div class="closing-property-name" data-closing-property-name></div>
+        </section>
     </div>
+
+    <!-- Common JavaScript -->
+    <script src="js/common.js"></script>
 
     <!-- Include ImageWithFallback script -->
     <script src="js/image-with-fallback.js"></script>
 
     <!-- Image Helpers -->
-    <script src="js/image-helpers.js"></script>
+    <!-- <script src="js/image-helpers.js"></script> -->
 
     <!-- Base Data Mapper -->
     <script src="js/data-mapper/core/base-mapper.js"></script>
@@ -159,11 +189,24 @@
     <!-- Header and Footer Loader -->
     <script src="js/header-footer-loader.js"></script>
 
-    <!-- Fullscreen Slider Component -->
-    <script src="js/components/fullscreen-slider.js"></script>
+    <!-- Scroll Animations -->
+    <script src="js/common/scroll-animations.js"></script>
 
     <!-- Page-specific script -->
     <script src="js/pages/reservation.js"></script>
+
+    <script>
+        // 타이핑 애니메이션 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 타이핑 애니메이션 완료 후 처리
+            const typingText = document.querySelector('.typing-text');
+            if (typingText) {
+                setTimeout(() => {
+                    typingText.classList.add('typed');
+                }, 3200); // 1.2s delay + 2s animation
+            }
+        });
+    </script>
 
 </body>
 </html>

@@ -1,68 +1,103 @@
-// Directions Page with Slider and Animation
-document.addEventListener('DOMContentLoaded', function() {
-    // Note: Slider는 directions-mapper.js의 reinitializeSlider()에서 초기화됨
+// Directions page JavaScript
+(function() {
+    'use strict';
 
-    // Initialize location notes with icons
-    initializeLocationNotes();
+    // 수동 스크롤 애니메이션 함수
+    function setupManualScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    // Initialize scroll animations
-    setupScrollAnimations();
-});
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // common.css의 애니메이션 클래스 사용
+                    if (entry.target.classList.contains('hero-content')) {
+                        entry.target.classList.add('animate-fade-in');
+                    } else if (entry.target.classList.contains('logo-line-container')) {
+                        entry.target.classList.add('animate-slide-up');
+                    } else if (entry.target.classList.contains('map-section')) {
+                        entry.target.classList.add('animate-fade-in');
+                    } else if (entry.target.classList.contains('location-details')) {
+                        entry.target.classList.add('animate-slide-left');
+                    } else if (entry.target.classList.contains('location-note-section')) {
+                        entry.target.classList.add('animate-slide-up');
+                    } else {
+                        entry.target.classList.add('animate-fade-in');
+                    }
 
-// 위치 안내 사항을 아이콘과 함께 동적으로 생성
-window.initializeLocationNotes = function initializeLocationNotes() {
-    const noteElement = document.querySelector('[data-directions-notes]');
-    if (!noteElement) return;
+                    // .visible 클래스도 추가 (full-banner 등을 위해)
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
 
-    // 텍스트 내용을 가져와서 줄바꿈으로 분할
-    const noteText = noteElement.textContent.trim();
-    if (!noteText) {
-        noteElement.style.display = 'none';
-        return;
-    }
+        // 모든 애니메이션 요소 관찰
+        const animateElements = document.querySelectorAll('.animate-element, .animate-hero, .hero-content, .logo-line-container');
 
-    const noteLines = noteText.split('\n').filter(line => line.trim() !== '');
-
-    // 새로운 HTML 구조 생성 (각 아이템에 애니메이션 지연 시간 추가)
-    const noteItemsHTML = noteLines.map((line, index) => {
-        const delay = 1.0 + (index * 0.15); // 1.0s, 1.15s, 1.3s 순차 지연
-        return `
-            <div class="note-item animate-element" style="transition-delay: ${delay}s;">
-                ${line.trim()}
-            </div>
-        `;
-    }).join('');
-
-    // 기존 내용을 새로운 구조로 교체
-    noteElement.innerHTML = noteItemsHTML;
-
-    // 새로 생성된 요소들을 애니메이션 시스템에 다시 등록
-    setTimeout(() => {
-        setupScrollAnimations();
-    }, 100);
-}
-
-// 스크롤 애니메이션 설정
-window.setupScrollAnimations = function setupScrollAnimations() {
-    const animateElements = document.querySelectorAll('.animate-element');
-
-    function checkScroll() {
         animateElements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const elementVisible = 150;
-
-            if (elementTop < window.innerHeight - elementVisible) {
-                element.classList.add('animate');
-            }
+            observer.observe(element);
         });
+
+        return observer;
     }
 
-    // 초기 실행
-    checkScroll();
+    // DOM ready event
+    document.addEventListener('DOMContentLoaded', function() {
 
-    // 스크롤 이벤트
-    window.addEventListener('scroll', checkScroll);
+        // DirectionsMapper가 데이터를 로드한 후에 애니메이션 초기화
+        setTimeout(function() {
 
-    // 리사이즈 이벤트
-    window.addEventListener('resize', checkScroll);
-}
+            // Full-banner fade 애니메이션
+            const fullBannerObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            const fullBanner = document.querySelector('.full-banner');
+            if (fullBanner) {
+                fullBannerObserver.observe(fullBanner);
+            } else {
+            }
+
+            // 수동으로 스크롤 애니메이션 설정
+            setupManualScrollAnimations();
+
+            // Handle typing animation
+            const typingText = document.querySelector('.typing-text');
+            if (typingText) {
+                setTimeout(() => {
+                    typingText.classList.add('typed');
+                }, 2700);
+            }
+
+            // Location note section 애니메이션
+            const locationNoteObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            const locationNote = document.querySelector('.location-note-section');
+            if (locationNote) {
+                locationNoteObserver.observe(locationNote);
+            }
+
+        }, 1000); // 더 긴 지연으로 DirectionsMapper가 완전히 로드될 때까지 기다림
+    });
+
+    // Global function for reinitializing scroll animations (called by DirectionsMapper)
+    window.setupScrollAnimations = function() {
+        setupManualScrollAnimations();
+    };
+
+    // Global function for initializing location notes (called by DirectionsMapper)
+    window.initializeLocationNotes = function() {
+    };
+})();

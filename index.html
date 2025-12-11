@@ -22,108 +22,138 @@
         <div class="content-wrap">
             <!-- CUSTOM FIELD : 메인 소개 섹션 -->
             <section class="hero-section">
-                <div class="hero-content">
-                <div class="hero-left">
-                    <div class="hero-subtitle">
-                        <span class="subtitle-text" data-hero-subtitle></span>
-                        <div class="subtitle-line"></div>
+                <div class="hero-slider-container">
+                    <div class="slider" data-hero-slider>
+                        <!-- 동적으로 슬라이드가 생성됩니다 -->
                     </div>
-                    <!-- 숙소 영문명 매핑 -->
-                    <h1 class="hero-title-property-name">
-                        <span class="hero-title-line" data-delay="0" data-hero-property-name-en></span>
-                    </h1>
-                    <!-- 메인 소개 타이틀 -->
-                    <p class="hero-title" data-hero-title></p>
-                    <!-- 메인 소개 설명 -->
-                    <p class="hero-description" data-hero-description></p>
-                </div>
-                <div class="hero-right">
-                    <div class="hero-slider-container">
-                        <div class="hero-slider" data-hero-slider>
-                            <!-- 동적으로 슬라이드가 생성됩니다 -->
-                        </div>
-                        <div class="hero-slider-nav">
-                            <button class="slider-btn prev">‹</button>
-                            <button class="slider-btn next">›</button>
+                    <div class="hero-content-overlay">
+                        <div class="hero-content-container">
+                            <div class="hero-text-content">
+                                <!-- 숙소 영문명 매핑 -->
+                                <h1 class="hero-property-name" data-hero-property-name-en></h1>
+                                <!--  CUSTOM FIELD : 메인 소개 타이틀 매핑 -->
+                                <p class="hero-title" data-hero-title></p>
+                                <!-- CUSTOM FIELD : 메인 소개 설명 매핑 -->
+                                <p class="hero-description" data-hero-description></p>
+                            </div>
+                            <div class="slider-nav">
+                                <div class="slider-buttons">
+                                    <button class="slider-btn prev">‹</button>
+                                    <button class="slider-btn next">›</button>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </section>
 
-            <!-- CUSTOM FIELD : 핵심 메시지 섹션 / 이미지 x -->
+            <!-- CUSTOM FIELD : 핵심 메시지 섹션 -->
             <section class="essence-section">
                 <div class="essence-content">
-                    <h4 class="essence-title" data-essence-title></h4>
-                    <p class="essence-description" data-essence-description></p>
+                    <!-- 숙소 영문명 매핑 -->
+                    <div class="essence-property-name">
+                        <h3 class="property-name-en" data-property-name-en></h3>
+                    </div>
+                    <div class="essence-bottom">
+                        <div class="essence-left">
+                            <div class="essence-text">
+                                <div class="text-content-with-icon">
+                                    <div class="section-icon"></div>
+                                    <div class="text-content">
+                                        <!-- CUSTOM FIELD : 핵심 메시지 타이틀 매핑 -->
+                                        <h4 class="essence-title" data-essence-title></h4>
+                                        <!-- CUSTOM FIELD : 핵심 메시지 설명 매핑 -->
+                                        <p class="essence-description" data-essence-description></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CUSTOM FIELD : 핵심 메시지 이미지 갯수제한 sortorder isselected 필터링으로 매핑 -->
+                            <div class="essence-thumbnails">
+                                <div class="essence-thumb" data-slide="0">
+                                    <div class="essence-thumb-container">
+                                        <!-- CUSTOM FIELD : 핵심 메시지 이미지1 매핑 -->
+                                        <img src="" alt="Thumbnail 1" />
+                                    </div>
+                                </div>
+                                <div class="essence-thumb" data-slide="1">
+                                    <div class="essence-thumb-container">
+                                         <!-- CUSTOM FIELD : 핵심 메시지 이미지2 매핑 -->
+                                        <img src="" alt="Thumbnail 2" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="essence-image">
+                            <div class="essence-slider-container">
+                                <div class="essence-slides">
+                                    <div class="essence-slide">
+                                         <!-- CUSTOM FIELD : 핵심 메시지 이미지3 매핑 -->
+                                        <img data-essence-image src="" alt="essence image" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
+            <!-- CUSTOM FIELD : 특색 섹션 사용안함-->
 
-            <!-- CUSTOM FIELD : 특색 섹션 / 이미지 4장 fix -->
-            <section class="signature-section">
-            <div class="signature-container">
-                <div class="signature-content">
-                    <div class="signature-left">
-                        <div class="signature-main-image">
-                            <img id="signature-main-img" data-signature-main-img src="" alt="">
-                        </div>
+            <!-- ROOMS SECTION : FIXED -->
+            <section class="rooms-section">
+                <div class="rooms-container">
+                    <div class="rooms-header">
+                        <h2 class="rooms-title">Rooms</h2>
                     </div>
-                    <div class="signature-right">
-                        <div class="signature-text-content">
-                            <!-- 특색 섹션 타이틀 / 특색 섹션 설명 사용 x -->
-                            <h2 class="signature-title" id="signature-title" data-signature-title></h2>
-
-                            <!-- 특색 섹션 업로드 이미지 설명 -->
-                            <p class="signature-description" id="signature-description" data-signature-description></p>
-                        </div>
-                        <!-- 특색 섹션 업로드 이미지들 -->
-                        <div class="signature-thumbnails">
-                            <div class="signature-thumb" data-index="0">
-                                <img src="" alt="">
-                            </div>
-                            <div class="signature-thumb" data-index="1">
-                                <img src="" alt="">
-                            </div>
-                            <div class="signature-thumb" data-index="2">
-                                <img src="" alt="">
-                            </div>
-                            <div class="signature-thumb" data-index="3">
-                                <img src="" alt="">
-                            </div>
-                        </div>
+                    <div class="rooms-grid" data-rooms-grid>
+                        <!-- 동적으로 룸 아이템이 생성됩니다 -->
+                    </div>
+                    <div class="rooms-drag-indicator">
                     </div>
                 </div>
-            </div>
             </section>
 
             <!-- CUSTOM FIELD : 갤러리 섹션 -->
             <section class="gallery-section">
             <div class="gallery-container">
                 <div class="gallery-header">
-                    <h2 class="gallery-title" data-gallery-title></h2>
-                    <p class="gallery-description" data-gallery-description></p>
+                    <div class="gallery-section-name">
+                        <!-- 숙소 영문명 매핑 -->
+                        <h3 class="gallery-section-title" data-gallery-property-name></h3>
+                    </div>
+                    <div class="text-content-with-icon">
+                        <div class="section-icon"></div>
+                        <div class="text-content">
+                            <!-- CUSTOM FIELD : 갤러리 타이틀 매핑 -->
+                            <h2 class="gallery-title" data-gallery-title></h2>
+                            <!-- CUSTOM FIELD : 갤러리 설명 매핑 -->
+                            <p class="gallery-description" data-gallery-description></p>
+                        </div>
+                    </div>
                 </div>
-                <div class="gallery-slider" data-gallery-slider>
-                    <!-- 동적으로 갤러리 아이템이 생성됩니다 -->
+                <!-- CUSTOM FIELD : 갤러리 이미지 5개 매핑 -->
+                <div class="gallery-grid" data-gallery-grid>
                 </div>
             </div>
-        </section>
+            </section>
 
             <!-- CUSTOM FIELD : 마무리 섹션 -->
             <section class="closing-section">
-                <!-- 마무리 섹션 이미지 -->
                 <div class="closing-background">
+                    <!-- CUSTOM FIELD : 마무리 섹션 이미지 매핑 -->
                     <img data-closing-bg-img src="" alt="Closing Background">
                 </div>
                 <div class="closing-content">
-                    <div class="closing-border-top"></div>
-                    <div class="closing-text-content">
-                        <!-- 마무리 섹션 설명 -->
+                    <div class="closing-vertical-text">
+                        <!-- CUSTOM FIELD : 마무리 섹션 설명 매핑 -->
                         <div class="closing-description" data-closing-description></div>
-                        <!-- 숙소 영문명 매핑 -->
+                        <!-- CUSTOM FIELD : 마무리 섹션 타이틀 매핑 -->
                         <div class="closing-title" data-closing-title></div>
+                        <!-- 숙소명 영문명 매핑 fixed -->
+                        <div class="closing-property-name" data-closing-property-name></div>
                     </div>
-                    <div class="closing-border-bottom"></div>
                 </div>
             </section>
         </div>
@@ -132,8 +162,9 @@
     <!-- Include ImageWithFallback script -->
     <script src="js/image-with-fallback.js"></script>
 
-    <!-- Image Helpers -->
+    <!-- Image Helpers - 템플릿화 시 주석 해제
     <script src="js/image-helpers.js"></script>
+    -->
 
     <!-- Base Data Mapper (must load before preview-handler) -->
     <script src="js/data-mapper/core/base-mapper.js"></script>
@@ -149,6 +180,9 @@
 
     <!-- Header and Footer Loader -->
     <script src="js/header-footer-loader.js"></script>
+
+    <!-- Scroll Animations -->
+    <script src="js/common/scroll-animations.js"></script>
 
     <!-- Page-specific script -->
     <script src="js/pages/index.js"></script>

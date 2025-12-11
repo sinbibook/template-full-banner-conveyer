@@ -13,6 +13,36 @@ class ReservationMapper extends BaseDataMapper {
     // ============================================================================
 
     /**
+     * Property Name Korean 매핑
+     * property.name → [data-main-property-name-kr]
+     */
+    mapPropertyNameKr() {
+        if (!this.isDataLoaded) return;
+
+        const property = this.safeGet(this.data, 'property');
+        const propertyNameElement = this.safeSelect('[data-main-property-name-kr]');
+
+        if (propertyNameElement && property?.name) {
+            propertyNameElement.textContent = this.sanitizeText(property.name, '더 베스트 풀빌라');
+        }
+    }
+
+    /**
+     * Property Name English 매핑
+     * property.nameEn → [data-main-property-name-en]
+     */
+    mapPropertyNameEn() {
+        if (!this.isDataLoaded) return;
+
+        const property = this.safeGet(this.data, 'property');
+        const propertyNameElement = this.safeSelect('[data-main-property-name-en]');
+
+        if (propertyNameElement && property?.nameEn) {
+            propertyNameElement.textContent = this.sanitizeText(property.nameEn, 'The Best Poolvilla');
+        }
+    }
+
+    /**
      * Hero 섹션 매핑 (Fullscreen Slider)
      */
     mapHeroSection() {
@@ -182,6 +212,56 @@ class ReservationMapper extends BaseDataMapper {
         });
     }
 
+    /**
+     * Full Banner 섹션 매핑
+     * 숙소 외경이미지 1번째 이미지 사용
+     */
+    mapFullBanner() {
+        if (!this.isDataLoaded) return;
+
+        const propertyImages = this.safeGet(this.data, 'property.images');
+        const exteriorImages = propertyImages && propertyImages.length > 0 ? propertyImages[0].exterior : null;
+        const bannerElement = this.safeSelect('[data-main-banner]');
+
+        if (!bannerElement) {
+            return;
+        }
+
+        // exterior 이미지 필터링 및 정렬
+        const sortedExterior = exteriorImages
+            ?.filter(img => img.isSelected === true)
+            .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)) || [];
+
+        const targetImage = sortedExterior[0];
+
+        if (targetImage && targetImage.url) {
+            // 배경 이미지 설정
+            bannerElement.style.backgroundImage = `url('${targetImage.url}')`;
+            bannerElement.style.backgroundSize = 'cover';
+            bannerElement.style.backgroundPosition = 'center';
+            bannerElement.style.backgroundRepeat = 'no-repeat';
+        } else {
+            // 이미지가 없으면 기본 placeholder 이미지
+            const placeholderImage = './images/exterior.jpg';
+            bannerElement.style.backgroundImage = `url('${placeholderImage}')`;
+            bannerElement.style.backgroundSize = 'cover';
+            bannerElement.style.backgroundPosition = 'center';
+            bannerElement.style.backgroundRepeat = 'no-repeat';
+        }
+
+        // 애니메이션 클래스 추가 (visible 클래스로 fade-in 효과)
+        setTimeout(() => {
+            bannerElement.classList.add('visible');
+        }, 100);
+
+        // 숙소 영문명 매핑 (full-banner 내부)
+        const propertyNameEn = this.safeGet(this.data, 'property.nameEn');
+        const closingPropertyName = bannerElement.querySelector('[data-closing-property-name]');
+        if (closingPropertyName && propertyNameEn) {
+            closingPropertyName.textContent = this.sanitizeText(propertyNameEn);
+        }
+    }
+
     // ============================================================================
     // 🔄 TEMPLATE METHODS IMPLEMENTATION
     // ============================================================================
@@ -191,16 +271,18 @@ class ReservationMapper extends BaseDataMapper {
      */
     async mapPage() {
         if (!this.isDataLoaded) {
-            console.error('Cannot map reservation page: data not loaded');
             return;
         }
 
         // 순차적으로 각 섹션 매핑
+        this.mapPropertyNameKr();
+        this.mapPropertyNameEn();
         this.mapHeroSection();
         this.mapReservationInfoSection();
         this.mapUsageSection();
         this.mapCheckInOutSection();
         this.mapRefundSection();
+        this.mapFullBanner();
 
         // 메타 태그 업데이트 (페이지별 SEO 적용)
         const property = this.data.property;
@@ -238,6 +320,7 @@ class ReservationMapper extends BaseDataMapper {
             }
         }
     }
+
 
     /**
      * Reservation 페이지 텍스트만 업데이트
@@ -278,6 +361,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         await reservationMapper.loadData();
         await reservationMapper.mapPage();
     } catch (error) {
-        console.error('Error initializing reservation mapper:', error);
     }
 });

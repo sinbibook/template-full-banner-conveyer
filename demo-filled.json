@@ -1,0 +1,647 @@
+{
+  "property": {
+    "id": "oceanview-pension-001",
+    "name": "영덕 씨레스트 풀빌라",
+    "nameEn": "Sea Rest Poolvilla",
+    "type": "풀빌라",
+    "subtitle": "SEA REST POOLVILLA",
+    "description": "바다가 한눈에 보이는 특별한 펜션에서 평온하고 여유로운 시간을 보내세요.",
+    "location": {
+      "address": "제주특별자치도 제주시 해안로 123",
+      "city": "제주시",
+      "state": "제주특별자치도",
+      "country": "대한민국",
+      "zipCode": "63000",
+      "latitude": 33.5063,
+      "longitude": 126.4929
+    },
+    "contact": {
+      "phone": "064-123-4567",
+      "email": "info@oceanviewpension.co.kr"
+    },
+    "images": {
+      "logo": "./images/logo.png",
+      "main": [
+        {
+          "url": "./images/hero.jpg",
+          "description": "숙소 메인 이미지",
+          "isVisible": true,
+          "sortOrder": 0
+        },
+        {
+          "url": "./images/hero2.jpg",
+          "description": "숙소 메인 이미지 2",
+          "isVisible": true,
+          "sortOrder": 1
+        }
+      ],
+      "exterior": [
+        {
+          "url": "./images/exterior.jpg",
+          "description": "숙소 외관 전경",
+          "isVisible": true,
+          "sortOrder": 0
+        },
+        {
+          "url": "./images/exterior2.jpg",
+          "description": "숙소 외관 측면",
+          "isVisible": true,
+          "sortOrder": 1
+        }
+      ]
+    },
+    "socialMedia": {
+      "instagram": "https://instagram.com/searestpoolvilla",
+      "facebook": "https://facebook.com/searestpoolvilla"
+    },
+    "businessInfo": {
+      "registrationNumber": "123-45-67890",
+      "ecommerceLicense": "제2023-제주-0001호",
+      "ownerName": "홍길동",
+      "contactEmail": "business@oceanviewpension.co.kr",
+      "contactPhone": "064-123-4567"
+    },
+    "amenities": [
+      "바다전망 테라스",
+      "무료 WiFi",
+      "무료 주차",
+      "BBQ 시설",
+      "세탁기"
+    ],
+    "checkin": "15:00",
+    "checkout": "11:00",
+    "facilities": [
+      {
+        "id": "facility-001",
+        "name": "개별 수영장",
+        "nameEn": "Private Pool",
+        "description": "수영장 물은 이용객 모두에게 항상 청결하게 기본으로 제공됩니다.",
+        "images": {
+          "main": [
+            {
+              "url": "./images/pool2.jpg",
+              "description": "수영장 메인",
+              "isVisible": true,
+              "sortOrder": 0
+            },
+            {
+              "url": "./images/pool3.jpg",
+              "description": "수영장 전경",
+              "isVisible": true,
+              "sortOrder": 1
+            },
+            {
+              "url": "./images/pool4.jpg",
+              "description": "수영장 야경",
+              "isVisible": true,
+              "sortOrder": 2
+            },
+            {
+              "url": "./images/pool5.jpg",
+              "description": "수영장 측면",
+              "isVisible": true,
+              "sortOrder": 3
+            }
+          ]
+        },
+        "subtitle": "special offer",
+        "displayOrder": 0,
+        "details": "이용시간: 체크인 ~ 체크아웃, 미온수 사전 예약 필수",
+        "usageGuide": [
+          "미온수는 사계절 내내 공급 가능하며 선택 사항입니다.",
+          "1회 공급당 이용요금은 10만원 이며 여름에는 35도의 미온수 겨울에는 38도의 온수로 준비해 드립니다.",
+          "야외수영장이며 미온수 온도는 유지되지 않고 서서히 식어갑니다.",
+          "수영장과 수영장 테라스는 항상 미끄럽습니다.",
+          "안전에 주의해 주세요."
+        ],
+        "features": [
+          "사계절 이용 가능한 개별 수영장",
+          "프라이빗한 공간 보장",
+          "청결한 수질 관리 시스템",
+          "안전 설비 완비"
+        ],
+        "additionalInfo": [
+          {
+            "title": "이용 시간",
+            "description": "체크인부터 체크아웃까지 24시간 이용 가능"
+          },
+          {
+            "title": "미온수 서비스",
+            "description": "1회 10만원 / 여름 35도, 겨울 38도"
+          },
+          {
+            "title": "안전 수칙",
+            "description": "수영장 테라스는 미끄러우니 주의하세요"
+          }
+        ],
+        "benefits": [
+          "투숙객 전용 프라이빗 수영장",
+          "무료 수건 및 가운 제공",
+          "수영장 파라솔 및 선베드 무료 이용",
+          "야간 조명 시설 완비"
+        ]
+      },
+      {
+        "id": "facility-002",
+        "name": "개별 바베큐",
+        "nameEn": "Private BBQ",
+        "description": "프라이빗한 공간에서 즐기는 특별한 바베큐 파티",
+        "images": {
+          "main": [
+            {
+              "url": "./images/bbq.jpg",
+              "description": "바베큐 시설",
+              "isVisible": true,
+              "sortOrder": 0
+            },
+            {
+              "url": "./images/breakfast.jpg",
+              "description": "바베큐 공간",
+              "isVisible": true,
+              "sortOrder": 1
+            }
+          ]
+        },
+        "subtitle": "special offer",
+        "displayOrder": 1,
+        "details": [
+          "각 객실 전용 바베큐 공간이 준비되어 있습니다.",
+          "바베큐 그릴과 기본 도구는 무료로 제공됩니다.",
+          "숯과 착화제는 현장에서 구매 가능합니다.",
+          "이용시간은 오후 6시부터 밤 10시까지입니다.",
+          "우천시에도 지붕이 있는 공간에서 이용 가능합니다."
+        ],
+        "usageGuide": "이용시간: 18:00-22:00, 사전 예약 필수, 바베큐 용품 제공"
+      }
+    ]
+  },
+  "rooms": [
+    {
+      "id": "room-001",
+      "name": "오션뷰 디럭스",
+      "nameEn": "Ocean View Deluxe",
+      "type": "디럭스",
+      "description": "바다를 한눈에 담을 수 있는 넓은 창문과 프라이빗 테라스가 있는 특별한 객실입니다.",
+      "capacity": {
+        "standard": 2,
+        "maximum": 4
+      },
+      "price": {
+        "weekday": 150000,
+        "weekend": 200000
+      },
+      "size": 45,
+      "bed": "킹사이즈 침대 1개, 소파베드 1개",
+      "amenities": [
+        "미니 주방",
+        "에어컨",
+        "무료 WiFi",
+        "냉장고",
+        "전자레인지",
+        "커피머신"
+      ],
+      "images": {
+        "main": [
+          {
+            "url": "./images/room.jpg",
+            "description": "객실 메인 이미지",
+            "isVisible": true,
+            "sortOrder": 0
+          }
+        ],
+        "interior": [
+          {
+            "url": "./images/room2.jpg",
+            "description": "객실 내부",
+            "isVisible": true,
+            "sortOrder": 0
+          }
+        ],
+        "exterior": [
+          {
+            "url": "./images/room3.jpg",
+            "description": "객실 외부",
+            "isVisible": true,
+            "sortOrder": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "room-002",
+      "name": "스위트룸",
+      "nameEn": "Suite Room",
+      "type": "스위트",
+      "description": "럭셔리한 공간에서 최고의 편안함을 제공하는 프리미엄 객실입니다.",
+      "capacity": {
+        "standard": 2,
+        "maximum": 4
+      },
+      "price": {
+        "weekday": 250000,
+        "weekend": 350000
+      },
+      "size": 65,
+      "bed": "킹사이즈 침대 1개",
+      "amenities": [
+        "바다전망 테라스",
+        "미니바",
+        "에어컨",
+        "무료 WiFi",
+        "냉장고",
+        "커피머신"
+      ],
+      "images": {
+        "main": [
+          {
+            "url": "./images/room4.jpg",
+            "description": "스위트룸 메인",
+            "isVisible": true,
+            "sortOrder": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "room-003",
+      "name": "디럭스룸",
+      "nameEn": "Deluxe Room",
+      "type": "디럭스",
+      "description": "편안하고 모던한 디자인으로 꾸며진 세련된 객실입니다.",
+      "capacity": {
+        "standard": 2,
+        "maximum": 3
+      },
+      "price": {
+        "weekday": 120000,
+        "weekend": 170000
+      },
+      "size": 35,
+      "bed": "퀸사이즈 침대 1개",
+      "amenities": [
+        "바다전망",
+        "에어컨",
+        "무료 WiFi",
+        "냉장고"
+      ],
+      "images": {
+        "main": [
+          {
+            "url": "./images/room5.jpg",
+            "description": "디럭스룸 메인",
+            "isVisible": true,
+            "sortOrder": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "room-004",
+      "name": "패밀리룸",
+      "nameEn": "Family Room",
+      "type": "패밀리",
+      "description": "가족 단위 여행객을 위한 넓고 쾌적한 객실입니다.",
+      "capacity": {
+        "standard": 4,
+        "maximum": 6
+      },
+      "price": {
+        "weekday": 300000,
+        "weekend": 400000
+      },
+      "size": 80,
+      "bed": "킹사이즈 침대 1개, 퀸사이즈 침대 1개",
+      "amenities": [
+        "바다전망 테라스",
+        "주방시설",
+        "에어컨",
+        "무료 WiFi",
+        "냉장고",
+        "세탁기",
+        "전자레인지"
+      ],
+      "images": {
+        "main": [
+          {
+            "url": "./images/room6.jpg",
+            "description": "패밀리룸 메인",
+            "isVisible": true,
+            "sortOrder": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "room-005",
+      "name": "풀빌라",
+      "nameEn": "Pool Villa",
+      "type": "빌라",
+      "description": "프라이빗 수영장과 함께 최고급 휴양을 즐길 수 있는 빌라입니다.",
+      "capacity": {
+        "standard": 4,
+        "maximum": 8
+      },
+      "price": {
+        "weekday": 500000,
+        "weekend": 700000
+      },
+      "size": 120,
+      "bed": "킹사이즈 침대 2개, 소파베드 1개",
+      "amenities": [
+        "프라이빗 수영장",
+        "바베큐 시설",
+        "바다전망 테라스",
+        "풀키친",
+        "에어컨",
+        "무료 WiFi",
+        "냉장고",
+        "세탁기",
+        "건조기"
+      ],
+      "images": {
+        "main": [
+          {
+            "url": "./images/pool.jpg",
+            "description": "풀빌라 메인",
+            "isVisible": true,
+            "sortOrder": 0
+          }
+        ]
+      }
+    }
+  ],
+  "reservation": {
+    "checkIn": "15:00",
+    "checkOut": "11:00",
+    "rules": [
+      "입실 시간은 오후 3시부터입니다.",
+      "퇴실 시간은 오전 11시까지입니다.",
+      "전 객실 금연입니다.",
+      "반려동물 동반은 불가합니다.",
+      "22시 이후 정숙해 주시기 바랍니다."
+    ],
+    "cancellationPolicy": [
+      {
+        "daysBeforeCheckIn": 7,
+        "refundPercentage": 100
+      },
+      {
+        "daysBeforeCheckIn": 5,
+        "refundPercentage": 80
+      },
+      {
+        "daysBeforeCheckIn": 3,
+        "refundPercentage": 50
+      },
+      {
+        "daysBeforeCheckIn": 1,
+        "refundPercentage": 30
+      },
+      {
+        "daysBeforeCheckIn": 0,
+        "refundPercentage": 0
+      }
+    ]
+  },
+  "homepage": {
+    "domain": "www.searestpoolvilla.com",
+    "templateType": "fullbanner",
+    "images": {
+      "logo": "./images/logo.png"
+    },
+    "seo": {
+      "title": "영덕 씨레스트 풀빌라 - 바다가 보이는 특별한 펜션",
+      "description": "바다가 한눈에 보이는 특별한 펜션에서 평온하고 여유로운 시간을 보내세요. 프라이빗 수영장과 바베큐 시설을 갖춘 럭셔리 풀빌라.",
+      "keywords": "영덕 풀빌라, 제주 오션뷰 펜션, 프라이빗 수영장, 바베큐 시설, 가족 여행, 커플 여행"
+    },
+    "customFields": {
+      "pages": {
+        "index": {
+          "sections": [
+            {
+              "hero": {
+                "title": "당신의 오늘이 고요하게 담기기를",
+                "subtitle": "OCEAN VIEW STORY",
+                "description": "바다가 보이는 특별한 공간에서 소중한 추억을 만들어보세요.",
+                "images": [
+                  "./images/exterior.jpg",
+                  "./images/exterior2.jpg",
+                  "./images/exterior3.jpg"
+                ]
+              },
+              "essence": {
+                "title": "A place where there is no noise",
+                "description": "지친 일상의 유일한 휴식처, 영덕 더베스트 풀빌라에 오신 것을 환영합니다.",
+                "images": [
+                  "./images/pool.jpg",
+                  "./images/pool2.jpg",
+                  "./images/pool3.jpg",
+                  "./images/pool4.jpg",
+                  "./images/pool5.jpg"
+                ]
+              },
+              "gallery": {
+                "title": "A place where there is no noise",
+                "description": "아름다운 바다 전망과 편안한 시설들을 미리 만나보세요.",
+                "images": [
+                  {
+                    "url": "./images/breakfast.jpg",
+                    "description": "바다 전망",
+                    "isSelected": true,
+                    "sortOrder": 1
+                  },
+                  {
+                    "url": "./images/breakfast2.jpg",
+                    "description": "석양 바다",
+                    "isSelected": true,
+                    "sortOrder": 2
+                  },
+                  {
+                    "url": "./images/bbq.jpg",
+                    "description": "해변 노을",
+                    "isSelected": true,
+                    "sortOrder": 3
+                  },
+                  {
+                    "url": "./images/flower.jpg",
+                    "description": "푸른 하늘과 바다",
+                    "isSelected": true,
+                    "sortOrder": 4
+                  },
+                  {
+                    "url": "./images/sky.jpg",
+                    "description": "감성적인 파도",
+                    "isSelected": true,
+                    "sortOrder": 5
+                  }
+                ]
+              },
+              "signature": {
+                "title": "특별한 순간들",
+                "description": "오션뷰 펜션에서만 경험할 수 있는 특별함을 느껴보세요. 바다가 선사하는 감동과 함께 잊지 못할 추억을 만들어드립니다.",
+                "images": [
+                  "./images/exterior4.jpg",
+                  "./images/exterior5.jpg",
+                  "./images/pool4.jpg",
+                  "./images/pool5.jpg"
+                ]
+              },
+              "closing": {
+                "title": "OCEAN VIEW PENSION",
+                "description": "바다가 품어주는 평온함 속에서 특별한 하루를 마무리하세요.",
+                "images": [
+                  "./images/shadow.jpg"
+                ]
+              }
+            }
+          ]
+        },
+        "directions": {
+          "sections": [
+            {
+              "hero": {
+                "title": "찾아오시는 길",
+                "description": "편리한 교통과 아름다운 자연이 함께하는 특별한 위치에 자리잡고 있습니다.",
+                "images": [
+                  {
+                    "url": "./images/hero3.jpg",
+                    "description": "오시는길 히어로 이미지",
+                    "isSelected": true,
+                    "sortOrder": 1
+                  }
+                ]
+              },
+              "notice": {
+                "title": "안내사항",
+                "description": "자동차 이용시\n네비게이션 주소명: 제주특별자치도 제주시 해안로 123\n주차장은 숙소 앞에 무료로 이용 가능합니다.\n\n대중교통 이용시\n제주공항에서 600번 공항리무진 버스 이용\n→ 제주시외버스터미널 하차 → 도보 10분 소요\n또는 제주공항에서 택시 이용 시 약 30분 소요\n\n문의사항\n길을 잃으셨거나 궁금한 점이 있으시면\n언제든 064-123-4567로 연락주세요."
+              }
+            }
+          ]
+        },
+        "main": {
+          "sections": [
+            {
+              "hero": {
+                "title": "특별하게 기억될 수 있는 그곳,",
+                "description": "푸른 동해바다를 마주보며 여유로운 시간을 즐기는 더 베스트 풀빌라\n 편안한 휴식과 특별한 추억을 만들어보세요.",
+                "images": [
+                  {
+                    "url": "./images/hero4.jpg",
+                    "description": "메인 히어로 이미지 1",
+                    "isSelected": true,
+                    "sortOrder": 1
+                  },
+                  {
+                    "url": "./images/hero5.jpg",
+                    "description": "메인 히어로 이미지 2",
+                    "isSelected": true,
+                    "sortOrder": 2
+                  },
+                  {
+                    "url": "./images/exterior6.jpg",
+                    "description": "메인 히어로 이미지 3",
+                    "isSelected": true,
+                    "sortOrder": 3
+                  }
+                ]
+              },
+              "about": [
+                {
+                  "title": "자연과 함께하는 휴식",
+                  "description": "탁 트인 바다 전망과 함께 일상에서 벗어나 진정한 휴식을 경험하세요. 프라이빗한 공간에서 소중한 사람들과 특별한 추억을 만들어보세요.",
+                  "images": [
+                    "./images/room.jpg"
+                  ]
+                },
+                {
+                  "title": "럭셔리한 프라이빗 공간",
+                  "description": "넓은 테라스와 프라이빗 풀을 갖춘 독립적인 공간에서 오직 당신만을 위한 특별한 시간을 보내세요. 최고급 시설과 서비스로 완벽한 휴양을 경험하실 수 있습니다.",
+                  "images": [
+                    "./images/room2.jpg"
+                  ]
+                },
+                {
+                  "title": "편안한 휴식과 힐링",
+                  "description": "도시의 소음에서 벗어나 자연 속에서 진정한 휴식을 취해보세요. 조용하고 평화로운 분위기 속에서 몸과 마음을 재충전할 수 있는 완벽한 공간입니다.",
+                  "images": [
+                    "./images/exterior.jpg"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "room": [
+          {
+            "id": "room-001",
+            "sections": [
+              {
+                "hero": {
+                  "title": "바다를 한눈에 담을 수 있는 넓은 창문과 프라이빗 테라스가 있는 객실입니다.",
+                  "images": []
+                },
+                "gallery": {
+                  "title": "특별하게 기억될 수 있는 그곳,",
+                  "images": []
+                }
+              }
+            ]
+          }
+        ],
+        "facility": [
+          {
+            "id": "facility-001",
+            "sections": [
+              {
+                "hero": {
+                  "title": "시설 히어로 타이틀",
+                  "images": []
+                },
+                "about": {
+                  "title": "시설 소개 타이틀",
+                  "images": []
+                },
+                "experience": {
+                  "features": [
+                    {
+                      "title": "특징 타이틀",
+                      "description": "특징 설명"
+                    }
+                  ],
+                  "additionalInfos": [
+                    {
+                      "title": "추가정보 타이틀",
+                      "description": "추가정보 설명"
+                    }
+                  ],
+                  "benefits": [
+                    {
+                      "title": "혜택 타이틀",
+                      "description": "혜택 설명"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "reservation": {
+          "sections": [
+            {
+              "hero": {
+                "title": "예약안내 히어로 타이틀",
+                "description": "예약안내 히어로 설명",
+                "images": []
+              },
+              "about": {
+                "title": "예약안내",
+                "description": "더 베스트 풀빌라 예약안내 입니다.",
+                "images": []
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

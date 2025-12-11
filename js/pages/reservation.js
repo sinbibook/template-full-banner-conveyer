@@ -1,69 +1,74 @@
-// Reservation Page with Slider
+
+// 스크롤 기반 이미지 및 텍스트 애니메이션 시스템
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the fullscreen slider using the reusable component
-    const reservationSlider = new FullscreenSlider('.fullscreen-slider-container', {
-        slideDuration: 4000,
-        autoplay: true,
-        enableSwipe: true,
-        enableKeyboard: true
-    });
+    // 타이핑 애니메이션 처리
+    const typingText = document.querySelector('.typing-text');
+    if (typingText) {
+        setTimeout(() => {
+            typingText.classList.add('typed');
+        }, 2700);
+    }
+    // 모든 이미지 패널 가져오기
+    const imagePanels = document.querySelectorAll('.reservation-panel-image');
+    // 모든 reservation 박스 가져오기
+    const reservationBoxes = document.querySelectorAll('.reservation-box');
 
-    // 스크롤 애니메이션 초기화
-    initializeScrollAnimations();
-});
-
-// 스크롤 애니메이션 관찰자 설정
-function initializeScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+    // 이미지 애니메이션을 위한 Intersection Observer 설정
+    const imageObserverOptions = {
+        root: null,
+        rootMargin: '-20% 0px',
+        threshold: 0
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    const imageObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+            const section = entry.target.closest('.reservation-section');
+            const isSecondSection = section && Array.from(section.parentElement.children).indexOf(section) === 1;
+
             if (entry.isIntersecting) {
-                // reservation-box가 포함된 섹션이 뷰포트에 들어오면 순차적으로 애니메이션 실행
-                if (entry.target.classList.contains('reservation-details-section')) {
-                    const boxes = entry.target.querySelectorAll('.reservation-box');
-                    boxes.forEach((box, index) => {
-                        setTimeout(() => {
-                            box.classList.add('animate');
-                            // 접힘 애니메이션은 박스 애니메이션 후에 실행
-                            setTimeout(() => {
-                                box.classList.add('fold-animate');
-                            }, 400);
-                        }, index * 200); // 각 박스마다 200ms씩 지연
-                    });
+                entry.target.classList.add('visible');
+                // 두번째 섹션은 왼쪽 radius, 나머지는 오른쪽 radius
+                if (isSecondSection) {
+                    entry.target.style.borderTopLeftRadius = '180px';
+                    entry.target.style.borderBottomLeftRadius = '180px';
+                } else {
+                    entry.target.style.borderTopRightRadius = '180px';
+                    entry.target.style.borderBottomRightRadius = '180px';
                 }
-                // refund-section의 테이블과 텍스트 섹션 애니메이션
-                else if (entry.target.classList.contains('refund-section')) {
-                    const tableSection = entry.target.querySelector('.refund-table-section');
-                    const textSection = entry.target.querySelector('.refund-text-section');
-
-                    if (tableSection) {
-                        setTimeout(() => {
-                            tableSection.classList.add('animate');
-                        }, 100);
-                    }
-
-                    if (textSection) {
-                        setTimeout(() => {
-                            textSection.classList.add('animate');
-                        }, 300);
-                    }
-                }
-                // 일반적인 애니메이션
-                else {
-                    entry.target.classList.add('animate');
-                }
+            } else {
+                entry.target.classList.remove('visible');
+                // 벗어나면 원래대로
+                entry.target.style.borderTopRightRadius = '0';
+                entry.target.style.borderBottomRightRadius = '0';
+                entry.target.style.borderTopLeftRadius = '0';
+                entry.target.style.borderBottomLeftRadius = '0';
             }
         });
-    }, observerOptions);
+    }, imageObserverOptions);
 
-    // 애니메이션을 적용할 요소들 관찰
-    const elementsToAnimate = document.querySelectorAll(
-        '.reservation-details-section, .reservation-book-now, .refund-section, ' +
-        '.refund-table-section, .refund-text-section, .reservation-content-layout'
-    );
-    elementsToAnimate.forEach(element => observer.observe(element));
-}
+    // 텍스트 박스 애니메이션을 위한 Intersection Observer 설정
+    const textObserverOptions = {
+        root: null,
+        rootMargin: '-10% 0px',
+        threshold: 0.2
+    };
+
+    const textObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, textObserverOptions);
+
+    // 각 이미지 패널 관찰 시작
+    imagePanels.forEach(panel => {
+        imageObserver.observe(panel);
+    });
+
+    // 각 텍스트 박스 관찰 시작
+    reservationBoxes.forEach(box => {
+        textObserver.observe(box);
+    });
+
+});

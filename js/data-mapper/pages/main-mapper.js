@@ -41,7 +41,9 @@ class MainMapper extends BaseDataMapper {
             if (firstSlide) {
                 const img = firstSlide.querySelector('img');
                 if (img) {
-                    ImageHelpers.applyPlaceholder(img);
+                    // Placeholder 이미지 적용
+                    img.src = './images/hero.jpg';
+                    img.alt = '메인 이미지';
                 }
             }
             return;
@@ -79,6 +81,44 @@ class MainMapper extends BaseDataMapper {
     }
 
     /**
+     * Property Name Korean 매핑
+     * property.name → [data-main-property-name-kr]
+     */
+    mapPropertyNameKr() {
+        if (!this.isDataLoaded) return;
+
+        const property = this.safeGet(this.data, 'property');
+        const propertyNameElement = this.safeSelect('[data-main-property-name-kr]');
+
+        if (propertyNameElement && property?.name) {
+            propertyNameElement.textContent = this.sanitizeText(property.name, '더 베스트 풀빌라');
+        }
+    }
+
+    /**
+     * Property Name English 매핑
+     * property.nameEn → [data-main-property-name-en]
+     * property.nameEn → [data-property-name-en]
+     */
+    mapPropertyNameEn() {
+        if (!this.isDataLoaded) return;
+
+        const property = this.safeGet(this.data, 'property');
+
+        // data-main-property-name-en 매핑
+        const propertyNameElement = this.safeSelect('[data-main-property-name-en]');
+        if (propertyNameElement && property?.nameEn) {
+            propertyNameElement.textContent = this.sanitizeText(property.nameEn, 'The Best Poolvilla');
+        }
+
+        // data-property-name-en 매핑 (property-en-bg-text용)
+        const propertyBgTextElement = this.safeSelect('[data-property-name-en]');
+        if (propertyBgTextElement && property?.nameEn) {
+            propertyBgTextElement.textContent = this.sanitizeText(property.nameEn, 'Sea Rest Poolvilla');
+        }
+    }
+
+    /**
      * About 섹션 매핑 (제목 + 설명)
      * customFields.pages.main.sections[0].hero.title → [data-main-about-title]
      * customFields.pages.main.sections[0].hero.description → [data-main-about-description]
@@ -88,13 +128,13 @@ class MainMapper extends BaseDataMapper {
 
         const heroData = this.safeGet(this.data, 'homepage.customFields.pages.main.sections.0.hero');
 
-        // About 제목 - customFields hero.title 사용
+        // About 제목 매핑
         const aboutTitle = this.safeSelect('[data-main-about-title]');
         if (aboutTitle) {
             aboutTitle.textContent = this.sanitizeText(heroData?.title, '소개 페이지 히어로 타이틀');
         }
 
-        // About 설명 - customFields hero.description 사용
+        // About 설명 매핑
         const aboutDescription = this.safeSelect('[data-main-about-description]');
         if (aboutDescription) {
             aboutDescription.innerHTML = this._formatTextWithLineBreaks(heroData?.description, '소개 페이지 히어로 설명');
@@ -154,10 +194,18 @@ class MainMapper extends BaseDataMapper {
             banner.style.backgroundRepeat = 'no-repeat';
         } else {
             // 이미지 없을 때 placeholder
-            banner.style.backgroundImage = `url('${ImageHelpers.EMPTY_IMAGE_WITH_ICON}')`;
+            const placeholderImage = './images/exterior.jpg';
+            banner.style.backgroundImage = `url('${placeholderImage}')`;
             banner.style.backgroundSize = 'cover';
             banner.style.backgroundPosition = 'center';
             banner.style.backgroundRepeat = 'no-repeat';
+        }
+
+        // 숙소 영문명 매핑 (full-banner 내부)
+        const propertyNameEn = this.safeGet(this.data, 'property.nameEn');
+        const closingPropertyName = banner.querySelector('[data-closing-property-name]');
+        if (closingPropertyName && propertyNameEn) {
+            closingPropertyName.textContent = this.sanitizeText(propertyNameEn);
         }
     }
 
@@ -171,32 +219,190 @@ class MainMapper extends BaseDataMapper {
         const aboutBlocks = this.safeGet(this.data, 'homepage.customFields.pages.main.sections.0.about');
         const introContainer = this.safeSelect('[data-main-introduction]');
 
-        if (!introContainer) return;
 
-        // 기존 gallery-wrap 제거
-        introContainer.innerHTML = '';
-
-        // aboutBlocks가 없거나 빈 배열일 때 기본 블록 하나 생성
-        if (!aboutBlocks || !Array.isArray(aboutBlocks) || aboutBlocks.length === 0) {
-            const defaultBlock = {
-                title: '소개 섹션 타이틀',
-                description: '소개 섹션 설명',
-                images: []
-            };
-            const galleryWrap = this.createIntroductionBlock(defaultBlock);
-            introContainer.appendChild(galleryWrap);
+        if (!introContainer) {
             return;
         }
 
-        // 각 about 블록에 대해 gallery-wrap 생성
-        aboutBlocks.forEach((block) => {
-            const galleryWrap = this.createIntroductionBlock(block);
-            introContainer.appendChild(galleryWrap);
+        // 기존 about-block 제거
+        introContainer.innerHTML = '';
+
+        // aboutBlocks가 없거나 빈 배열일 때 기본 블록 두 개 생성
+        if (!aboutBlocks || !Array.isArray(aboutBlocks) || aboutBlocks.length === 0) {
+            const defaultBlocks = [
+                {
+                    title: '소개 섹션 타이틀 1',
+                    description: '소개 섹션 설명 1',
+                    images: ['./images/room.jpg']
+                },
+                {
+                    title: '소개 섹션 타이틀 2',
+                    description: '소개 섹션 설명 2',
+                    images: ['./images/pool.jpg']
+                }
+            ];
+
+            defaultBlocks.forEach((block) => {
+                const aboutBlock = this.createAboutBlock(block);
+                introContainer.appendChild(aboutBlock);
+            });
+            return;
+        }
+
+        // 각 about 블록에 대해 about-block 생성
+        const totalBlocks = aboutBlocks.length;
+        aboutBlocks.forEach((block, index) => {
+            const aboutBlock = this.createAboutBlock(block);
+
+            // 동적 그라데이션 적용
+            this.applyDynamicGradient(aboutBlock, index, totalBlocks);
+
+            introContainer.appendChild(aboutBlock);
         });
     }
 
     /**
-     * Introduction 블록 생성 헬퍼 함수
+     * 동적 그라데이션 적용 헬퍼 함수
+     */
+    applyDynamicGradient(element, index, total) {
+        // 블록이 하나일 때는 흰색에서 연한 하늘색으로
+        if (total === 1) {
+            element.style.background = `linear-gradient(to bottom, rgba(255, 255, 255, 0.9) 0%, rgba(230, 243, 255, 0.9) 100%)`;
+
+            // 밝은 배경에서 텍스트 색상 조정
+            const title = element.querySelector('.about-title');
+            const description = element.querySelector('.about-description');
+            const aboutText = element.querySelector('.about-text');
+
+            if (title) {
+                title.style.color = '#658399';
+            }
+            if (description) {
+                description.style.color = '#666';
+            }
+
+            // 세로줄 색상도 조정 (밝은 배경에는 연한 강조색)
+            if (aboutText) {
+                const style = document.createElement('style');
+                style.textContent = `
+                    .about-block:first-child .about-text::after {
+                        background: rgba(101, 131, 153, 0.2) !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            return;
+        }
+
+        // 여러 블록일 때는 그라데이션
+        // 색상 정의
+        const startColor = { r: 230, g: 243, b: 255 }; // #e6f3ff (하늘색 - body 배경색)
+        const endColor = { r: 101, g: 131, b: 153 }; // #658399
+
+        // 현재 블록의 위치 비율 계산
+        const ratio = index / (total - 1);
+        const nextRatio = Math.min(1, (index + 1) / (total - 1));
+
+        // 색상 보간
+        const topColor = {
+            r: Math.round(startColor.r + (endColor.r - startColor.r) * ratio),
+            g: Math.round(startColor.g + (endColor.g - startColor.g) * ratio),
+            b: Math.round(startColor.b + (endColor.b - startColor.b) * ratio)
+        };
+
+        const bottomColor = {
+            r: Math.round(startColor.r + (endColor.r - startColor.r) * nextRatio),
+            g: Math.round(startColor.g + (endColor.g - startColor.g) * nextRatio),
+            b: Math.round(startColor.b + (endColor.b - startColor.b) * nextRatio)
+        };
+
+        // 그라데이션 적용 (opacity 0.8 적용)
+        element.style.background = `linear-gradient(to bottom, rgba(${topColor.r}, ${topColor.g}, ${topColor.b}, 0.8) 0%, rgba(${bottomColor.r}, ${bottomColor.g}, ${bottomColor.b}, 0.8) 100%)`;
+
+        // 첫 번째 블록이 아주 밝을 때 텍스트 색상 조정
+        if (index === 0) {
+            const title = element.querySelector('.about-title');
+            const description = element.querySelector('.about-description');
+            const aboutText = element.querySelector('.about-text');
+
+            // 배경이 충분히 밝은지 확인 (첫 번째 색상이 거의 흰색에 가까우면)
+            if (topColor.r > 220 && topColor.g > 235 && topColor.b > 245) {
+                if (title) {
+                    title.style.color = '#658399';
+                }
+                if (description) {
+                    description.style.color = '#666';
+                }
+
+                // 첫 번째 블록 세로줄도 강조색으로
+                if (aboutText) {
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .about-block:first-child .about-text::after {
+                            background: rgba(101, 131, 153, 0.3) !important;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+        }
+    }
+
+    /**
+     * About 블록 생성 헬퍼 함수 (새로운 구조 - 원형 이미지 1개 + 중앙정렬 텍스트)
+     */
+    createAboutBlock(block) {
+        const aboutBlock = document.createElement('div');
+        aboutBlock.className = 'about-block';
+
+        // 내부 컨테이너 추가
+        const innerContainer = document.createElement('div');
+        innerContainer.className = 'about-block-inner';
+
+        // 이미지 컨테이너 (세로 이미지)
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'about-image';
+        const img = document.createElement('img');
+
+        // 이미지 처리
+        const defaultImage = './images/room.jpg';
+
+        if (block.images && Array.isArray(block.images) && block.images[0]) {
+            img.src = typeof block.images[0] === 'string' ? block.images[0] : block.images[0].url || defaultImage;
+        } else {
+            img.src = defaultImage;
+        }
+
+        img.alt = this.sanitizeText(block.title, '소개 이미지');
+        imageContainer.appendChild(img);
+
+        // 텍스트 컨테이너
+        const aboutText = document.createElement('div');
+        aboutText.className = 'about-text';
+
+        const title = document.createElement('h3');
+        title.className = 'about-title';
+        title.textContent = this.sanitizeText(block.title, '소개 섹션 타이틀');
+
+        const description = document.createElement('p');
+        description.className = 'about-description';
+        description.innerHTML = this._formatTextWithLineBreaks(block.description, '소개 섹션 설명');
+
+        aboutText.appendChild(title);
+        aboutText.appendChild(description);
+
+        // inner container에 추가
+        innerContainer.appendChild(imageContainer);
+        innerContainer.appendChild(aboutText);
+
+        // about-block에 inner container 추가
+        aboutBlock.appendChild(innerContainer);
+
+        return aboutBlock;
+    }
+
+    /**
+     * Introduction 블록 생성 헬퍼 함수 (기존 구조 - 호환성 유지)
      */
     createIntroductionBlock(block) {
         const galleryWrap = document.createElement('div');
@@ -225,7 +431,9 @@ class MainMapper extends BaseDataMapper {
             img1.alt = this.sanitizeText(selectedImages[0].description, '소개 이미지 1');
             img1.classList.remove('empty-image-placeholder');
         } else {
-            ImageHelpers.applyPlaceholder(img1);
+            // Placeholder 이미지 적용
+            img1.src = './images/room.jpg';
+            img1.alt = '소개 이미지 1';
         }
         imgWrap.appendChild(img1);
 
@@ -253,7 +461,9 @@ class MainMapper extends BaseDataMapper {
             img2.alt = this.sanitizeText(selectedImages[1].description, '소개 이미지 2');
             img2.classList.remove('empty-image-placeholder');
         } else {
-            ImageHelpers.applyPlaceholder(img2);
+            // Placeholder 이미지 적용
+            img2.src = './images/pool.jpg';
+            img2.alt = '소개 이미지 2';
         }
         viewImg.appendChild(img2);
 
@@ -273,13 +483,15 @@ class MainMapper extends BaseDataMapper {
      * Main 페이지 전체 매핑 실행
      */
     async mapPage() {
+
         if (!this.isDataLoaded) {
-            console.error('Cannot map main page: data not loaded');
             return;
         }
 
         // Main 페이지 섹션들 순차 매핑
         this.mapHeroSlider();
+        this.mapPropertyNameKr();
+        this.mapPropertyNameEn();
         this.mapAboutSection();
         this.mapMarqueeSection();
         this.mapFullBanner();

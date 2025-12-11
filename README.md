@@ -1,1 +1,1 @@
-# template-gallery-sidebar Template
+# template-full-banner-wipe

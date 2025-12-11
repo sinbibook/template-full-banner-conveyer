@@ -1,275 +1,529 @@
+/* Main �t� � ��| */
 
-.about-description.animate-element {
-    transform: translateY(30px);
-    transition-delay: 0.3s;
-}
-
-.about-description.animate-element.animate {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.img-wrap.animate-element {
-    transform: translateX(-50px);
-    transition-delay: 0.2s;
-}
-
-.img-wrap.animate-element.animate {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.intro-title.animate-element {
-    transform: scale(0.8);
-    transition-delay: 0.4s;
-}
-
-.intro-title.animate-element.animate {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.intro-description.animate-element {
-    transform: translateY(30px);
-    transition-delay: 0.6s;
-}
-
-.intro-description.animate-element.animate {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.view-img.animate-element {
-    transform: translateX(50px);
-    transition-delay: 0.8s;
-}
-
-.view-img.animate-element.animate {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.about-description {
-    font-family: 'Chosunilbo', serif;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #666;
-    font-weight: bold;
-    margin-top: 20px;
-}
-
-
-/* Introduction Section */
-.introduction-section {
-    padding: 80px 0 200px 0;
-}
-
-.introduction-section .gallery-wrap {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 50px 40px;
-    display: flex;
-    height: 600px;
+/* �t� ��\ 9X */
+.page-hero-section {
     position: relative;
-    margin-top: 70px;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.introduction-section .gallery-wrap .img-wrap {
-    width: 45%;
-    height: auto;
-    position: relative;
-}
-
-.introduction-section .gallery-wrap .img-wrap::before {
-    content: '';
+/* ��l� 0� t�� */
+.hero-background {
     position: absolute;
-    top: -25px;
-    left: -25px;
+    top: 0;
+    left: 0;
     width: 100%;
-    aspect-ratio: 4/3;
-    border: 2px solid #7a8471;
-    background: transparent;
-    z-index: -1;
-}
-
-.introduction-section .gallery-wrap .img-wrap img {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: cover;
-    position: relative;
+    height: 100%;
     z-index: 1;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards;
 }
 
-.introduction-section .gallery-wrap .txt-wrap {
-    padding-left: 50px;
+.hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* 애니메이션 키프레임 */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInCenter {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blinkCursor {
+    50% {
+        border-color: transparent;
+    }
+}
+
+/* �t� � (Prologue) */
+.page-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    text-align: center;
+    opacity: 1;
+}
+
+/* page-title h1 스타일은 common.css에서 관리 */
+
+
+/* �t�� $� �Lt (index.html ��|�  �) */
+/* main-container 스타일은 common.css로 이동 */
+
+.text-content {
+    position: relative;
+    margin-bottom: 80px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+
+/* logo-line-container 스타일은 common.css로 이동됨 */
+
+.hero-content {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.text-content .hero-title {
+    font-size: 28px;  /* essence-title과 동일 */
+    font-weight: 700;
+    color: #658399;
+    margin: 0 0 20px 0;
+    line-height: 1.3;
+    display: block;
+    width: 100%;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+}
+
+.text-content .hero-description {
+    font-size: 17px;  /* essence-description과 동일 */
+    color: #666;
+    line-height: 1.8;
+    text-align: right;
+    max-width: 600px;
+    margin-left: auto;
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
+}
+
+.hero-text-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-bottom: 60px;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 180px;
+    padding: 0;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+}
+
+/* 소개 블록 - 새로운 디자인 */
+.about-block {
+    position: relative;
+    width: 100vw;
+    margin: 0;
+    min-height: 600px;
+    opacity: 1;
+}
+
+/* 첫 번째 블록 - 하늘색에서 시작 */
+.about-block:first-child {
+    background: linear-gradient(to bottom, #e6f3ff 0%, rgba(196, 223, 242, 0.8) 100%);
+}
+
+/* 두 번째 블록 - 중간 색상 */
+.about-block:nth-child(2) {
+    background: linear-gradient(to bottom, rgba(196, 223, 242, 0.8) 0%, rgba(101, 131, 153, 0.8) 100%);
+}
+
+/* 세 번째 이상 블록이 있을 경우 */
+.about-block:nth-child(3) {
+    background: linear-gradient(to bottom, rgba(101, 131, 153, 0.8) 0%, rgba(74, 98, 120, 0.8) 100%);
+}
+
+.about-block:last-child {
+    margin-bottom: 0;
+}
+
+.about-content {
+    position: relative;
+}
+
+.about-content::after {
+    content: '';
+    display: block;
+    width: 100vw;
+    height: 100px;
+    background-color: rgba(101, 131, 153, 0.8);
+    position: relative;
+    left: 0;
+}
+
+/* 짝수 번째 about-block - 반대 레이아웃 */
+.about-block:nth-child(even) .about-image {
+    left: auto;
+    right: 20px;
+    transform: translateX(100px);
+}
+
+/* 짝수 블록 이미지 - 오른쪽에서 나타남 */
+.about-block:nth-child(even) .about-image.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.about-block:nth-child(even) .about-text {
+    right: auto;
+    left: 20px;
+    text-align: left;
+    transform: translateY(-50%) translateX(-100px);
+}
+
+/* 짝수 블록 텍스트 - 왼쪽에서 나타남 */
+.about-block:nth-child(even) .about-text.visible {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* 짝수 번째 about-text 세로줄 위치 조정 */
+.about-block:nth-child(even) .about-text::after {
+    right: auto;
+    left: 0;
+}
+
+/* 내부 컨테이너 - 최대 너비 제한 */
+.about-block-inner {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 600px;
+    padding: 80px 20px 100px;
+}
+
+/* 세로 이미지 컨테이너 - 왼쪽에 위치 */
+.about-image {
+    width: 500px;
+    height: 600px;
+    position: absolute;
+    left: 20px;
+    top: -50px;
+    border-radius: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-100px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    z-index: 2;
+}
+
+/* 홀수 블록 이미지 - 왼쪽에서 나타남 */
+.about-block:nth-child(odd) .about-image.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 텍스트 영역 - 우측에 위치 */
+.about-text {
+    position: absolute;
+    right: 20px;
+    top: 60%;
+    transform: translateY(-50%) translateX(100px);
+    width: 50%;
+    padding: 40px 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 300px;
-}
-
-.introduction-section .gallery-wrap .txt-wrap .intro-title {
-    color: #7a8471;
-    font-family: 'Chosunilbo', serif;
-    font-weight: bold;
-    font-size: 1.8rem;
-    margin: 0;
-    margin-bottom: 15px;
-}
-
-.introduction-section .gallery-wrap .txt-wrap .intro-description {
-    color: #333;
-    font-family: 'Chosunilbo', serif;
-    font-weight: 300;
-    line-height: 1.8;
-    margin: 0;
-    font-size: 1.1rem;
-}
-
-.introduction-section .gallery-wrap .view-img {
-    position: absolute;
-    bottom: -120px;
-    right: 50px;
-    width: 350px;
-    aspect-ratio: 1/1;
-}
-
-.introduction-section .gallery-wrap .view-img::before {
-    content: '';
-    position: absolute;
-    top: -25px;
-    left: -25px;
-    width: 100%;
-    height: 100%;
-    border: 3px solid #7a8471;
-    background: transparent;
-    z-index: -1;
-}
-
-.introduction-section .gallery-wrap .view-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: relative;
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
     z-index: 1;
 }
 
-/* Responsive Introduction Section */
+/* 홀수 블록 텍스트 - 오른쪽에서 나타남 */
+.about-block:nth-child(odd) .about-text.visible {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* about-text 영역 우측 세로줄 */
+.about-text::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -50px;
+    width: 1px;
+    height: calc(100% + 100px);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.about-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 20px 0;
+    line-height: 1.3;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+}
+
+.about-description {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.8;
+    margin: 0;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s;
+}
+
+/* 모든 블록 어두운 색상 텍스트로 통일 */
+.about-block .about-title {
+    color: #2c4d64;
+}
+
+.about-block .about-description {
+    color: #4a5866;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: normal;
+    color: white;
+    margin: 0 0 20px 0;
+    line-height: 1.1;
+    letter-spacing: 2px;
+}
+
+.hero-description {
+    font-size: 18px;
+    font-weight: 400;
+    color: white;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+
+/* Q ��| */
 @media (max-width: 1024px) {
-    .introduction-section .gallery-wrap {
-        height: 700px;
+    /* page-title h1은 common.css에서 관리 */
+
+    .hero-title {
+        font-size: 42px;
     }
 
-    .introduction-section .gallery-wrap .img-wrap img {
-        height: 400px;
+    .hero-description {
+        font-size: 16px;
     }
 
-    .introduction-section .gallery-wrap .txt-wrap h2.txt1 {
-        padding-top: 6rem;
-        font-size: 1.6rem;
+    /* About block tablet styles */
+    .about-block-inner {
+        padding: 60px 20px 80px;
+        height: 500px;
+    }
+
+    .about-image {
+        width: 400px;
+        height: 500px;
+        left: 20px;
+        top: -30px;
+    }
+
+    .about-text {
+        width: 50%;
+        padding: 30px 40px;
+    }
+
+    .about-block:nth-child(even) .about-image {
+        right: 20px;
+    }
+
+    .about-block:nth-child(even) .about-text {
+        left: 20px;
     }
 }
 
 @media (max-width: 768px) {
+    /* page-title h1은 common.css에서 관리 */
 
-    .introduction-section {
-        padding: 50px 0;
+    /* main-container 스타일은 common.css로 이동 */
+
+    .hero-text-content {
+        align-items: center;
+        text-align: center;
     }
 
-    .introduction-section .gallery-wrap {
-        flex-direction: column;
-        gap: 40px;
+    .hero-title {
+        font-size: 36px;
+        letter-spacing: 1px;
+    }
+
+    .hero-description {
+        font-size: 16px;
+        max-width: 90%;
+    }
+
+    /* About 블록 모바일 - 새로운 디자인 */
+    .about-content {
+        gap: 0;
+        margin-top: 100px;
+    }
+
+    .about-block {
+        min-height: auto;
+        padding: 80px 0;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+
+    .about-block-inner {
+        height: auto;
         padding: 0;
     }
 
-    .introduction-section .gallery-wrap .img-wrap {
-        width: 100%;
-        height: auto;
-        order: 1;
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .introduction-section .gallery-wrap .img-wrap::before {
+    .about-block .about-image {
+        position: relative;
+        width: 90%;
+        height: 350px;
+        left: auto;
+        right: auto;
+        transform: none;
+        top: 0;
+        border-radius: 0;
+        margin: 0 auto 40px;
         display: block;
-        top: 5px;
-        left: 5px;
-        width: 90%;
-        height: 200px;
-        aspect-ratio: unset;
-        border: 1px solid #7a8471;
+        opacity: 1 !important;
     }
 
-    .introduction-section .gallery-wrap .img-wrap img {
-        height: 200px;
+    .about-text {
+        position: relative;
         width: 90%;
-    }
-
-    .introduction-section .gallery-wrap .txt-wrap {
-        padding: 0 20px;
-        height: auto;
+        max-width: none;
+        padding: 0;
+        margin: 0 auto;
         text-align: center;
-        order: 2;
+        top: 0;
+        right: auto;
+        left: auto;
+        transform: none !important;
+        opacity: 1 !important;
     }
 
-    .introduction-section .gallery-wrap .txt-wrap .intro-title {
-        font-size: 1.4rem;
-        margin-bottom: 15px;
+    /* visible 클래스가 추가되어도 transform 제거 */
+    .about-block:nth-child(even) .about-text.visible,
+    .about-block:nth-child(odd) .about-text.visible {
+        transform: none !important;
+        opacity: 1;
     }
 
-    .introduction-section .gallery-wrap .txt-wrap .intro-description {
-        font-size: 1rem;
+    /* 모바일에서 세로줄 숨김 */
+    .about-text::after {
+        display: none;
     }
 
-    .introduction-section .gallery-wrap .view-img {
-        position: static;
-        width: 100%;
-        height: auto;
-        order: 3;
-        display: flex;
-        justify-content: flex-end;
+    /* 짝수 번째 블록도 동일하게 중앙정렬 */
+    .about-block:nth-child(even) .about-image {
+        left: auto;
+        right: auto;
+        transform: none;
+        margin: 0 auto 40px;
     }
 
-    .introduction-section .gallery-wrap .view-img img {
-        width: 90%;
-        height: 200px;
+    .about-block:nth-child(even) .about-text {
+        text-align: center;
+        left: auto;
+        right: auto;
+        margin: 0 auto;
     }
 
-    .introduction-section .gallery-wrap .view-img::before {
-        display: block;
-        top: 5px;
-        right: 5px;
-        left: unset;
-        width: 90%;
-        height: 200px;
-        border: 1px solid #7a8471;
+    .about-title {
+        font-size: 24px;
+        text-align: center;
     }
 
-
+    .about-description {
+        font-size: 14px;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
-    .introduction-section {
-        padding: 40px 0;
+    /* page-title h1은 common.css에서 관리 */
+
+    /* main-container 스타일은 common.css로 이동 */
+
+    .hero-title {
+        font-size: 28px;
     }
 
-    .introduction-section .gallery-wrap {
-        height: 550px;
+    .hero-description {
+        font-size: 14px;
     }
 
-    .introduction-section .gallery-wrap .txt-wrap h2.txt1 {
-        font-size: 1.2rem;
-        padding: 15px 20px;
+    /* About 블록 480px - 새로운 디자인 */
+    .about-content {
+        gap: 0;
+        margin-top: 80px;
     }
 
-    .introduction-section .gallery-wrap .txt-wrap p.txt2 {
-        font-size: 0.9rem;
-        padding: 15px 20px;
+    .about-block {
+        min-height: auto;
+        padding: 60px 0;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
     }
 
-    .introduction-section .gallery-wrap .view-img {
-        height: 150px;
+    .about-block-inner {
+        height: auto;
+        padding: 0;
+    }
+
+    .about-block .about-image {
+        width: 90%;
+        height: 250px;
+        left: auto;
+        right: auto;
+        transform: none;
+        border-radius: 0;
+        margin: 0 auto 25px;
+        display: block;
+    }
+
+    .about-text {
+        padding: 0 20px;
+    }
+
+    .about-title {
+        font-size: 20px;
+    }
+
+    .about-description {
+        font-size: 13px;
     }
 }
-

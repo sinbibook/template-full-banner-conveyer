@@ -5,71 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="숙소 설명">
   <meta name="keywords" content="SEO 키워드">
-  <title>숙소명 - 소개</title>
+  <title>Main - 템플릿</title>
 
+  <!-- Preload critical resources -->
+  <link rel="preload" href="styles/common.css" as="style">
+  <link rel="preload" href="styles/main.css" as="style">
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="styles/common.css">
-  <link rel="stylesheet" href="styles/slider.css">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
 
-  <!-- Main Content -->
-  <main class="main-content">
-
-      <!-- CUSTOM FIELD : 메인 소개 섹션 -->
-      <section class="main-section fullscreen-slider">
-        <div class="fullscreen-slider-container">
-          <div class="fullscreen-slider-inner" data-main-hero-slider>
-            <!-- 동적으로 슬라이드가 생성됩니다 -->
-            <div class="fullscreen-slide active">
-              <img src="" alt="">
-            </div>
+  <main>
+      <section class="page-hero-section">
+        <!-- CUSTOM FIELD : 메인 소개 섹션 이미지 매핑 1장 -->
+          <div class="hero-background">
+              <img data-main-hero-img src="./images/hero3.jpg" alt="Main Hero Image">
           </div>
-
-          <div class="fullscreen-slider-content">
-            <h2 class="fullscreen-slider-title centered">About Us</h2>
+          <!-- 페이지 제목 하드코딩 fixed -->
+          <div class="page-title">
+              <span class="property-name-kr" data-main-property-name-kr></span>
+              <h1 class="typing-text" data-text="Prologue" style="--text-length: 8;">Prologue</h1>
           </div>
-
-          <div class="fullscreen-slider-nav">
-            <span class="nav-arrow nav-prev">‹</span>
-            <span class="nav-current">01</span>
-            <span class="nav-divider">|</span>
-            <span class="nav-total">03</span>
-            <span class="nav-arrow nav-next">›</span>
+          <!-- Scroll Down Icon -->
+          <div class="scroll-down-icon" onclick="scrollToContent()">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 10L12 15L17 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
           </div>
-        </div>
       </section>
-      <div class="content-wrap">
-        <!-- 메인 소개 섹션 제목/설명 -->
-         <div class="about-description-wrap">
-            <h2 class="about-title animate-element" data-main-about-title></h2>
-            <p class="about-description animate-element" data-main-about-description></p>
-         </div>
-      </div>
-
-      <!-- 숙소 영문명 매핑-->
-      <div class="marquee-section">
-        <div class="marquee-container">
-          <div class="marquee-text" data-main-marquee>
-            <!-- 동적으로 span이 생성됩니다 -->
+      <div class="content-wrap scroll-target">
+          <div class="main-container">
+              <div class="text-content">
+                  <div class="logo-line-container">
+                      <!-- 숙소 영문명 매핑 fixed -->
+                      <span class="logo-text-line" data-main-property-name-en></span>
+                      <div class="horizontal-line"></div>
+                  </div>
+                  <!-- custom field : 메인 소개 섹션 타이틀/설명 매핑 -->
+                  <div class="hero-content">
+                      <h2 class="hero-title" data-main-about-title></h2>
+                      <p class="hero-description" data-main-about-description></p>
+                  </div>
+              </div>
+              <!-- custom field : 소개 블록 동적 생성 - 이미지1, 제목, 설명이 한블록-->
+              <div class="about-content" data-main-introduction>
+                  <!-- 동적으로 about-block들이 생성됩니다 -->
+              </div>
           </div>
-        </div>
+
+          <!-- 숙소 외경이미지 0번째 fixed -->
+          <section class="full-banner" data-main-banner>
+              <!-- 숙소 영문명 매핑 fixed -->
+              <div class="closing-property-name" data-closing-property-name></div>
+          </section>
       </div>
-
-      <!-- 숙소 외경이미지 0번째 -->
-      <section class="full-banner" data-main-banner></section>
-
-      <!-- CUSTOM FIELD : 소개 섹션 (동적생성) 제목, 설명, 이미지 2개가 한 블록 -->
-      <section class="introduction-section" data-main-introduction>
-        <!-- 동적으로 gallery-wrap 블록들이 생성됩니다 -->
-      </section>
   </main>
+
+  <!-- Common JavaScript -->
+  <script src="js/common.js"></script>
 
   <!-- Include ImageWithFallback script -->
   <script src="js/image-with-fallback.js"></script>
 
-  <!-- Image Helpers -->
+  <!-- Image Helpers - 템플릿화 시 주석 해제
   <script src="js/image-helpers.js"></script>
+  -->
 
   <!-- Base Data Mapper (must load before preview-handler) -->
   <script src="js/data-mapper/core/base-mapper.js"></script>
@@ -86,11 +88,15 @@
   <!-- Header and Footer Loader -->
   <script src="js/header-footer-loader.js"></script>
 
-  <!-- Fullscreen Slider Component -->
-  <script src="js/components/fullscreen-slider.js"></script>
+  <!-- Fullscreen Slider Component (나중에 추가) -->
+  <!-- <script src="js/components/fullscreen-slider.js"></script> -->
+
+  <!-- Scroll Animations -->
+  <script src="js/common/scroll-animations.js"></script>
 
   <!-- Page-specific script -->
   <script type="module" src="js/pages/main.js"></script>
+
 
 </body>
 </html>
