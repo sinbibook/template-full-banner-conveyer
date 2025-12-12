@@ -15,11 +15,16 @@
         const nextBtn = document.querySelector('.slider-btn.next');
 
         if (!slider) {
+            console.warn('Hero slider container not found');
             return;
         }
 
         // Clear ALL existing intervals to prevent duplicates
         stopAutoPlay();
+
+        // Reset variables
+        currentSlide = 0;
+        slides = [];
 
         // Get images from JSON data or use fallback
         let heroImages = [];
@@ -54,6 +59,14 @@
 
         slides = slider.querySelectorAll('.slide');
 
+        // Verify slides are created
+        if (slides.length === 0) {
+            console.error('No slides were created');
+            return;
+        }
+
+        console.log('Hero slider initialized with', slides.length, 'slides');
+
         // Navigation buttons
         if (prevBtn) {
             prevBtn.addEventListener('click', previousSlide);
@@ -62,8 +75,17 @@
             nextBtn.addEventListener('click', nextSlide);
         }
 
-        // Auto-play and hover events
+        // Start autoplay immediately for GitHub Pages compatibility
         startAutoPlay();
+
+        // Also set a backup start in case the first one fails
+        setTimeout(() => {
+            if (!slideInterval) {
+                console.log('Backup autoplay start');
+                startAutoPlay();
+            }
+        }, 500);
+
         slider.addEventListener('mouseenter', stopAutoPlay);
         slider.addEventListener('mouseleave', startAutoPlay);
 
@@ -107,7 +129,12 @@
 
     // Next slide
     function nextSlide() {
-        if (slides.length === 0) return;
+        if (!slides || slides.length === 0) {
+            console.error('nextSlide called but no slides available');
+            return;
+        }
+
+        console.log('Transitioning from slide', currentSlide, 'to', (currentSlide + 1) % slides.length);
 
         slides[currentSlide].classList.remove('active');
         currentSlide = (currentSlide + 1) % slides.length;
@@ -162,6 +189,12 @@
 
     // Start auto-play
     function startAutoPlay() {
+        // 슬라이드가 2개 이상일 때만 자동재생
+        if (!slides || slides.length === 0) {
+            console.warn('No slides available for autoplay');
+            return;
+        }
+
         // 기존 interval 정리
         stopAutoPlay();
 
@@ -183,6 +216,8 @@
         slideInterval = setInterval(() => {
             nextSlide();
         }, slideDuration);
+
+        console.log('Autoplay started with interval:', slideDuration);
     }
 
     // Stop auto-play
@@ -755,13 +790,13 @@
             setTimeout(initializeAll, 200);
         }
 
-        // Extra safety: Force progress bar start if it's stuck
-        if (!slideInterval && document.querySelector('.hero-slider-container .slider')) {
-            const progressBar = document.querySelector('.progress-bar');
-            if (progressBar && progressBar.style.width === '0%') {
+        // Extra safety: Force autoplay if it hasn't started
+        setTimeout(() => {
+            if (!slideInterval && slides && slides.length > 0) {
+                console.log('Force starting autoplay on window load');
                 startAutoPlay();
             }
-        }
+        }, 500);
     });
 
 })();
