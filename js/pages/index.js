@@ -165,13 +165,24 @@
         // 기존 interval 정리
         stopAutoPlay();
 
+        // 프로그레스바 즉시 시작 (초기 로드 문제 해결)
+        const progressBar = document.querySelector('.progress-bar');
+        if (progressBar) {
+            // 강제 리플로우로 초기화 보장
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+            progressBar.offsetHeight; // 강제 리플로우
+
+            // 약간의 딜레이 후 애니메이션 시작
+            setTimeout(() => {
+                startProgress();
+            }, 10);
+        }
+
         // 슬라이드 전환과 프로그레스바를 동기화
         slideInterval = setInterval(() => {
             nextSlide();
         }, slideDuration);
-
-        // 프로그레스바 시작
-        startProgress();
     }
 
     // Stop auto-play
@@ -715,23 +726,41 @@
     }
 
     // Initialize all components when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(() => {
-            initHeroSlider();
-            initSignatureThumbnails();
-            initEssenceSlider();
-            initClosingSection();
-            initScrollAnimations();
-        }, 100);
-    });
+    let isInitialized = false;
 
-    // Also try initializing when window loads (only if not already initialized)
+    function initializeAll() {
+        if (isInitialized) return;
+        isInitialized = true;
+
+        initHeroSlider();
+        initSignatureThumbnails();
+        initEssenceSlider();
+        initClosingSection();
+        initScrollAnimations();
+    }
+
+    // Try multiple initialization strategies for better compatibility
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initializeAll, 100);
+        });
+    } else {
+        // DOM is already loaded
+        setTimeout(initializeAll, 100);
+    }
+
+    // Fallback: Also try on window load
     window.addEventListener('load', function() {
-        // Only initialize if DOMContentLoaded handler failed
-        if (slides.length === 0 && !slideInterval && document.querySelector('.hero-slider-container .slider')) {
-            setTimeout(() => {
-                initHeroSlider();
-            }, 200);
+        if (!isInitialized) {
+            setTimeout(initializeAll, 200);
+        }
+
+        // Extra safety: Force progress bar start if it's stuck
+        if (!slideInterval && document.querySelector('.hero-slider-container .slider')) {
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar && progressBar.style.width === '0%') {
+                startAutoPlay();
+            }
         }
     });
 
