@@ -204,8 +204,10 @@ th, td {
     height: 100%;
     background: white;
     width: 0;
-    transition: width 0.1s linear;
+    transition: width 100ms linear;
     border-radius: 1px;
+    will-change: width;
+    transform: translateZ(0);
 }
 
 /* ============================================================================

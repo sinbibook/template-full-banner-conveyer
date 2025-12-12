@@ -18,20 +18,8 @@
             return;
         }
 
-        // Prevent duplicate initialization
-        if (slideInterval) {
-            return;
-        }
-
-        // Clear existing intervals to prevent duplicates
-        if (slideInterval) {
-            clearInterval(slideInterval);
-            slideInterval = null;
-        }
-        if (progressInterval) {
-            clearInterval(progressInterval);
-            progressInterval = null;
-        }
+        // Clear ALL existing intervals to prevent duplicates
+        stopAutoPlay();
 
         // Get images from JSON data or use fallback
         let heroImages = [];
@@ -142,49 +130,47 @@
         const progressBar = document.querySelector('.progress-bar');
         if (!progressBar) return;
 
-        let progressWidth = 0;
+        // CSS 애니메이션을 사용한 방식
+        progressBar.style.transition = 'none';
         progressBar.style.width = '0%';
 
-        progressInterval = setInterval(() => {
-            progressWidth += 100 / (slideDuration / 25);
-            progressBar.style.width = progressWidth + '%';
+        // 강제로 리플로우
+        progressBar.offsetHeight;
 
-            if (progressWidth >= 100) {
-                clearInterval(progressInterval);
-            }
-        }, 25);
+        // 애니메이션 시작
+        progressBar.style.transition = `width ${slideDuration}ms linear`;
+        progressBar.style.width = '100%';
     }
 
     // Reset progress bar
     function resetProgress() {
-        // 기존 interval 정리
-        if (progressInterval) {
-            clearInterval(progressInterval);
-            progressInterval = null;
-        }
-
-        // 프로그레스 바를 즉시 0으로 설정
         const progressBar = document.querySelector('.progress-bar');
-        if (progressBar) {
-            progressBar.style.width = '0%';
-            progressBar.style.transition = 'none'; // 애니메이션 없이 즉시 0으로
+        if (!progressBar) return;
 
-            // 강제로 reflow를 발생시켜 스타일이 적용되도록 함
-            progressBar.offsetHeight;
+        // 즉시 0으로 리셋
+        progressBar.style.transition = 'none';
+        progressBar.style.width = '0%';
 
-            // 잠시 후 transition 복원하고 새로운 프로그레스 시작
-            setTimeout(() => {
-                if (progressBar) {
-                    progressBar.style.transition = 'width 0.1s linear';
-                    startProgress();
-                }
-            }, 50);
-        }
+        // 강제로 리플로우
+        progressBar.offsetHeight;
+
+        // 잠시 후 새로운 프로그레스 시작
+        setTimeout(() => {
+            startProgress();
+        }, 50);
     }
 
     // Start auto-play
     function startAutoPlay() {
-        slideInterval = setInterval(nextSlide, slideDuration);
+        // 기존 interval 정리
+        stopAutoPlay();
+
+        // 슬라이드 전환과 프로그레스바를 동기화
+        slideInterval = setInterval(() => {
+            nextSlide();
+        }, slideDuration);
+
+        // 프로그레스바 시작
         startProgress();
     }
 
@@ -192,9 +178,18 @@
     function stopAutoPlay() {
         if (slideInterval) {
             clearInterval(slideInterval);
+            slideInterval = null;
         }
-        if (progressInterval) {
-            clearInterval(progressInterval);
+
+        // 프로그레스바 정지
+        const progressBar = document.querySelector('.progress-bar');
+        if (progressBar) {
+            const currentWidth = progressBar.offsetWidth;
+            const containerWidth = progressBar.parentElement.offsetWidth;
+            const currentPercent = (currentWidth / containerWidth) * 100;
+
+            progressBar.style.transition = 'none';
+            progressBar.style.width = currentPercent + '%';
         }
     }
 
