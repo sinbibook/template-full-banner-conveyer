@@ -279,17 +279,22 @@
         // Show initial state (애니메이션은 시작하지 않음)
         showEssenceSlide(0);
 
-        // IntersectionObserver로 스크롤 감지
+        // essence-image 요소의 애니메이션 완료 감지
+        const essenceImage = document.querySelector('.essence-image');
         const essenceSection = document.querySelector('.essence-section');
-        if (essenceSection) {
+
+        if (essenceImage && essenceSection) {
+            // essence-image가 animate 클래스를 받았을 때 감지
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting && !essenceStarted) {
-                        essenceStarted = true;
-                        // 2초 후에 애니메이션 시작
+                        // essence-image의 fadeIn 애니메이션이 시작되는 시점 계산
+                        // slideUp 애니메이션(1초) + delay(800ms) + fadeIn 애니메이션(1.2초) = 약 3초
+                        // 애니메이션 완료 후 2초 대기
                         setTimeout(() => {
+                            essenceStarted = true;
                             startEssenceAutoSlide();
-                        }, 2000);
+                        }, 3000 + 2000); // 애니메이션 완료(3초) + 대기(2초) = 5초
                         observer.unobserve(entry.target);
                     }
                 });
@@ -297,7 +302,7 @@
                 threshold: 0.3 // 섹션의 30%가 보일 때 트리거
             });
 
-            observer.observe(essenceSection);
+            observer.observe(essenceImage);
 
             // Pause auto-sliding on hover
             essenceSection.addEventListener('mouseenter', stopEssenceAutoSlide);
