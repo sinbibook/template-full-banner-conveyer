@@ -241,6 +241,7 @@
     let essenceDuration = 3000; // 3 seconds
     let isTransitioning = false;
     let essenceImages = []; // 이미지 배열 저장
+    let essenceStarted = false; // 애니메이션 시작 여부 추가
 
     function initEssenceSlider() {
 
@@ -275,15 +276,36 @@
             });
         });
 
-        // Show initial state
+        // Show initial state (애니메이션은 시작하지 않음)
         showEssenceSlide(0);
-        startEssenceAutoSlide();
 
-        // Pause auto-sliding on hover
+        // IntersectionObserver로 스크롤 감지
         const essenceSection = document.querySelector('.essence-section');
         if (essenceSection) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !essenceStarted) {
+                        essenceStarted = true;
+                        // 2초 후에 애니메이션 시작
+                        setTimeout(() => {
+                            startEssenceAutoSlide();
+                        }, 2000);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.3 // 섹션의 30%가 보일 때 트리거
+            });
+
+            observer.observe(essenceSection);
+
+            // Pause auto-sliding on hover
             essenceSection.addEventListener('mouseenter', stopEssenceAutoSlide);
-            essenceSection.addEventListener('mouseleave', startEssenceAutoSlide);
+            essenceSection.addEventListener('mouseleave', () => {
+                if (essenceStarted) {
+                    startEssenceAutoSlide();
+                }
+            });
         }
     }
 
