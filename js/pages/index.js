@@ -288,13 +288,11 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting && !essenceStarted) {
-                        // essence-image의 fadeIn 애니메이션이 시작되는 시점 계산
-                        // slideUp 애니메이션(1초) + delay(800ms) + fadeIn 애니메이션(1.2초) = 약 3초
-                        // 애니메이션 완료 후 2초 대기
+                        // essence-image의 fadeIn 애니메이션 delay(800ms) 후 즉시 시작
                         setTimeout(() => {
                             essenceStarted = true;
                             startEssenceAutoSlide();
-                        }, 3000 + 2000); // 애니메이션 완료(3초) + 대기(2초) = 5초
+                        }, 800); // fadeIn delay와 동일하게 설정
                         observer.unobserve(entry.target);
                     }
                 });
