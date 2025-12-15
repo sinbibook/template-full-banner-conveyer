@@ -179,6 +179,10 @@ class RoomMapper extends BaseDataMapper {
 
                 const roomTotalPages = this.safeSelect('.room-total-pages');
                 if (roomTotalPages) roomTotalPages.textContent = '01';
+
+                // 슬라이드 1개일 때 네비게이션 버튼 숨기기
+                const navButtons = document.querySelectorAll('.room-nav-btn, .room-nav-btn-mobile');
+                navButtons.forEach(btn => btn.style.display = 'none');
             }
             return;
         }
@@ -221,6 +225,12 @@ class RoomMapper extends BaseDataMapper {
         const roomTotalPagesMobile = this.safeSelect('.room-total-pages-mobile');
         if (roomTotalPagesMobile) {
             roomTotalPagesMobile.textContent = String(sortedImages.length).padStart(2, '0');
+        }
+
+        // 슬라이드 1개일 때 네비게이션 버튼 숨기기
+        if (sortedImages.length <= 1) {
+            const navButtons = document.querySelectorAll('.room-nav-btn, .room-nav-btn-mobile');
+            navButtons.forEach(btn => btn.style.display = 'none');
         }
 
         // Hero Slider 초기화
