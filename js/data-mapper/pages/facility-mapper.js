@@ -221,7 +221,7 @@ class FacilityMapper extends BaseDataMapper {
                 item.className = 'content-item';
                 if (typeof feature === 'object' && feature !== null) {
                     item.innerHTML = `
-                        <div class="content-title">${feature.title || '특징 타이틀'}</div>
+                        <div class="content-title">${this._escapeHTML(feature.title || '특징 타이틀')}</div>
                         <div class="content-description">${this._formatTextWithLineBreaks(feature.description || '특징 설명')}</div>
                     `;
                 } else {
@@ -241,7 +241,7 @@ class FacilityMapper extends BaseDataMapper {
                 item.className = 'content-item';
                 if (typeof info === 'object' && info !== null) {
                     item.innerHTML = `
-                        <div class="content-title">${info.title || '추가정보 타이틀'}</div>
+                        <div class="content-title">${this._escapeHTML(info.title || '추가정보 타이틀')}</div>
                         <div class="content-description">${this._formatTextWithLineBreaks(info.description || '추가정보 설명')}</div>
                     `;
                 } else {
@@ -261,7 +261,7 @@ class FacilityMapper extends BaseDataMapper {
                 item.className = 'content-item';
                 if (typeof benefit === 'object' && benefit !== null) {
                     item.innerHTML = `
-                        <div class="content-title">${benefit.title || '혜택 타이틀'}</div>
+                        <div class="content-title">${this._escapeHTML(benefit.title || '혜택 타이틀')}</div>
                         <div class="content-description">${this._formatTextWithLineBreaks(benefit.description || '혜택 설명')}</div>
                     `;
                 } else {
