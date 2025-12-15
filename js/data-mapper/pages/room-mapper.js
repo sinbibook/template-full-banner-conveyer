@@ -430,6 +430,7 @@ class RoomMapper extends BaseDataMapper {
             touchStartY = e.changedTouches[0].screenY;
             touchEndX = touchStartX;
             touchEndY = touchStartY;
+            stopAutoPlay();
         }, { passive: true });
 
         sliderContainer.addEventListener('touchmove', (e) => {
@@ -445,7 +446,7 @@ class RoomMapper extends BaseDataMapper {
             }
         }, { passive: false });
 
-        sliderContainer.addEventListener('touchend', (e) => {
+        sliderContainer.addEventListener('touchend', () => {
             const deltaX = touchStartX - touchEndX;
             const deltaY = Math.abs(touchStartY - touchEndY);
 
@@ -457,6 +458,7 @@ class RoomMapper extends BaseDataMapper {
                     movePrev();
                 }
             }
+            startAutoPlay();
         }, { passive: true });
 
         // 리사이즈 이벤트 처리
