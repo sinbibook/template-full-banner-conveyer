@@ -39,8 +39,6 @@
         }
 
         let currentSlide = 0;
-        let autoSlideInterval;
-        let progressInterval;
 
         function showSlide(index) {
             // Hide all slides
@@ -61,41 +59,50 @@
             resetProgress();
         }
 
-        function startProgress() {
-            let progress = 0;
+        // 시간 기반 애니메이션 변수
+        let animationStartTime = null;
+        let animationFrameId = null;
+        const SLIDE_DURATION = 3000; // 3초
+
+        // requestAnimationFrame 기반 프로그레스바 애니메이션
+        function animateProgress(timestamp) {
+            if (!animationStartTime) animationStartTime = timestamp;
+
+            const elapsed = timestamp - animationStartTime;
+            const progress = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
+
             if (progressBar) {
-                progressBar.style.width = '0%';
-                progressInterval = setInterval(() => {
-                    progress += 100 / 30; // 3 seconds = 30 intervals of 100ms
-                    progressBar.style.width = Math.min(progress, 100) + '%';
-                    if (progress >= 100) {
-                        clearInterval(progressInterval);
-                    }
-                }, 100);
+                progressBar.style.width = progress + '%';
+            }
+
+            if (progress >= 100) {
+                // 슬라이드 전환
+                nextSlide();
+                animationStartTime = timestamp;
+            }
+
+            animationFrameId = requestAnimationFrame(animateProgress);
+        }
+
+        function startAutoSlide() {
+            if (animationFrameId) return; // 이미 실행 중이면 무시
+
+            animationStartTime = null;
+            if (progressBar) progressBar.style.width = '0%';
+            animationFrameId = requestAnimationFrame(animateProgress);
+        }
+
+        function stopAutoSlide() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
             }
         }
 
         function resetProgress() {
-            if (progressInterval) {
-                clearInterval(progressInterval);
-            }
-            startProgress();
-        }
-
-        function startAutoSlide() {
-            resetProgress();
-            autoSlideInterval = setInterval(() => {
-                nextSlide();
-            }, 3000);
-        }
-
-        function stopAutoSlide() {
-            if (autoSlideInterval) {
-                clearInterval(autoSlideInterval);
-            }
-            if (progressInterval) {
-                clearInterval(progressInterval);
-            }
+            stopAutoSlide();
+            if (progressBar) progressBar.style.width = '0%';
+            startAutoSlide();
         }
 
         // Set up event listeners
@@ -115,9 +122,7 @@
             });
         }
 
-        // Pause on hover
-        slider.addEventListener('mouseenter', stopAutoSlide);
-        slider.addEventListener('mouseleave', startAutoSlide);
+        // 호버해도 프로그레스바 계속 진행 (호버 일시정지 기능 제거)
 
         // Touch swipe support for mobile
         let touchStartX = 0;

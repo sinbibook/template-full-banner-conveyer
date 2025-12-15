@@ -417,9 +417,7 @@ class RoomMapper extends BaseDataMapper {
             });
         }
 
-        // 마우스 호버 시 자동 재생 정지
-        sliderContainer.addEventListener('mouseenter', stopAutoPlay);
-        sliderContainer.addEventListener('mouseleave', startAutoPlay);
+        // 호버해도 슬라이더 계속 진행 (호버 일시정지 기능 제거)
 
         // 모바일 터치 이벤트 (스와이프)
         let touchStartX = 0;
@@ -430,28 +428,38 @@ class RoomMapper extends BaseDataMapper {
         sliderContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
+            touchEndX = touchStartX;
+            touchEndY = touchStartY;
             stopAutoPlay();
-        });
+        }, { passive: true });
 
-        sliderContainer.addEventListener('touchend', (e) => {
+        sliderContainer.addEventListener('touchmove', (e) => {
             touchEndX = e.changedTouches[0].screenX;
             touchEndY = e.changedTouches[0].screenY;
 
+            const deltaX = Math.abs(touchStartX - touchEndX);
+            const deltaY = Math.abs(touchStartY - touchEndY);
+
+            // 수평 이동이 수직보다 크면 스크롤 방지
+            if (deltaX > deltaY && deltaX > 10) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        sliderContainer.addEventListener('touchend', () => {
             const deltaX = touchStartX - touchEndX;
             const deltaY = Math.abs(touchStartY - touchEndY);
 
-            // 가로 스와이프가 세로보다 클 때만 처리 (세로 스크롤 방해 방지)
+            // 가로 스와이프가 세로보다 클 때만 처리
             if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
                 if (deltaX > 0) {
-                    // 왼쪽으로 스와이프 → 다음 슬라이드
                     moveNext();
                 } else {
-                    // 오른쪽으로 스와이프 → 이전 슬라이드
                     movePrev();
                 }
             }
             startAutoPlay();
-        });
+        }, { passive: true });
 
         // 리사이즈 이벤트 처리
         let resizeTimer;

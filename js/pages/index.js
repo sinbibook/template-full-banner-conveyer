@@ -10,11 +10,12 @@
 
     // Initialize hero slider
     function initHeroSlider() {
+        const sliderContainer = document.querySelector('.hero-slider-container');
         const slider = document.querySelector('.hero-slider-container .slider');
         const prevBtn = document.querySelector('.slider-btn.prev');
         const nextBtn = document.querySelector('.slider-btn.next');
 
-        if (!slider) {
+        if (!slider || !sliderContainer) {
             return;
         }
 
@@ -28,46 +29,40 @@
         currentSlide = 0;
         slides = [];
 
-        // Get images from JSON data or use fallback
-        let heroImages = [];
+        // 슬라이드 생성 헬퍼 함수
+        function createSlides(images) {
+            slider.innerHTML = '';
+            images.forEach((imageUrl, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                if (index === 0) slide.classList.add('active');
+
+                const img = document.createElement('img');
+                img.src = typeof imageUrl === 'object' ? imageUrl.url : imageUrl;
+                img.alt = typeof imageUrl === 'object' ? imageUrl.description : `Slide ${index + 1}`;
+
+                slide.appendChild(img);
+                slider.appendChild(slide);
+            });
+            return slider.querySelectorAll('.slide');
+        }
 
         // Check if hero images were set by mapper
         if (window.heroImageData && window.heroImageData.images && window.heroImageData.images.length > 0) {
-            heroImages = window.heroImageData.images;
+            slides = createSlides(window.heroImageData.images);
         } else {
             // 이미지 없으면 mapper에서 설정한 empty-image 유지
             const existingSlides = slider.querySelectorAll('.slide');
             if (existingSlides.length > 0) {
-                // mapper가 이미 empty-image 설정함 - 유지
                 slides = existingSlides;
-                startAutoPlay();
-                return;
+            } else {
+                // Fallback to sample images if no JSON data
+                slides = createSlides([
+                    './images/hero.jpg',
+                    './images/hero5.jpg'
+                ]);
             }
-            // Fallback to sample images if no JSON data
-            heroImages = [
-                './images/hero.jpg',
-                './images/hero5.jpg'
-            ];
         }
-
-        // Clear existing slides
-        slider.innerHTML = '';
-
-        // Create slides
-        heroImages.forEach((imageUrl, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'slide';
-            if (index === 0) slide.classList.add('active');
-
-            const img = document.createElement('img');
-            img.src = typeof imageUrl === 'object' ? imageUrl.url : imageUrl;
-            img.alt = typeof imageUrl === 'object' ? imageUrl.description : `Slide ${index + 1}`;
-
-            slide.appendChild(img);
-            slider.appendChild(slide);
-        });
-
-        slides = slider.querySelectorAll('.slide');
 
         // Verify slides are created
         if (slides.length === 0) {
@@ -87,46 +82,47 @@
             startAutoPlay();
         }, 200);
 
-        // Remove existing event listeners before adding new ones
-        slider.removeEventListener('mouseenter', stopAutoPlay);
-        slider.removeEventListener('mouseleave', startAutoPlay);
+        // 호버해도 프로그레스바 계속 진행 (호버 일시정지 기능 제거)
 
-        slider.addEventListener('mouseenter', stopAutoPlay);
-        slider.addEventListener('mouseleave', startAutoPlay);
-
-        // Touch swipe support for mobile
+        // Touch swipe support for mobile (room-mapper.js와 동일한 방식)
         let touchStartX = 0;
         let touchEndX = 0;
-        let isSwiping = false;
+        let touchStartY = 0;
+        let touchEndY = 0;
 
-        slider.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-            isSwiping = true;
+        sliderContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+            touchEndX = touchStartX;
+            touchEndY = touchStartY;
             stopAutoPlay();
         }, { passive: true });
 
-        slider.addEventListener('touchmove', (e) => {
-            if (!isSwiping) return;
-            touchEndX = e.touches[0].clientX;
-        }, { passive: true });
+        sliderContainer.addEventListener('touchmove', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
 
-        slider.addEventListener('touchend', (e) => {
-            if (!isSwiping) return;
-            isSwiping = false;
+            const deltaX = Math.abs(touchStartX - touchEndX);
+            const deltaY = Math.abs(touchStartY - touchEndY);
 
-            const swipeDistance = touchStartX - touchEndX;
-            const threshold = 50; // Minimum distance for swipe
+            // 수평 이동이 수직보다 크면 스크롤 방지
+            if (deltaX > deltaY && deltaX > 10) {
+                e.preventDefault();
+            }
+        }, { passive: false });
 
-            if (Math.abs(swipeDistance) > threshold) {
-                if (swipeDistance > 0) {
-                    // Swiped left - next slide
+        sliderContainer.addEventListener('touchend', () => {
+            const deltaX = touchStartX - touchEndX;
+            const deltaY = Math.abs(touchStartY - touchEndY);
+
+            // 가로 스와이프가 세로보다 클 때만 처리
+            if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
+                if (deltaX > 0) {
                     nextSlide();
                 } else {
-                    // Swiped right - previous slide
                     previousSlide();
                 }
             }
-
             startAutoPlay();
         }, { passive: true });
 
@@ -490,9 +486,6 @@
         // 돔 모양 클리핑: border-radius 275px 275px 0 0과 동일한 효과
         actualMainContainer.style.clipPath = 'inset(0 0 0 0 round 275px 275px 0 0)';
         actualMainContainer.style.isolation = 'isolate';
-
-        // 확실한 경계 설정
-        const containerRect = actualMainContainer.getBoundingClientRect();
 
         actualMainContainer.insertBefore(newMainImg, mainImg);
 
