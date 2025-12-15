@@ -88,6 +88,7 @@
     display: flex;
     align-items: center;
     overflow: hidden;
+    touch-action: pan-y pinch-zoom; /* 수직 스크롤만 허용, 수평은 JS가 처리 */
 }
 
 /* Hero Text Container */
