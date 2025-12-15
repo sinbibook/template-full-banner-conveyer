@@ -118,7 +118,7 @@
         "commonArea": []
       }
     ],
-    "nameEn": "숙소 영문명",
+    "nameEn": "Property Name (EN)",
     "domain": "도메인",
     "realtimeBookingId": "지펜션ID",
     "ybsId": "YBS ID"

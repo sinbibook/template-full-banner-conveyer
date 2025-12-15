@@ -15,7 +15,7 @@ class BaseDataMapper {
         // 테스트할 때: 'demo-filled.json' (실제 데이터가 들어있는 파일)
         // 실제 상용할 때: 'standard-template-data.json' (빈 템플릿)
 
-        this.dataSource = 'demo-filled.json';  // ← 여기만 변경하면 전체 페이지 적용!
+        this.dataSource = 'standard-template-data.json';  // ← 여기만 변경하면 전체 페이지 적용!
     }
 
     // ============================================================================
@@ -38,18 +38,6 @@ class BaseDataMapper {
             }, {});
         }
         return obj;
-    }
-
-    /**
-     * JSON 파일 소스 설정
-     * @param {string} source - 'standard-template-data.json' 또는 'demo-filled.json'
-     */
-    setDataSource(source) {
-        if (source === 'standard-template-data.json' || source === 'demo-filled.json') {
-            this.dataSource = source;
-        } else {
-            console.warn(`Invalid data source: ${source}. Using default: ${this.dataSource}`);
-        }
     }
 
     /**
@@ -183,45 +171,6 @@ class BaseDataMapper {
         // 먼저 HTML 특수 문자를 이스케이프 처리한 후 줄바꿈 변환
         const escapedText = this._escapeHTML(trimmedText);
         return escapedText.replace(/\n/g, '<br>');
-    }
-
-    // ============================================================================
-    // 🖼️ IMAGE UTILITIES
-    // ============================================================================
-
-    /**
-     * Feature 코드에 따른 고품질 이미지 URL 반환
-     * @deprecated demo-filled.json 사용 시에는 JSON의 이미지만 사용
-     */
-    getFeatureImage(code) {
-        // demo-filled.json 사용 시에는 null 반환 (JSON 데이터만 사용)
-        if (this.dataSource === 'demo-filled.json') {
-            return null;
-        }
-
-        // standard-template-data.json 사용 시 폴백 이미지 제공
-        const imageMap = {
-            'WIFI': './images/wifi.jpg',
-            'LAUNDRY': './images/laundry.jpg',
-            'KITCHEN': './images/kitchen.jpg',
-            'BARBECUE': './images/bbq.jpg',
-            'SPA': './images/pool.jpg'
-        };
-        return imageMap[code] || null;
-    }
-
-    /**
-     * 편의시설별 설명 반환
-     */
-    getAmenityDescription(code) {
-        const descriptions = {
-            'WIFI': '고속 무선 인터넷 서비스',
-            'LAUNDRY': '24시간 이용 가능한 세탁 서비스',
-            'KITCHEN': '완비된 주방 시설',
-            'BARBECUE': '야외 바베큐 그릴',
-            'SPA': '힐링과 휴식을 위한 스파 시설'
-        };
-        return descriptions[code] || '';
     }
 
     // ============================================================================
@@ -386,19 +335,6 @@ class BaseDataMapper {
         }
     }
 
-    // ============================================================================
-    // 🧹 CLEANUP
-    // ============================================================================
-
-    /**
-     * 리소스 정리
-     */
-    cleanup() {
-        if (this.animationObserver) {
-            this.animationObserver.disconnect();
-            this.animationObserver = null;
-        }
-    }
 }
 
 // ES6 모듈 및 글로벌 노출

@@ -421,18 +421,12 @@ function createConveyorSlider(leftContainer, rightContainer) {
  */
 function getSliderImages() {
     // JSON 데이터에서 이미지 가져오기
+    // window.facilitySpecialImages가 null이면 슬라이더 비활성화 (mapper에서 설정)
     if (window.facilitySpecialImages && window.facilitySpecialImages.length > 0) {
         // URL만 추출
         return window.facilitySpecialImages.map(img => img.url);
     }
 
-    // 폴백: 데이터가 없으면 기본 이미지 사용
-    return [
-        'images/john-fornander-Id7u0EkTjBE-unsplash.jpg',
-        'images/axel-bimashanda-5Re--kAsKco-unsplash.jpg',
-        'images/jesse-gardner-OwWbUOIbhDY-unsplash.jpg',
-        'images/ferdinand-asakome-oUdt2BJrLJE-unsplash.jpg',
-        'images/prometey-sanchez-noskov-pB7e8JL5KMI-unsplash.jpg',
-        'images/rosemary-media-mbHWETVlhWY-unsplash.jpg'
-    ];
+    // 데이터가 없으면 빈 배열 반환 (슬라이더 비활성화, mapper에서 설정한 placeholder 유지)
+    return [];
 }
