@@ -307,12 +307,16 @@ class RoomMapper extends BaseDataMapper {
             }
         });
 
-        // 초기 위치 설정 후 transition 활성화
+        // 초기 위치 설정 후 transition 활성화 및 슬라이더 시작
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 slides.forEach(slide => {
                     slide.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 });
+
+                // transition 설정 후 슬라이더 초기화
+                updateSlidePositions();
+                startAutoPlay();
             });
         });
 
@@ -507,11 +511,7 @@ class RoomMapper extends BaseDataMapper {
             }, 250);
         });
 
-        // 초기 설정 - 약간의 딜레이 후 실행하여 안정성 향상
-        setTimeout(() => {
-            updateSlidePositions();
-            startAutoPlay();
-        }, 150);
+        // 초기 설정은 위의 requestAnimationFrame 체인에서 처리됨
     }
 
     /**
