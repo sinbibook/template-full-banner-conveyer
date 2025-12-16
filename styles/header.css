@@ -350,7 +350,6 @@
 
 .header-opened.expanded {
     height: calc(100vh - 80px) !important;
-    max-height: 600px !important;
     padding-right: 5px;
 }
 

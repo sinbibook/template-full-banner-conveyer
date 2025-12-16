@@ -380,7 +380,7 @@
 }
 
 .room-info-section {
-    padding: 60px 20px;
+    padding: 60px 0;
 }
 
 .room-info-container {
@@ -497,7 +497,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px;
+    padding: 20px 5px;
     border-bottom: 1px solid #658399;
 }
 
@@ -534,7 +534,7 @@
     margin-bottom: 0;
     font-weight: 600;
     text-align: left;
-    padding: 15px 30px 15px 30px;
+    padding: 15px 5px 15px 5px;
     border-bottom: 1px solid #658399;
     
     display: flex;
@@ -587,7 +587,7 @@
     margin-bottom: 0;
     font-weight: 600;
     text-align: left;
-    padding: 15px 30px 15px 30px;
+    padding: 15px 5px 15px 5px;
     border-bottom: 1px solid #658399;
     
     display: flex;
@@ -651,8 +651,11 @@
 
 @media (max-width: 768px) {
     .amenities-list {
-        flex-direction: column;
         align-items: flex-start;
+    }
+
+    .amenities-content, .usage-guide-content {
+        padding: 12px 18px;
     }
 }
 
@@ -1118,7 +1121,7 @@
 
     /* 슬라이더 섹션만 좌우 패딩 제거 */
     .room-hero-section {
-        height: 60vh; /* 모바일에서는 60vh */
+        height: 65vh; /* 모바일에서는 65vh */
         min-height: 400px;
         padding-left: 0;
         padding-right: 0;
@@ -1213,7 +1216,6 @@
 
     .room-details-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
     }
 
     .room-thumbnails {
@@ -1273,9 +1275,9 @@
 
     .room-detail-item {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start;
-        gap: 8px;
+        gap: 12px;
         padding: 12px 18px;
         border-bottom: 1px solid rgba(101, 131, 153, 0.2);
     }
@@ -1287,12 +1289,16 @@
     .detail-label {
         font-weight: 600;
         color: #658399;
+        flex: 0 0 50%;
+        word-break: keep-all;
     }
 
     .detail-value {
         margin-left: 0;
-        align-self: flex-end;
-        text-align: right;
+        flex: 1;
+        text-align: left;
+        word-break: break-word;
+        line-height: 1.5;
     }
 
     /* property-en-bg-text 폰트 크기 조정 */
