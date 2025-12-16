@@ -205,31 +205,9 @@
                 if (overlay) overlay.classList.remove('active');
                 if (topHeader) topHeader.classList.remove('menu-open');
 
-                // 스크롤 복원 - 개선된 방법
-                const currentTop = body.style.top;
-                const scrollY = currentTop ? parseInt(currentTop.replace('px', '')) * -1 : 0;
-
+                // 스크롤 복원 - 스크롤이 그대로 보이므로 복원 불필요
                 body.classList.remove('menu-open-body');
                 html.classList.remove('menu-open');
-
-                // 모든 스타일 제거
-                body.style.position = '';
-                body.style.overflow = '';
-                body.style.width = '';
-                body.style.height = '';
-                body.style.top = '';
-                body.style.left = '';
-
-                // html overflow 복원
-                html.style.overflow = '';
-
-                // 스크롤 위치 복원 (부드럽게)
-                if (scrollY > 0) {
-                    window.scrollTo({
-                        top: scrollY,
-                        behavior: 'instant'
-                    });
-                }
 
                 // Remove global event listeners when menu closes
                 if (window.menuClickHandler) {
@@ -244,15 +222,9 @@
                 // 열기 - 헤더 위치 계산하여 메뉴 위치 조정
                 const scrollY = window.scrollY;
 
-                // 스크롤 위치 저장 후 body 고정
-                body.style.position = 'fixed';
-                body.style.top = `-${scrollY}px`;
-                body.style.width = '100%';
-                body.style.height = '100%';
-                body.style.overflow = 'hidden';
+                // 스크롤을 그대로 보이도록 body 고정하지 않음
                 body.classList.add('menu-open-body');
                 html.classList.add('menu-open');
-                html.style.overflow = 'hidden';
 
                 // 메뉴 위치를 현재 헤더 하단으로 설정
                 // 스크롤 상태와 관계없이 항상 80px
