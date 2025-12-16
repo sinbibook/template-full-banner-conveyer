@@ -276,8 +276,43 @@ class RoomMapper extends BaseDataMapper {
             slide.style.height = '90%';
             slide.style.borderRadius = '20px';
             slide.style.overflow = 'hidden';
-            slide.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            // transition은 초기 위치 설정 후에 적용
+            slide.style.transition = 'none';
+
+            // 초기 위치 설정
+            if (index === 0) {
+                // Active (center)
+                slide.style.transform = 'translate(-50%, -50%)';
+                slide.style.opacity = '1';
+                slide.style.visibility = 'visible';
+                slide.style.zIndex = '3';
+            } else if (index === 1) {
+                // Next (right)
+                slide.style.transform = 'translate(calc(50% + 30px), -50%)';
+                slide.style.opacity = '0.7';
+                slide.style.visibility = 'visible';
+                slide.style.zIndex = '2';
+            } else if (index === totalSlides - 1 && totalSlides > 2) {
+                // Prev (left)
+                slide.style.transform = 'translate(calc(-150% - 30px), -50%)';
+                slide.style.opacity = '0.7';
+                slide.style.visibility = 'visible';
+                slide.style.zIndex = '2';
+            } else {
+                // Hidden
+                slide.style.transform = 'translate(calc(150% + 60px), -50%)';
+                slide.style.opacity = '0';
+                slide.style.visibility = 'hidden';
+                slide.style.zIndex = '1';
+            }
         });
+
+        // 초기 위치 설정 후 transition 활성화
+        setTimeout(() => {
+            slides.forEach(slide => {
+                slide.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            });
+        }, 100);
 
         // 슬라이드 위치 업데이트 함수
         const updateSlidePositions = () => {
@@ -321,7 +356,7 @@ class RoomMapper extends BaseDataMapper {
                     } else {
                         // Hidden
                         slide.style.opacity = '0';
-                        slide.style.visibility = 'visible';
+                        slide.style.visibility = 'hidden';
                         slide.style.zIndex = '1';
                         // 다음에 prev 위치로 올 슬라이드는 왼쪽 멀리에 배치
                         if (position === totalSlides - 2) {
@@ -470,9 +505,11 @@ class RoomMapper extends BaseDataMapper {
             }, 250);
         });
 
-        // 초기 설정
-        updateSlidePositions();
-        startAutoPlay();
+        // 초기 설정 - 약간의 딜레이 후 실행하여 안정성 향상
+        setTimeout(() => {
+            updateSlidePositions();
+            startAutoPlay();
+        }, 150);
     }
 
     /**
