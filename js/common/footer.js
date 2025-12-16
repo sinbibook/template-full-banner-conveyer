@@ -15,9 +15,54 @@
         });
     }
 
+    // Top Button functionality
+    function initTopButton() {
+        const topButton = document.getElementById('topButton');
+        if (!topButton) return;
+
+        let isScrolling = false;
+
+        // Show/hide button based on scroll position
+        function handleScroll() {
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    if (window.pageYOffset > 300) {
+                        topButton.classList.add('show');
+                    } else {
+                        topButton.classList.remove('show');
+                    }
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        }
+
+        // Smooth scroll to top
+        topButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll);
+
+        // Check initial scroll position
+        handleScroll();
+    }
+
     // Initialize footer
-    document.addEventListener('DOMContentLoaded', function() {
+    const runInitializers = () => {
         updateCopyrightYear();
-    });
+        initTopButton();
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runInitializers);
+    } else {
+        // DOM is already loaded
+        runInitializers();
+    }
 
 })();

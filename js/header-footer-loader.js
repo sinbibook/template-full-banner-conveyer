@@ -144,6 +144,12 @@
                     document.body.appendChild(footer);
                 }
 
+                // Also append top button if exists
+                const topButton = temp.querySelector('#topButton');
+                if (topButton) {
+                    document.body.appendChild(topButton);
+                }
+
                 // Load footer JavaScript if exists
                 const script = document.createElement('script');
                 script.src = 'js/common/footer.js';
