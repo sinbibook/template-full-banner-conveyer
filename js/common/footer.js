@@ -53,15 +53,16 @@
     }
 
     // Initialize footer
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCopyrightYear();
-            initTopButton();
-        });
-    } else {
-        // DOM is already loaded
+    const runInitializers = () => {
         updateCopyrightYear();
         initTopButton();
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runInitializers);
+    } else {
+        // DOM is already loaded
+        runInitializers();
     }
 
 })();
