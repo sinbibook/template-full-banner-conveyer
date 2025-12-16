@@ -308,11 +308,13 @@ class RoomMapper extends BaseDataMapper {
         });
 
         // 초기 위치 설정 후 transition 활성화
-        setTimeout(() => {
-            slides.forEach(slide => {
-                slide.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                slides.forEach(slide => {
+                    slide.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                });
             });
-        }, 100);
+        });
 
         // 슬라이드 위치 업데이트 함수
         const updateSlidePositions = () => {
