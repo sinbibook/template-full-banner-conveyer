@@ -103,8 +103,8 @@
     margin: 0;
 }
 
-/* 두번째 섹션 (입/퇴실 안내) 반대 레이아웃 */
-.reservation-section:nth-child(2) .reservation-section-grid {
+/* 짝수 섹션 (입/퇴실, 예약안내) 반대 레이아웃 */
+.reservation-section:nth-child(even) .reservation-section-grid {
     flex-direction: row-reverse;
 }
 
@@ -122,8 +122,8 @@
     width: 40vw;
 }
 
-/* 두번째 섹션 이미지 패널 - 오른쪽 정렬 */
-.reservation-section:nth-child(2) .reservation-image-panel {
+/* 짝수 섹션 이미지 패널 - 오른쪽 정렬 */
+.reservation-section:nth-child(even) .reservation-image-panel {
     margin-left: 0;
     margin-right: calc(-50vw + 50%);
 }
@@ -139,12 +139,14 @@
     position: relative;
 }
 
-/* 두번째 섹션 이미지 - 왼쪽 radius */
-.reservation-section:nth-child(2) .reservation-panel-image.visible {
-    border-top-left-radius: 180px;
-    border-bottom-left-radius: 180px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+/* 홀수 섹션 이미지 - 오른쪽 radius */
+.reservation-section:nth-child(odd) .reservation-panel-image.visible {
+    border-radius: 0px 180px 180px 0px;
+}
+
+/* 짝수 섹션 이미지 - 왼쪽 radius, 오른쪽은 직각 */
+.reservation-section:nth-child(even) .reservation-panel-image.visible {
+    border-radius: 180px 0px 0px 180px;
 }
 
 .reservation-panel-image img {
@@ -177,14 +179,14 @@
     margin-right: 20px;
 }
 
-/* 두번째 섹션 타이틀 - 왼쪽 정렬 */
-.reservation-section:nth-child(2) .reservation-panel-title {
+/* 짝수 섹션 타이틀 - 왼쪽 정렬 */
+.reservation-section:nth-child(even) .reservation-panel-title {
     text-align: left;
     justify-content: flex-start;
     flex-direction: row-reverse;
 }
 
-.reservation-section:nth-child(2) .reservation-panel-title::before {
+.reservation-section:nth-child(even) .reservation-panel-title::before {
     margin-right: 0;
     margin-left: 20px;
 }

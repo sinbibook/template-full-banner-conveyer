@@ -22,26 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const imageObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            const section = entry.target.closest('.reservation-section');
-            const isSecondSection = section && Array.from(section.parentElement.children).indexOf(section) === 1;
-
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // 두번째 섹션은 왼쪽 radius, 나머지는 오른쪽 radius
-                if (isSecondSection) {
-                    entry.target.style.borderTopLeftRadius = '180px';
-                    entry.target.style.borderBottomLeftRadius = '180px';
-                } else {
-                    entry.target.style.borderTopRightRadius = '180px';
-                    entry.target.style.borderBottomRightRadius = '180px';
-                }
+                // CSS에서 border-radius를 처리하므로 JavaScript에서는 설정하지 않음
             } else {
                 entry.target.classList.remove('visible');
-                // 벗어나면 원래대로
-                entry.target.style.borderTopRightRadius = '0';
-                entry.target.style.borderBottomRightRadius = '0';
-                entry.target.style.borderTopLeftRadius = '0';
-                entry.target.style.borderBottomLeftRadius = '0';
             }
         });
     }, imageObserverOptions);

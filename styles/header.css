@@ -348,9 +348,9 @@
     top: 80px;
 }
 
-.header-opened.expanded {
-    height: calc(100vh - 80px) !important;
-    max-height: 600px !important;
+/* 명시도를 높여서 !important 제거 */
+body .header-opened.expanded {
+    height: calc(100vh - 80px);
     padding-right: 5px;
 }
 
