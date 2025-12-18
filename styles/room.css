@@ -150,6 +150,86 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 20px;
+}
+
+/* Slide States - CSS Class based approach */
+.room-slide {
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.8s ease,
+                visibility 0.8s ease,
+                width 1s ease,
+                height 1s ease;
+}
+
+/* Active slide (center) */
+.room-slide.active {
+    transform: translate(-50%, -50%);
+    width: 75%;
+    height: 90%;
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+/* Next slide (right) */
+.room-slide.next {
+    transform: translate(calc(50% + 30px), -50%);
+    width: 75%;
+    height: 90%;
+    opacity: 0.7;
+    visibility: visible;
+    z-index: 2;
+}
+
+/* Previous slide (left) */
+.room-slide.prev {
+    transform: translate(calc(-150% - 30px), -50%);
+    width: 75%;
+    height: 90%;
+    opacity: 0.7;
+    visibility: visible;
+    z-index: 2;
+}
+
+/* Hidden slides */
+.room-slide.hidden {
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+}
+
+.room-slide.hidden-next {
+    transform: translate(calc(150% + 60px), -50%);
+}
+
+.room-slide.hidden-prev {
+    transform: translate(calc(-250% - 60px), -50%);
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+    .room-slide.active {
+        width: 90vw;
+    }
+
+    .room-slide.next {
+        transform: translate(calc(50% + 30px), -50%) scale(0.7);
+        width: 70vw;
+    }
+
+    .room-slide.prev {
+        transform: translate(calc(-150% - 30px), -50%) scale(0.7);
+        width: 70vw;
+    }
+
+    .room-slide.hidden-next {
+        transform: translate(calc(120% + 30px), -50%);
+    }
+
+    .room-slide.hidden-prev {
+        transform: translate(calc(-200% - 30px), -50%);
+    }
 }
 
 
@@ -1085,25 +1165,27 @@
         left: 0;
         width: 100%;
         height: 100%;
-        pointer-events: none;
+        pointer-events: auto;
+        z-index: 20;
     }
 
     /* 모바일 버튼 - 슬라이더 컨테이너 기준 */
     .room-nav-btn-mobile {
         position: absolute;
-        width: 40px;
-        height: 40px;
-        background: transparent;
+        width: 50px;
+        height: 50px;
+        background: rgba(0, 0, 0, 0.3);
         border: 2px solid white;
         border-radius: 50%;
         top: 50%;
         transform: translateY(-50%);
-        z-index: 100;
+        z-index: 21;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         pointer-events: auto;
+        touch-action: manipulation;
     }
 
     .room-nav-btn-mobile svg {
@@ -1249,6 +1331,8 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        border-radius: 20px;
+        overflow: hidden;
         transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out !important;
     }
 

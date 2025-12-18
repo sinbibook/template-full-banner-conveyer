@@ -156,6 +156,7 @@ class RoomMapper extends BaseDataMapper {
                     img.src = imgSrc;
                     img.alt = `객실 이미지 ${i + 1}`;
                     img.loading = i === 0 ? 'eager' : 'lazy';
+                    img.style.borderRadius = '20px'; // 이미지 자체에 border-radius 적용
 
                     slide.appendChild(img);
                     sliderContainer.appendChild(slide);
@@ -173,6 +174,7 @@ class RoomMapper extends BaseDataMapper {
                 img.src = ImageHelpers.EMPTY_IMAGE_WITH_ICON;
                 img.alt = '이미지 없음';
                 img.classList.add('empty-image-placeholder');
+                img.style.borderRadius = '20px'; // 이미지 자체에 border-radius 적용
 
                 slide.appendChild(img);
                 sliderContainer.appendChild(slide);
@@ -212,6 +214,7 @@ class RoomMapper extends BaseDataMapper {
             img.alt = this.sanitizeText(image.description, room.name || '객실 이미지');
             img.loading = index === 0 ? 'eager' : 'lazy';
             img.setAttribute('data-image-fallback', '');
+            img.style.borderRadius = '20px'; // 이미지 자체에 border-radius 적용
 
             slide.appendChild(img);
             sliderContainer.appendChild(slide);
@@ -233,8 +236,10 @@ class RoomMapper extends BaseDataMapper {
             navButtons.forEach(btn => btn.style.display = 'none');
         }
 
-        // Hero Slider 초기화
-        this.initializeHeroSlider();
+        // Hero Slider 초기화 (DOM이 완전히 로드된 후)
+        setTimeout(() => {
+            this.initializeHeroSlider();
+        }, 100);
     }
 
     /**
@@ -244,8 +249,10 @@ class RoomMapper extends BaseDataMapper {
         const sliderContainer = this.safeSelect('[data-room-slider]');
         const prevBtn = this.safeSelect('#room-prev-btn');
         const nextBtn = this.safeSelect('#room-next-btn');
-        const prevBtnMobile = this.safeSelect('#room-prev-btn-mobile');
-        const nextBtnMobile = this.safeSelect('#room-next-btn-mobile');
+
+        // 모바일 버튼 - 일관성 있게 safeSelect 사용
+        const prevBtnMobile = this.safeSelect('#room-prev-btn-mobile') || this.safeSelect('.room-nav-prev-mobile');
+        const nextBtnMobile = this.safeSelect('#room-next-btn-mobile') || this.safeSelect('.room-nav-next-mobile');
         const currentPageSpan = this.safeSelect('.room-current-page');
         const currentPageSpanMobile = this.safeSelect('.room-current-page-mobile');
         const progressFill = this.safeSelect('.room-progress-fill');
@@ -311,7 +318,7 @@ class RoomMapper extends BaseDataMapper {
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 slides.forEach(slide => {
-                    slide.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    slide.style.transition = 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
                 });
 
                 // transition 설정 후 슬라이더 초기화
@@ -320,59 +327,46 @@ class RoomMapper extends BaseDataMapper {
             });
         });
 
-        // 슬라이드 위치 업데이트 함수
+        // 슬라이드 위치 업데이트 함수 - CSS 클래스 기반
         const updateSlidePositions = () => {
-            const isMobile = window.innerWidth <= 768;
+            slides.forEach((slide, index) => {
+                // Remove all state classes
+                slide.classList.remove('active', 'next', 'prev', 'hidden', 'hidden-next', 'hidden-prev');
 
-            if (isMobile) {
-                // 모바일: fade 효과 (90vw)
-                slides.forEach((slide, index) => {
-                    slide.style.transform = 'translate(-50%, -50%)'; // transform 유지
-                    slide.style.width = '90vw';
-                    if (index === currentIndex) {
+                // Remove inline styles to rely on CSS classes
+                slide.style.transform = '';
+                slide.style.width = '';
+                slide.style.height = '';
+                slide.style.opacity = '';
+                slide.style.visibility = '';
+                slide.style.zIndex = '';
+                slide.style.backgroundColor = '';
+
+                // Calculate position relative to current index
+                const position = (index - currentIndex + totalSlides) % totalSlides;
+
+                // Apply appropriate class based on position
+                switch (position) {
+                    case 0:
                         slide.classList.add('active');
-                    } else {
-                        slide.classList.remove('active');
-                    }
-                });
-            } else {
-                // 데스크탑: 기존 슬라이드 효과
-                slides.forEach((slide, index) => {
-                    slide.classList.remove('active'); // 모바일 클래스 제거
-                    const position = (index - currentIndex + totalSlides) % totalSlides;
-
-                    if (position === 0) {
-                        // Active (center)
-                        slide.style.transform = 'translate(-50%, -50%)';
-                        slide.style.opacity = '1';
-                        slide.style.visibility = 'visible';
-                        slide.style.zIndex = '3';
-                    } else if (position === 1) {
-                        // Next (right)
-                        slide.style.transform = 'translate(calc(50% + 30px), -50%)';
-                        slide.style.opacity = '0.7';
-                        slide.style.visibility = 'visible';
-                        slide.style.zIndex = '2';
-                    } else if (position === totalSlides - 1) {
-                        // Prev (left)
-                        slide.style.transform = 'translate(calc(-150% - 30px), -50%)';
-                        slide.style.opacity = '0.7';
-                        slide.style.visibility = 'visible';
-                        slide.style.zIndex = '2';
-                    } else {
-                        // Hidden
-                        slide.style.opacity = '0';
-                        slide.style.visibility = 'hidden';
-                        slide.style.zIndex = '1';
-                        // 다음에 prev 위치로 올 슬라이드는 왼쪽 멀리에 배치
+                        break;
+                    case 1:
+                        slide.classList.add('next');
+                        break;
+                    case totalSlides - 1:
+                        slide.classList.add('prev');
+                        break;
+                    default:
+                        slide.classList.add('hidden');
+                        // Determine which hidden position
                         if (position === totalSlides - 2) {
-                            slide.style.transform = 'translate(calc(-250% - 60px), -50%)';
+                            slide.classList.add('hidden-prev');
                         } else {
-                            slide.style.transform = 'translate(calc(150% + 60px), -50%)';
+                            slide.classList.add('hidden-next');
                         }
-                    }
-                });
-            }
+                        break;
+                }
+            });
         };
 
         // 다음 슬라이드로 이동
@@ -443,7 +437,9 @@ class RoomMapper extends BaseDataMapper {
 
         // 모바일 버튼 이벤트
         if (prevBtnMobile) {
-            prevBtnMobile.addEventListener('click', () => {
+            prevBtnMobile.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 stopAutoPlay();
                 movePrev();
                 startAutoPlay();
@@ -451,7 +447,9 @@ class RoomMapper extends BaseDataMapper {
         }
 
         if (nextBtnMobile) {
-            nextBtnMobile.addEventListener('click', () => {
+            nextBtnMobile.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 stopAutoPlay();
                 moveNext();
                 startAutoPlay();
