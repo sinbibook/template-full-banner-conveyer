@@ -13,18 +13,38 @@ class HeaderFooterMapper extends BaseDataMapper {
     // ============================================================================
 
     /**
-     * Favicon 매핑 (homepage.images.logo 데이터 사용)
+     * 로고 URL 추출 헬퍼 메서드
+     * homepage.images[0].logo 또는 property.images[0].logo에서 isSelected인 이미지 URL 반환
+     */
+    _getLogoUrl() {
+        let logoUrl = null;
+
+        // 우선순위 1: homepage.images[0].logo 배열
+        const homepageLogo = this.data?.homepage?.images?.[0]?.logo;
+        if (homepageLogo && Array.isArray(homepageLogo) && homepageLogo.length > 0) {
+            const selectedLogo = homepageLogo.find(img => img.isSelected) || homepageLogo[0];
+            logoUrl = selectedLogo?.url;
+        }
+
+        // 우선순위 2: property.images[0].logo 배열 (fallback)
+        if (!logoUrl) {
+            const propertyLogo = this.data?.property?.images?.[0]?.logo;
+            if (propertyLogo && Array.isArray(propertyLogo) && propertyLogo.length > 0) {
+                const selectedLogo = propertyLogo.find(img => img.isSelected) || propertyLogo[0];
+                logoUrl = selectedLogo?.url;
+            }
+        }
+
+        return logoUrl;
+    }
+
+    /**
+     * Favicon 매핑 (homepage.images[0].logo 데이터 사용)
      */
     mapFavicon() {
         if (!this.isDataLoaded) return;
 
-        // 로고 URL 추출 - ImageHelpers 없이 직접 처리
-        let logoUrl = null;
-        if (this.data?.homepage?.images?.logo) {
-            logoUrl = this.data.homepage.images.logo;
-        } else if (this.data?.property?.images?.logo) {
-            logoUrl = this.data.property.images.logo;
-        }
+        const logoUrl = this._getLogoUrl();
 
         if (logoUrl) {
             // 기존 favicon 링크 찾기
@@ -61,17 +81,10 @@ class HeaderFooterMapper extends BaseDataMapper {
         // Header 로고 이미지 매핑 (data-logo 속성 사용)
         const logoImage = this.safeSelect('[data-logo]');
         if (logoImage) {
-            // 로고 URL 추출 - ImageHelpers 없이 직접 처리
-            let logoUrl = null;
-            if (this.data?.homepage?.images?.logo) {
-                logoUrl = this.data.homepage.images.logo;
-            } else if (this.data?.property?.images?.logo) {
-                logoUrl = this.data.property.images.logo;
-            }
+            const logoUrl = this._getLogoUrl();
 
             if (logoUrl) {
-                logoImage.onerror = () => {
-                };
+                logoImage.onerror = () => {};
                 logoImage.src = logoUrl;
                 logoImage.alt = this.sanitizeText(property.name, '로고');
             }
@@ -401,17 +414,10 @@ class HeaderFooterMapper extends BaseDataMapper {
         // Footer 로고 이미지 매핑 (data-footer-logo 속성 사용)
         const footerLogoImage = this.safeSelect('[data-footer-logo]');
         if (footerLogoImage) {
-            // 로고 URL 추출 - ImageHelpers 없이 직접 처리
-            let logoUrl = null;
-            if (this.data?.homepage?.images?.logo) {
-                logoUrl = this.data.homepage.images.logo;
-            } else if (this.data?.property?.images?.logo) {
-                logoUrl = this.data.property.images.logo;
-            }
+            const logoUrl = this._getLogoUrl();
 
             if (logoUrl) {
-                footerLogoImage.onerror = () => {
-                };
+                footerLogoImage.onerror = () => {};
                 footerLogoImage.src = logoUrl;
                 footerLogoImage.alt = this.sanitizeText(property.name, '로고');
             }
