@@ -250,9 +250,9 @@ class RoomMapper extends BaseDataMapper {
         const prevBtn = this.safeSelect('#room-prev-btn');
         const nextBtn = this.safeSelect('#room-next-btn');
 
-        // 모바일 버튼 - 더 안전한 선택자 사용
-        const prevBtnMobile = document.querySelector('#room-prev-btn-mobile') || document.querySelector('.room-nav-prev-mobile');
-        const nextBtnMobile = document.querySelector('#room-next-btn-mobile') || document.querySelector('.room-nav-next-mobile');
+        // 모바일 버튼 - 일관성 있게 safeSelect 사용
+        const prevBtnMobile = this.safeSelect('#room-prev-btn-mobile') || this.safeSelect('.room-nav-prev-mobile');
+        const nextBtnMobile = this.safeSelect('#room-next-btn-mobile') || this.safeSelect('.room-nav-next-mobile');
         const currentPageSpan = this.safeSelect('.room-current-page');
         const currentPageSpanMobile = this.safeSelect('.room-current-page-mobile');
         const progressFill = this.safeSelect('.room-progress-fill');
