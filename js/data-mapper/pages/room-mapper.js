@@ -287,7 +287,7 @@ class RoomMapper extends BaseDataMapper {
             } else if (index === totalSlides - 1 && totalSlides > 2) {
                 slide.classList.add('prev');
             } else {
-                slide.classList.add('hidden-far-right');
+                slide.classList.add('hidden', 'hidden-next');
             }
         });
 

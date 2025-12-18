@@ -144,9 +144,13 @@
     border-radius: 20px;
     overflow: hidden;
     pointer-events: auto;
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                visibility 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0; /* 초기값 설정 */
+    visibility: hidden; /* 초기값 설정 */
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.8s ease,
+                visibility 0.8s ease,
+                width 1s ease,
+                height 1s ease;
 }
 
 .room-slide img {
@@ -154,15 +158,6 @@
     height: 100%;
     object-fit: cover;
     border-radius: 20px;
-}
-
-/* Slide States - CSS Class based approach */
-.room-slide {
-    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.8s ease,
-                visibility 0.8s ease,
-                width 1s ease,
-                height 1s ease;
 }
 
 /* Active slide (center) */
@@ -213,25 +208,48 @@
 /* Mobile specific styles */
 @media (max-width: 768px) {
     .room-slide.active {
+        transform: translate(-50%, -50%);
         width: 90vw;
+        height: 90%;
+        opacity: 1;
+        visibility: visible;
+        z-index: 10;
     }
 
     .room-slide.next {
         transform: translate(calc(50% + 30px), -50%) scale(0.7);
         width: 70vw;
+        height: 70%;
+        opacity: 0.5;
+        visibility: visible;
+        z-index: 2;
     }
 
     .room-slide.prev {
         transform: translate(calc(-150% - 30px), -50%) scale(0.7);
         width: 70vw;
+        height: 70%;
+        opacity: 0.5;
+        visibility: visible;
+        z-index: 2;
+    }
+
+    .room-slide.hidden {
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1;
     }
 
     .room-slide.hidden-next {
         transform: translate(calc(120% + 30px), -50%);
+        opacity: 0;
+        visibility: hidden;
     }
 
     .room-slide.hidden-prev {
         transform: translate(calc(-200% - 30px), -50%);
+        opacity: 0;
+        visibility: hidden;
     }
 }
 
