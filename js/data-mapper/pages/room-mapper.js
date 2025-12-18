@@ -327,85 +327,44 @@ class RoomMapper extends BaseDataMapper {
             });
         });
 
-        // 슬라이드 위치 업데이트 함수
+        // 슬라이드 위치 업데이트 함수 - CSS 클래스 기반
         const updateSlidePositions = () => {
-            const isMobile = window.innerWidth <= 768;
-
-            // 데스크탑과 모바일 모두 동일한 슬라이드 효과 적용
             slides.forEach((slide, index) => {
-                slide.classList.remove('active'); // 모바일 클래스 제거
+                // Remove all state classes
+                slide.classList.remove('active', 'next', 'prev', 'hidden', 'hidden-next', 'hidden-prev');
+
+                // Remove inline styles to rely on CSS classes
+                slide.style.transform = '';
+                slide.style.width = '';
+                slide.style.height = '';
+                slide.style.opacity = '';
+                slide.style.visibility = '';
+                slide.style.zIndex = '';
+                slide.style.backgroundColor = '';
+
+                // Calculate position relative to current index
                 const position = (index - currentIndex + totalSlides) % totalSlides;
 
-                // 슬라이드와 이미지 모두에 border-radius 유지
-                slide.style.borderRadius = '20px';
-                slide.style.overflow = 'hidden';
-                slide.style.backgroundColor = 'transparent'; // 배경색 투명
-
-                const img = slide.querySelector('img');
-                if (img) {
-                    img.style.borderRadius = '20px';
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'cover';
-                    img.style.display = 'block'; // 이미지 아래 공백 제거
-                }
-
-                if (position === 0) {
-                    // Active (center)
-                    slide.style.transform = 'translate(-50%, -50%)';
-                    slide.style.width = isMobile ? '90vw' : '75%';
-                    slide.style.height = '90%';
-                    slide.style.opacity = '1';
-                    slide.style.visibility = 'visible';
-                    slide.style.zIndex = '10';
-                    slide.style.backgroundColor = 'transparent';
-                } else if (position === 1) {
-                    // Next (right)
-                    if (isMobile) {
-                        // 모바일: 크기 줄이고 더 멀리 배치
-                        slide.style.transform = 'translate(calc(50% + 30px), -50%) scale(0.7)';
-                        slide.style.width = '70vw';
-                        slide.style.height = '70%';
-                        slide.style.opacity = '0.5';
-                    } else {
-                        // 데스크탑: 기존처럼 양옆에 보이게
-                        slide.style.transform = 'translate(calc(50% + 30px), -50%)';
-                        slide.style.width = '75%';
-                        slide.style.height = '90%';
-                        slide.style.opacity = '0.7';
-                    }
-                    slide.style.visibility = 'visible';
-                    slide.style.zIndex = '2';
-                    slide.style.backgroundColor = 'transparent';
-                } else if (position === totalSlides - 1) {
-                    // Prev (left)
-                    if (isMobile) {
-                        // 모바일: 크기 줄이고 더 멀리 배치
-                        slide.style.transform = 'translate(calc(-150% - 30px), -50%) scale(0.7)';
-                        slide.style.width = '70vw';
-                        slide.style.height = '70%';
-                        slide.style.opacity = '0.5';
-                    } else {
-                        // 데스크탑: 기존처럼 양옆에 보이게
-                        slide.style.transform = 'translate(calc(-150% - 30px), -50%)';
-                        slide.style.width = '75%';
-                        slide.style.height = '90%';
-                        slide.style.opacity = '0.7';
-                    }
-                    slide.style.visibility = 'visible';
-                    slide.style.zIndex = '2';
-                    slide.style.backgroundColor = 'transparent';
-                } else {
-                    // Hidden
-                    slide.style.opacity = '0';
-                    slide.style.visibility = 'hidden';
-                    slide.style.zIndex = '1';
-                    // 다음에 prev 위치로 올 슬라이드는 왼쪽 멀리에 배치
-                    if (position === totalSlides - 2) {
-                        slide.style.transform = isMobile ? 'translate(calc(-200% - 30px), -50%)' : 'translate(calc(-250% - 60px), -50%)';
-                    } else {
-                        slide.style.transform = isMobile ? 'translate(calc(120% + 30px), -50%)' : 'translate(calc(150% + 60px), -50%)';
-                    }
+                // Apply appropriate class based on position
+                switch (position) {
+                    case 0:
+                        slide.classList.add('active');
+                        break;
+                    case 1:
+                        slide.classList.add('next');
+                        break;
+                    case totalSlides - 1:
+                        slide.classList.add('prev');
+                        break;
+                    default:
+                        slide.classList.add('hidden');
+                        // Determine which hidden position
+                        if (position === totalSlides - 2) {
+                            slide.classList.add('hidden-prev');
+                        } else {
+                            slide.classList.add('hidden-next');
+                        }
+                        break;
                 }
             });
         };
