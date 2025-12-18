@@ -351,8 +351,8 @@ class RoomMapper extends BaseDataMapper {
                 }
 
                 if (position === 0) {
-                    // Active (center) - 정상 크기
-                    slide.style.transform = 'translate(-50%, -50%) scale(1)';
+                    // Active (center)
+                    slide.style.transform = 'translate(-50%, -50%)';
                     slide.style.width = isMobile ? '90vw' : '75%';
                     slide.style.height = '90%';
                     slide.style.opacity = '1';
@@ -360,20 +360,38 @@ class RoomMapper extends BaseDataMapper {
                     slide.style.zIndex = '10';
                     slide.style.backgroundColor = 'transparent';
                 } else if (position === 1) {
-                    // Next (right) - 크기를 줄이고 더 멀리 배치
-                    slide.style.transform = isMobile ? 'translate(calc(50% + 30px), -50%) scale(0.7)' : 'translate(calc(70% + 50px), -50%) scale(0.7)';
-                    slide.style.width = isMobile ? '70vw' : '60%';
-                    slide.style.height = '70%';
-                    slide.style.opacity = '0.5';
+                    // Next (right)
+                    if (isMobile) {
+                        // 모바일: 크기 줄이고 더 멀리 배치
+                        slide.style.transform = 'translate(calc(50% + 30px), -50%) scale(0.7)';
+                        slide.style.width = '70vw';
+                        slide.style.height = '70%';
+                        slide.style.opacity = '0.5';
+                    } else {
+                        // 데스크탑: 기존처럼 양옆에 보이게
+                        slide.style.transform = 'translate(calc(50% + 30px), -50%)';
+                        slide.style.width = '75%';
+                        slide.style.height = '90%';
+                        slide.style.opacity = '0.7';
+                    }
                     slide.style.visibility = 'visible';
                     slide.style.zIndex = '2';
                     slide.style.backgroundColor = 'transparent';
                 } else if (position === totalSlides - 1) {
-                    // Prev (left) - 크기를 줄이고 더 멀리 배치
-                    slide.style.transform = isMobile ? 'translate(calc(-150% - 30px), -50%) scale(0.7)' : 'translate(calc(-170% - 50px), -50%) scale(0.7)';
-                    slide.style.width = isMobile ? '70vw' : '60%';
-                    slide.style.height = '70%';
-                    slide.style.opacity = '0.5';
+                    // Prev (left)
+                    if (isMobile) {
+                        // 모바일: 크기 줄이고 더 멀리 배치
+                        slide.style.transform = 'translate(calc(-150% - 30px), -50%) scale(0.7)';
+                        slide.style.width = '70vw';
+                        slide.style.height = '70%';
+                        slide.style.opacity = '0.5';
+                    } else {
+                        // 데스크탑: 기존처럼 양옆에 보이게
+                        slide.style.transform = 'translate(calc(-150% - 30px), -50%)';
+                        slide.style.width = '75%';
+                        slide.style.height = '90%';
+                        slide.style.opacity = '0.7';
+                    }
                     slide.style.visibility = 'visible';
                     slide.style.zIndex = '2';
                     slide.style.backgroundColor = 'transparent';
