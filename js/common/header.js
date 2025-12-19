@@ -105,7 +105,7 @@
     };
 
     // Navigation function
-    window.navigateTo = function(page) {
+    window.navigateTo = function(page, id) {
         // Close mobile menu if open
         const mobileMenu = document.getElementById('mobile-menu');
         if (mobileMenu && mobileMenu.classList.contains('active')) {
@@ -129,6 +129,11 @@
                 break;
             default:
                 url = page + '.html';
+        }
+
+        // id 파라미터가 있으면 쿼리스트링으로 추가
+        if (url && id) {
+            url += '?id=' + encodeURIComponent(id);
         }
 
         if (url) {
