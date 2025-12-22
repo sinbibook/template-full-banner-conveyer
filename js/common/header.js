@@ -210,9 +210,23 @@
                 if (overlay) overlay.classList.remove('active');
                 if (topHeader) topHeader.classList.remove('menu-open');
 
-                // 스크롤 복원 - 스크롤이 그대로 보이므로 복원 불필요
+                // 스크롤 복원
+                const scrollY = body.style.top ? -parseInt(body.style.top) : 0;
+
                 body.classList.remove('menu-open-body');
                 html.classList.remove('menu-open');
+
+                // 스크롤 관련 스타일 제거
+                body.style.position = '';
+                body.style.top = '';
+                body.style.width = '';
+                body.style.overflow = '';
+                html.style.overflow = '';
+
+                // 원래 스크롤 위치로 복원
+                if (scrollY > 0) {
+                    window.scrollTo(0, scrollY);
+                }
 
                 // Remove global event listeners when menu closes
                 if (window.menuClickHandler) {
@@ -224,10 +238,18 @@
                     window.menuKeyHandler = null;
                 }
             } else {
-                // 열기 - 헤더 위치 계산하여 메뉴 위치 조정
-                // 스크롤을 그대로 보이도록 body 고정하지 않음
+                // 열기 - 현재 스크롤 위치 저장하고 body 고정
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
                 body.classList.add('menu-open-body');
                 html.classList.add('menu-open');
+
+                // 스크롤 방지를 위해 body 고정
+                body.style.position = 'fixed';
+                body.style.top = `-${scrollY}px`;
+                body.style.width = '100%';
+                body.style.overflow = 'hidden';
+                html.style.overflow = 'hidden';
 
                 // 메뉴 위치를 현재 헤더 하단으로 설정
                 // 스크롤 상태와 관계없이 항상 80px
