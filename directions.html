@@ -10,6 +10,21 @@
     <!-- Preload critical resources -->
     <link rel="preload" href="styles/common.css" as="style">
     <link rel="preload" href="styles/directions.css" as="style">
+
+    <!-- 초기 템플릿 폰트 CDN -->
+    <link rel="stylesheet" href="https://use.typekit.net/vll4umt.css">
+    <link href="https://fonts.cdnfonts.com/css/roustel" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Aritaburi';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-buri-SemiBold.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="styles/theme.css">
     <link rel="stylesheet" href="styles/common.css">
     <link rel="stylesheet" href="styles/directions.css">
 </head>
@@ -56,7 +71,7 @@
             <div class="location-details animate-element">
                 <div class="location-address-wrapper">
                     <svg class="location-icon" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#658399"/>
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="currentColor"/>
                         <circle cx="12" cy="9" r="2.5" fill="white"/>
                     </svg>
                     <!-- 숙소 주소 매핑 -->

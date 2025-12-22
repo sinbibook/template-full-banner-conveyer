@@ -259,21 +259,9 @@ class MainMapper extends BaseDataMapper {
      * 동적 그라데이션 적용 헬퍼 함수
      */
     applyDynamicGradient(element, index, total) {
-        // 블록이 하나일 때는 흰색에서 연한 하늘색으로
+        // 블록이 하나일 때는 CSS에서 처리
         if (total === 1) {
-            element.style.background = `linear-gradient(to bottom, rgba(255, 255, 255, 0.9) 0%, rgba(230, 243, 255, 0.9) 100%)`;
-
-            // 밝은 배경에서 텍스트 색상 조정
-            const title = element.querySelector('.about-title');
-            const description = element.querySelector('.about-description');
-
-            if (title) {
-                title.style.color = '#658399';
-            }
-            if (description) {
-                description.style.color = '#666';
-            }
-
+            // CSS의 .about-block:first-child 스타일 사용
             // 세로줄 색상 스타일 적용 (중복 방지)
             this.applyAboutTextLineStyle(0.2);
             return;
@@ -301,27 +289,11 @@ class MainMapper extends BaseDataMapper {
             b: Math.round(startColor.b + (endColor.b - startColor.b) * nextRatio)
         };
 
-        // 그라데이션 적용 (opacity 0.8 적용)
-        element.style.background = `linear-gradient(to bottom, rgba(${topColor.r}, ${topColor.g}, ${topColor.b}, 0.8) 0%, rgba(${bottomColor.r}, ${bottomColor.g}, ${bottomColor.b}, 0.8) 100%)`;
+        // CSS의 nth-child 스타일 사용 (인라인 스타일 제거)
+        // element.style.background은 CSS에서 처리
 
-        // 첫 번째 블록이 아주 밝을 때 텍스트 색상 조정
-        if (index === 0) {
-            const title = element.querySelector('.about-title');
-            const description = element.querySelector('.about-description');
-
-            // 배경이 충분히 밝은지 확인 (첫 번째 색상이 거의 흰색에 가까우면)
-            if (topColor.r > 220 && topColor.g > 235 && topColor.b > 245) {
-                if (title) {
-                    title.style.color = '#658399';
-                }
-                if (description) {
-                    description.style.color = '#666';
-                }
-
-                // 세로줄 색상 스타일 적용 (중복 방지)
-                this.applyAboutTextLineStyle(0.3);
-            }
-        }
+        // 첫 번째 블록이 아주 밝을 때 텍스트 색상 조정 - CSS에서 처리하도록 변경
+        // inline 스타일 적용 제거 - CSS 변수 사용
     }
 
     /**

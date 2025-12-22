@@ -173,7 +173,7 @@
 /* Essence Section */
 .essence-section {
     padding: 100px 0;
-    background: #e6f3ff;
+    background: var(--color-primary, #e6f3ff);
     position: relative;
 }
 
@@ -193,10 +193,10 @@
 }
 
 .property-name-en {
-    font-family: 'Roustel', serif;
+    font-family: 'Roustel', sans-serif;
     font-size: 48px;
     font-weight: normal;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0;
     line-height: 1.2;
     letter-spacing: 2px;
@@ -209,7 +209,8 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: rgba(101, 131, 153, 0.8);
+    background: var(--color-secondary, #658399);
+    opacity: 0.8;
 }
 
 .essence-text {
@@ -247,7 +248,8 @@
     right: -15px;
     width: 500px;
     height: 550px;
-    background: rgba(101, 131, 153, 0.8);
+    background: var(--color-secondary, #658399);
+    opacity: 0.8;
     border-radius: 275px 275px 0 0;
     z-index: 0;
 }
@@ -305,18 +307,21 @@
     right: -10px;
     width: 200px;
     height: 250px;
-    background: rgba(101, 131, 153, 0.3);
+    background: var(--color-secondary, #658399);
+    opacity: 0.3;
     border-radius: 100px 100px 0 0;
     z-index: 0;
     transition: all 0.3s ease;
 }
 
 .essence-thumb:hover::before {
-    background: rgba(101, 131, 153, 0.5);
+    background: var(--color-secondary, #658399);
+    opacity: 0.5;
 }
 
 .essence-thumb.active::before {
-    background: rgba(101, 131, 153, 0.8);
+    background: var(--color-secondary, #658399);
+    opacity: 0.8;
 }
 
 .essence-thumb-container {
@@ -365,15 +370,17 @@
 }
 
 .essence-title {
+    font-family: var(--font-ko-main);
     font-size: 28px;
     font-weight: 700;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0 0 15px 0;
     line-height: 1.3;
     text-align: left;
 }
 
 .essence-description {
+    font-family: var(--font-ko-sub);
     font-size: 17px;
     color: #666;
     line-height: 1.7;
@@ -393,7 +400,8 @@
     top: -30px;
     width: 1px;
     height: calc(100% + 60px);
-    background: rgba(101, 131, 153, 0.3);
+    background: var(--color-secondary, #658399);
+    opacity: 0.3;
 }
 
 /* 모바일에서 세로줄 숨김 */
@@ -442,7 +450,7 @@
 .signature-title {
     font-size: 42px;
     font-weight: 700;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0 0 30px 0;
     line-height: 1.3;
 }
@@ -480,7 +488,7 @@
 /* Rooms Section */
 .rooms-section {
     padding: 100px 0;
-    background: linear-gradient(to bottom, #e6f3ff 0%, #8aa3b6 100%);
+    background: linear-gradient(to bottom, var(--color-primary, #e6f3ff) 0%, var(--color-secondary, #658399) 100%);
     position: relative;
     overflow: hidden;  /* 섹션 밖으로 나가는 요소 숨김 */
 }
@@ -515,7 +523,8 @@
     content: '‹ drag ›';
     position: relative;
     z-index: 2;
-    background: rgba(101, 131, 153, 0.8);
+    background: var(--color-secondary, #658399);
+    opacity: 0.8;
     padding: 0 10px;
 }
 
@@ -536,10 +545,10 @@
 }
 
 .rooms-title {
-    font-family: 'Roustel', serif;
+    font-family: 'Roustel', sans-serif;
     font-size: 42px;
     font-weight: normal;
-    color:#658399;
+    color: var(--color-secondary, #658399);
     margin: 0 0 30px 0;
     letter-spacing: 2px;
     position: relative;
@@ -552,7 +561,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: #658399;
+    background: var(--color-secondary, #658399);
     margin-left: 20px;
 }
 
@@ -638,7 +647,7 @@
     writing-mode: vertical-rl;
     text-orientation: mixed;
     font-size: 16px;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     letter-spacing: 8px;
     font-weight: 300;
     z-index: 2;
@@ -653,7 +662,7 @@
     transform: translateX(-50%);
     width: 1px;
     height: 0; /* 기본값: 줄 없음 */
-    background: #658399;
+    background: var(--color-secondary, #658399);
     z-index: -1;
     transition: height 0.3s ease;
 }
@@ -692,7 +701,7 @@
     
     font-size: 28px;
     font-weight: normal;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0 0 30px 0;
     letter-spacing: 0;
     line-height: 1.3;
@@ -700,7 +709,7 @@
 
 .room-description {
     font-size: 16px;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     line-height: 1.7;
     margin: 0 0 40px 0;
     max-width: 400px;
@@ -720,7 +729,7 @@
 
 .room-view-btn {
     background: transparent;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     border: none;
     border-bottom: 1px solid transparent;
     font-size: 16px;
@@ -786,7 +795,7 @@
 /* Gallery Section */
 .gallery-section {
     padding: 100px 0 0 0;
-    background: #e6f3ff;
+    background: var(--color-primary, #e6f3ff);
 }
 
 .gallery-container {
@@ -807,10 +816,10 @@
 }
 
 .gallery-section-title {
-    font-family: 'Roustel', serif;
+    font-family: 'Roustel', sans-serif;
     font-size: 42px;
     font-weight: normal;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0;
     letter-spacing: 2px;
     position: relative;
@@ -824,14 +833,15 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: rgba(101, 131, 153, 0.8);
+    background: var(--color-secondary, #658399);
+    opacity: 0.8;
     margin-right: 20px;
 }
 
 .gallery-title {
     font-size: 28px;
     font-weight: 700;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0 0 15px 0;
     line-height: 1.3;
 }
@@ -1046,7 +1056,7 @@
 .closing-property-name {
     font-size: 30px;
     font-weight: bold;
-    font-family: 'Roustel';
+    font-family: 'Roustel', sans-serif;
     letter-spacing: 5px;
     color: white;
     writing-mode: vertical-rl;
@@ -1057,7 +1067,7 @@
 .closing-title {
     font-size: 24px;
     font-weight: 700;
-    
+    font-family: var(--font-ko-main);
     letter-spacing: 2px;
     color: rgba(255, 255, 255, 0.8);
     margin-left: 5px;
