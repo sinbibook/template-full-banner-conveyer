@@ -1,3 +1,14 @@
+/* Prevent body scroll when menu is open */
+body.menu-open-body {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+html.menu-open {
+    overflow: hidden;
+}
+
 /* Top Header Styles */
 .top-header {
     position: fixed;
