@@ -211,17 +211,13 @@
                 if (topHeader) topHeader.classList.remove('menu-open');
 
                 // 스크롤 복원
-                const scrollY = body.style.top ? -parseInt(body.style.top) : 0;
+                const scrollY = body.style.top ? -parseInt(body.style.top, 10) : 0;
 
                 body.classList.remove('menu-open-body');
                 html.classList.remove('menu-open');
 
-                // 스크롤 관련 스타일 제거
-                body.style.position = '';
+                // 스크롤 관련 스타일 제거 (top만 제거, 나머지는 CSS 클래스로 처리)
                 body.style.top = '';
-                body.style.width = '';
-                body.style.overflow = '';
-                html.style.overflow = '';
 
                 // 원래 스크롤 위치로 복원
                 if (scrollY > 0) {
@@ -244,12 +240,8 @@
                 body.classList.add('menu-open-body');
                 html.classList.add('menu-open');
 
-                // 스크롤 방지를 위해 body 고정
-                body.style.position = 'fixed';
+                // 스크롤 방지를 위해 body 고정 (top만 설정, 나머지는 CSS 클래스로 처리)
                 body.style.top = `-${scrollY}px`;
-                body.style.width = '100%';
-                body.style.overflow = 'hidden';
-                html.style.overflow = 'hidden';
 
                 // 메뉴 위치를 현재 헤더 하단으로 설정
                 // 스크롤 상태와 관계없이 항상 80px
