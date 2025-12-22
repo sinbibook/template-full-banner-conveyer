@@ -13,7 +13,7 @@
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(180deg, #8aa3b6 0%, #e6f3ff 100%); /* 그라데이션 여기에만 적용 */
+    background: linear-gradient(180deg, var(--color-secondary, #658399) 0%, var(--color-primary, #e6f3ff) 100%); /* 그라데이션 여기에만 적용 */
     padding-top: 80px;
 }
 
@@ -22,7 +22,7 @@
     position: relative;
     padding: 60px 0 40px;
     text-align: center;
-    background: #e6f3ff; /* 그라데이션 끝 색상으로 연결 */
+    background: var(--color-primary, #e6f3ff); /* 그라데이션 끝 색상으로 연결 */
     display: none; /* 데스크탑에서는 숨김 (오버레이 사용) */
 }
 
@@ -68,16 +68,16 @@
     /* 모바일에서 room-name-section 보이기 */
     .room-name-section {
         display: block;
-        background: #e6f3ff;
+        background: var(--color-primary, #e6f3ff);
     }
 
     .room-name-section .room-title {
-        color: #658399; /* 파란색으로 표시 */
+        color: var(--color-secondary, #658399); /* 파란색으로 표시 */
     }
 
     /* 모바일에서 circular 텍스트도 파란색 */
     .room-name-section .room-hero-circular-text text {
-        fill: #658399;
+        fill: var(--color-secondary, #658399);
     }
 }
 
@@ -125,7 +125,7 @@
 .room-hero-text .room-title {
     font-size: 35px;
     font-weight: bold;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0;
     text-align: center;
     letter-spacing: 1px;
@@ -348,7 +348,7 @@
 
 .room-hero-circular-text text {
     fill: white; /* 흰색으로 변경 */
-    font-family: 'Amandine_Regular', serif;
+    font-family: var(--font-en-main, 'Amandine'), serif;
     font-size: 12px;
     font-weight: 400;
     letter-spacing: 3px;
@@ -366,7 +366,7 @@
    ======================================== */
 .room-description-section {
     padding: 40px 20px;
-    background: #e6f3ff; /* 그라데이션 끝 색상 */
+    background: var(--color-primary, #e6f3ff); /* 그라데이션 끝 색상 */
     text-align: center;
 }
 
@@ -393,7 +393,7 @@
     padding: 80px 20px;
     max-width: 1400px;
     margin: 0 auto;
-    background: #e6f3ff; /* 그라데이션 끝 색상 */
+    background: var(--color-primary, #e6f3ff); /* 그라데이션 끝 색상 */
 }
 
 /* Desktop only - remove padding-top */
@@ -416,9 +416,10 @@
 }
 
 .room-title {
+    font-family: var(--font-ko-main);
     font-size: 36px;
     font-weight: bold;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin-bottom: 40px;
     letter-spacing: 2px;
 }
@@ -429,7 +430,7 @@
     margin: 0 auto 40px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #658399;
+    border: 3px solid var(--color-secondary, #658399);
 }
 
 .room-image-circle img {
@@ -452,10 +453,10 @@
    ROOM INFORMATION SECTION
    ======================================== */
 .room-info-title-styled {
-    font-family: 'Roustel', serif;
+    font-family: 'Roustel',sans-serif;
     font-size: 42px;
     font-weight: normal;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0 0 40px 0;
     letter-spacing: 2px;
     position: relative;
@@ -468,7 +469,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: #658399;
+    background: var(--color-secondary, #658399);
     margin-right: 20px;
 }
 
@@ -476,7 +477,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: #658399;
+    background: var(--color-secondary, #658399);
     margin-left: 20px;
 }
 
@@ -544,7 +545,7 @@
 
 .room-thumb.active {
     opacity: 1;
-    border: 2px solid #658399;
+    border: 2px solid var(--color-secondary, #658399);
 }
 
 .room-thumb:hover {
@@ -568,13 +569,14 @@
 }
 
 .details-section-title {
+    font-family: var(--font-ko-main);
     font-size: 22px;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin-bottom: 0;
     font-weight: 600;
     text-align: left;
     padding: 0 5px 15px 5px;
-    border-bottom: 1px solid #658399;
+    border-bottom: 1px solid var(--color-secondary, #658399);
     
     display: flex;
     justify-content: space-between;
@@ -583,8 +585,8 @@
 
 .room-details-content {
     padding: 20px 30px;
-    border-bottom: 1px solid #658399;
-    background: #dcecf7;
+    border-bottom: 1px solid var(--color-secondary, #658399);
+    background: color-mix(in srgb, var(--color-secondary) 10%, transparent);
 }
 
 .room-details-grid {
@@ -599,7 +601,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 5px;
-    border-bottom: 1px solid #658399;
+    border-bottom: 1px solid var(--color-secondary, #658399);
 }
 
 .room-detail-item:last-child {
@@ -608,7 +610,7 @@
 
 .detail-label {
     font-size: 16px;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     font-weight: 600;
     letter-spacing: 0.5px;
 }
@@ -630,13 +632,14 @@
 }
 
 .amenities-section-title {
+    font-family: var(--font-ko-main);
     font-size: 22px;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin-bottom: 0;
     font-weight: 600;
     text-align: left;
     padding: 15px 5px;
-    border-bottom: 1px solid #658399;
+    border-bottom: 1px solid var(--color-secondary, #658399);
     
     display: flex;
     justify-content: space-between;
@@ -645,8 +648,8 @@
 
 .amenities-content {
     padding: 20px 30px;
-    border-bottom: 1px solid #658399;
-    background: #dcecf7;
+    border-bottom: 1px solid var(--color-secondary, #658399);
+    background: color-mix(in srgb, var(--color-secondary) 10%, transparent);
 }
 
 .amenities-list {
@@ -670,7 +673,7 @@
 .amenity-icon {
     width: 20px;
     height: 20px;
-    color: #658399;
+    color: var(--color-secondary, #658399);
 }
 
 /* Room Usage Guide */
@@ -683,13 +686,14 @@
 }
 
 .usage-guide-title {
+    font-family: var(--font-ko-main);
     font-size: 22px;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin-bottom: 0;
     font-weight: 600;
     text-align: left;
     padding: 15px 5px;
-    border-bottom: 1px solid #658399;
+    border-bottom: 1px solid var(--color-secondary, #658399);
     
     display: flex;
     justify-content: space-between;
@@ -698,8 +702,8 @@
 
 .usage-guide-content {
     padding: 20px 30px;
-    border-bottom: 1px solid #658399;
-    background: #dcecf7;
+    border-bottom: 1px solid var(--color-secondary, #658399);
+    background: color-mix(in srgb, var(--color-secondary) 10%, transparent);
     transition: all 0.3s ease;
 }
 
@@ -717,7 +721,7 @@
 .section-toggle-btn {
     background: none;
     border: none;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     font-size: 24px;
     cursor: pointer;
     padding: 0;
@@ -766,7 +770,7 @@
 .marquee-section {
     overflow: hidden;
     padding: 80px 0;
-    background: #658399;
+    background: var(--color-secondary, #658399);
 }
 
 .marquee-container {
@@ -785,7 +789,7 @@
 
 .marquee-text span {
     display: inline-block;
-    font-family: 'Roustel', serif;
+    font-family: 'Roustel', sans-serif;
     font-size: 80px;
     color: white;
     opacity: 0.3;
@@ -873,9 +877,10 @@
 
 /* Gallery Title */
 .gallery-grid-title {
+    font-family: var(--font-ko-main);
     font-size: 28px;
     font-weight: 700;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0 0 60px 0;
     text-align: left;
     
@@ -1240,7 +1245,7 @@
     .room-name-section {
         display: block !important; /* 모바일에서 강제로 표시 */
         padding: 40px 20px 30px; /* 모바일 패딩 */
-        background: #e6f3ff;
+        background: var(--color-primary, #e6f3ff);
     }
 
     /* 텍스트 영역은 패딩 유지 */
@@ -1421,7 +1426,7 @@
 
     .detail-label {
         font-weight: 600;
-        color: #658399;
+        color: var(--color-secondary, #658399);
         flex: 0 0 50%;
         word-break: keep-all;
     }

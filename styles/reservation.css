@@ -30,7 +30,7 @@
 .reservation-hero-title {
     font-size: 32px;
     font-weight: bold;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0;
     line-height: 1.2;
     text-align: left;
@@ -55,7 +55,7 @@
 .reservation-book-btn {
     display: inline-block;
     padding: 15px 50px;
-    background-color: #658399;
+    background-color: var(--color-secondary, #658399);
     color: white;
     text-decoration: none;
     font-size: 16px;
@@ -65,7 +65,8 @@
 }
 
 .reservation-book-btn:hover {
-    background-color: #4a6278;
+    background-color: var(--color-secondary, #658399);
+    opacity: 0.8;
     transform: translateY(-2px);
 }
 
@@ -156,10 +157,10 @@
 }
 
 .reservation-panel-title {
-    font-family: 'Roustel', serif;
+    font-family: 'Roustel', sans-serif;
     font-size: 36px;
     font-weight: 400;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     text-align: right;
     transition: all 0.6s ease;
     padding: 0 40px;
@@ -175,7 +176,7 @@
     content: '';
     flex: 1 1 auto;
     height: 1px;
-    background-color: #658399;
+    background-color: var(--color-secondary, #658399);
     margin-right: 20px;
 }
 
@@ -228,10 +229,10 @@
 .reservation-box-title {
     font-size: 24px;
     font-weight: 700;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin-bottom: 40px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #658399;
+    border-bottom: 1px solid var(--color-secondary, #658399);
 }
 
 .reservation-box-content {
@@ -255,7 +256,7 @@
 
 .detail-label {
     font-weight: 600;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     font-size: 16px;
 }
 
@@ -310,7 +311,7 @@
 }
 
 .refund-table thead {
-    background: #658399;
+    background: var(--color-secondary, #658399);
     color: white;
 }
 

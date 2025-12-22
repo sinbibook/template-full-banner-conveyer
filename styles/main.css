@@ -95,9 +95,10 @@
 }
 
 .text-content .hero-title {
+    font-family: var(--font-ko-main);
     font-size: 28px;  /* essence-title과 동일 */
     font-weight: 700;
-    color: #658399;
+    color: var(--color-secondary, #658399);
     margin: 0 0 20px 0;
     line-height: 1.3;
     display: block;
@@ -108,6 +109,7 @@
 }
 
 .text-content .hero-description {
+    font-family: var(--font-ko-sub);
     font-size: 17px;  /* essence-description과 동일 */
     color: #666;
     line-height: 1.8;
@@ -136,31 +138,25 @@
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
+    /* 전체 컨테이너에 그라데이션 적용 */
+    background: linear-gradient(to bottom,
+        var(--color-primary) 0%,
+        var(--color-secondary) 50%,
+        var(--color-secondary) 100%);
 }
 
-/* 소개 블록 - 새로운 디자인 */
+/* 소개 블록 - 배경 제거 */
 .about-block {
     position: relative;
     width: 100vw;
     margin: 0;
     min-height: 600px;
     opacity: 1;
+    /* 개별 블록 배경 제거 */
+    background: transparent;
 }
 
-/* 첫 번째 블록 - 하늘색에서 시작 */
-.about-block:first-child {
-    background: linear-gradient(to bottom, #e6f3ff 0%, rgba(196, 223, 242, 0.8) 100%);
-}
-
-/* 두 번째 블록 - 중간 색상 */
-.about-block:nth-child(2) {
-    background: linear-gradient(to bottom, rgba(196, 223, 242, 0.8) 0%, rgba(101, 131, 153, 0.8) 100%);
-}
-
-/* 세 번째 이상 블록이 있을 경우 */
-.about-block:nth-child(3) {
-    background: linear-gradient(to bottom, rgba(101, 131, 153, 0.8) 0%, rgba(74, 98, 120, 0.8) 100%);
-}
+/* 개별 블록 배경 스타일 제거 - 컨테이너 레벨에서 그라데이션 적용 */
 
 .about-block:last-child {
     margin-bottom: 0;
@@ -175,7 +171,8 @@
     display: block;
     width: 100vw;
     height: 100px;
-    background-color: rgba(101, 131, 153, 0.8);
+    background: var(--color-secondary);
+    opacity: 0.8;
     position: relative;
     left: 0;
 }
@@ -282,6 +279,7 @@
 }
 
 .about-title {
+    font-family: var(--font-ko-main);
     font-size: 26px;
     font-weight: 700;
     color: #ffffff;
@@ -293,6 +291,7 @@
 }
 
 .about-description {
+    font-family: var(--font-ko-sub);
     font-size: 16px;
     color: rgba(255, 255, 255, 0.95);
     line-height: 1.8;
@@ -304,11 +303,11 @@
 
 /* 모든 블록 어두운 색상 텍스트로 통일 */
 .about-block .about-title {
-    color: #2c4d64;
+    color: var(--color-primary);
 }
 
 .about-block .about-description {
-    color: #4a5866;
+    color: var(--color-primary);
 }
 
 .hero-title {
