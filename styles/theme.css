@@ -1,14 +1,27 @@
 /* Theme CSS - 테마 변수 정의 (폰트, 색상) */
 /* 배포 시 이 파일만 덮어쓰면 됨 */
 
-/* 테마 변수 */
-:root {
-    /* 색상 */
-    --color-primary: #e6f3ff;
-    --color-secondary: #658399;
+/* CDN Fonts */
+@import url('https://use.typekit.net/vll4umt.css');
+@import url('https://fonts.cdnfonts.com/css/roustel');
 
+/* Font Faces */
+@font-face {
+    font-family: 'Aritaburi';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-buri-SemiBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* CSS Variables */
+:root {
     /* 폰트 */
     --font-ko-main: 'Aritaburi', sans-serif;
     --font-ko-sub: 'Aritaburi', sans-serif;
     --font-en-main: 'Amandine', serif;
+
+    /* 색상 */
+    --color-primary: #e6f3ff;
+    --color-secondary: #658399;
 }
