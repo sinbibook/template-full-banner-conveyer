@@ -347,3 +347,8 @@
     }
 }
 
+
+/* Popup open scroll lock */
+body.popup-open {
+    overflow: hidden !important;
+}
