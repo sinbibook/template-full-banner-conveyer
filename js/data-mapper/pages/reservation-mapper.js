@@ -13,32 +13,32 @@ class ReservationMapper extends BaseDataMapper {
     // ============================================================================
 
     /**
-     * Property Name Korean 매핑
-     * property.name → [data-main-property-name-kr]
+     * Property Name Korean 매핑 (customFields 우선)
+     * customFields.property.name → [data-main-property-name-kr]
      */
     mapPropertyNameKr() {
         if (!this.isDataLoaded) return;
 
-        const property = this.safeGet(this.data, 'property');
+        const propertyName = this.getPropertyName();
         const propertyNameElement = this.safeSelect('[data-main-property-name-kr]');
 
-        if (propertyNameElement && property?.name) {
-            propertyNameElement.textContent = this.sanitizeText(property.name, '더 베스트 풀빌라');
+        if (propertyNameElement) {
+            propertyNameElement.textContent = propertyName;
         }
     }
 
     /**
-     * Property Name English 매핑
-     * property.nameEn → [data-main-property-name-en]
+     * Property Name English 매핑 (customFields 우선)
+     * customFields.property.nameEn → [data-main-property-name-en]
      */
     mapPropertyNameEn() {
         if (!this.isDataLoaded) return;
 
-        const property = this.safeGet(this.data, 'property');
+        const propertyNameEn = this.getPropertyNameEn();
         const propertyNameElement = this.safeSelect('[data-main-property-name-en]');
 
-        if (propertyNameElement && property?.nameEn) {
-            propertyNameElement.textContent = this.sanitizeText(property.nameEn, 'The Best Poolvilla');
+        if (propertyNameElement) {
+            propertyNameElement.textContent = propertyNameEn;
         }
     }
 
@@ -220,27 +220,22 @@ class ReservationMapper extends BaseDataMapper {
     }
 
     /**
-     * Full Banner 섹션 매핑
-     * 숙소 외경이미지 1번째 이미지 사용
+     * Full Banner 섹션 매핑 (customFields 우선)
+     * customFields.property.images (category: property_exterior) 첫 번째 이미지 사용
      */
     mapFullBanner() {
         if (!this.isDataLoaded) return;
 
         const isDemo = this.dataSource === 'demo-filled.json';
-        const propertyImages = this.safeGet(this.data, 'property.images');
-        const exteriorImages = (propertyImages && Array.isArray(propertyImages) && propertyImages[0]) ? propertyImages[0].exterior : null;
         const bannerElement = this.safeSelect('[data-main-banner]');
 
         if (!bannerElement) {
             return;
         }
 
-        // exterior 이미지 필터링 및 정렬
-        const sortedExterior = exteriorImages
-            ?.filter(img => img.isSelected === true)
-            .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)) || [];
-
-        const targetImage = sortedExterior[0];
+        // customFields에서 property_exterior 카테고리 이미지 가져오기
+        const exteriorImages = this.getPropertyImages('property_exterior');
+        const targetImage = exteriorImages[0];
 
         // 기존 placeholder img 제거
         const existingPlaceholder = bannerElement.querySelector('.banner-placeholder-img');
@@ -282,11 +277,11 @@ class ReservationMapper extends BaseDataMapper {
             bannerElement.classList.add('visible');
         }, 100);
 
-        // 숙소 영문명 매핑 (full-banner 내부)
-        const propertyNameEn = this.safeGet(this.data, 'property.nameEn');
+        // 숙소 영문명 매핑 (customFields 우선, full-banner 내부)
+        const propertyNameEn = this.getPropertyNameEn();
         const closingPropertyName = bannerElement.querySelector('[data-closing-property-name]');
-        if (closingPropertyName && propertyNameEn) {
-            closingPropertyName.textContent = this.sanitizeText(propertyNameEn);
+        if (closingPropertyName) {
+            closingPropertyName.textContent = propertyNameEn;
         }
     }
 
@@ -313,12 +308,12 @@ class ReservationMapper extends BaseDataMapper {
         this.mapRefundSection();
         this.mapFullBanner();
 
-        // 메타 태그 업데이트 (페이지별 SEO 적용)
-        const property = this.data.property;
+        // 메타 태그 업데이트 (customFields 우선, 페이지별 SEO 적용)
+        const propertyName = this.getPropertyName();
         const reservationData = this.safeGet(this.data, 'homepage.customFields.pages.reservation.sections.0.hero');
         const pageSEO = {
-            title: property?.name ? `예약안내 - ${property.name}` : 'SEO 타이틀',
-            description: reservationData?.description || property?.description || 'SEO 설명'
+            title: `예약안내 - ${propertyName}`,
+            description: reservationData?.description || this.data.property?.description || 'SEO 설명'
         };
         this.updateMetaTags(pageSEO);
 
