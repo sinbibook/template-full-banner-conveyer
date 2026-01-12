@@ -84,11 +84,11 @@ class IndexMapper extends BaseDataMapper {
         const heroData = this.safeGet(this.data, 'homepage.customFields.pages.index.sections.0.hero');
         if (!heroData) return;
 
-        // 숙소 영문명 매핑
-        const propertyNameEn = this.safeGet(this.data, 'property.nameEn');
+        // 숙소 영문명 매핑 (customFields 우선)
+        const propertyNameEn = this.getPropertyNameEn();
         const heroPropertyNameEn = this.safeSelect('[data-hero-property-name-en]');
-        if (heroPropertyNameEn && propertyNameEn) {
-            heroPropertyNameEn.textContent = this.sanitizeText(propertyNameEn);
+        if (heroPropertyNameEn) {
+            heroPropertyNameEn.textContent = propertyNameEn;
         }
 
         // 메인 소개 타이틀 매핑
@@ -190,11 +190,11 @@ class IndexMapper extends BaseDataMapper {
         const essenceData = this.safeGet(this.data, 'homepage.customFields.pages.index.sections.0.essence');
         if (!essenceData) return;
 
-        // 숙소 영문명 매핑
-        const propertyNameEn = this.safeGet(this.data, 'property.nameEn');
+        // 숙소 영문명 매핑 (customFields 우선)
+        const propertyNameEn = this.getPropertyNameEn();
         const propertyNameElement = this.safeSelect('[data-property-name-en]');
-        if (propertyNameElement && propertyNameEn) {
-            propertyNameElement.textContent = this.sanitizeText(propertyNameEn);
+        if (propertyNameElement) {
+            propertyNameElement.textContent = propertyNameEn;
         }
 
         // 타이틀 매핑
@@ -316,8 +316,8 @@ class IndexMapper extends BaseDataMapper {
     mapGallerySection() {
         const galleryData = this.safeGet(this.data, 'homepage.customFields.pages.index.sections.0.gallery');
 
-        // Gallery 섹션 타이틀에 숙소 영문명 매핑
-        const propertyNameEn = this.safeGet(this.data, 'homepage.basicInfo.propertyNameEn', 'Gallery');
+        // Gallery 섹션 타이틀에 숙소 영문명 매핑 (customFields 우선)
+        const propertyNameEn = this.getPropertyNameEn();
         const galleryPropertyNameElement = this.safeSelect('[data-gallery-property-name]');
         if (galleryPropertyNameElement) {
             galleryPropertyNameElement.textContent = propertyNameEn;
@@ -485,13 +485,17 @@ class IndexMapper extends BaseDataMapper {
             roomItem.className = 'room-item';
             // 전체 클릭 이벤트 제거 - ROOM VIEW 버튼만 클릭 가능
 
-            // 룸 이미지 (썸네일 또는 첫 번째 이미지)
-            const hasImage = room.images?.[0]?.thumbnail?.[0]?.url;
+            // 객실명 가져오기 (customFields 우선)
+            const roomName = this.getRoomName(room);
+            const isShortText = roomName.length <= 7; // 7글자 이하면 줄 표시
+
+            // 룸 이미지 (customFields 우선, thumbnail 카테고리)
+            const thumbnailImages = this.getRoomImages(room, 'roomtype_thumbnail');
             const isDemo = this.dataSource === 'demo-filled.json';
             let roomImage, imageClass;
 
-            if (hasImage) {
-                roomImage = room.images[0].thumbnail[0].url;
+            if (thumbnailImages.length > 0 && thumbnailImages[0]?.url) {
+                roomImage = thumbnailImages[0].url;
                 imageClass = '';
             } else if (isDemo) {
                 // demo-filled.json: 기본 이미지 사용
@@ -503,17 +507,13 @@ class IndexMapper extends BaseDataMapper {
                 imageClass = 'empty-image-placeholder';
             }
 
-
-            const roomName = this.sanitizeText(room.name, '객실명');
-            const isShortText = roomName.length <= 7; // 7글자 이하면 줄 표시
-
             roomItem.innerHTML = `
                 <div class="room-number${isShortText ? ' short-text' : ''}">${roomName}</div>
                 <div class="room-image">
-                    <img alt="${this.sanitizeText(room.name, '객실 이미지')}" loading="lazy" class="${imageClass}">
+                    <img alt="${roomName}" loading="lazy" class="${imageClass}">
                 </div>
                 <div class="room-content">
-                    <h3 class="room-name">${this.sanitizeText(room.name, '객실명')}</h3>
+                    <h3 class="room-name">${roomName}</h3>
                     <p class="room-description">${this._formatTextWithLineBreaks(room.description, '객실 설명')}</p>
                     <button class="room-view-btn" onclick="navigateTo('room', '${room.id}')">
                         ROOM VIEW
@@ -654,11 +654,11 @@ class IndexMapper extends BaseDataMapper {
             bgImg.alt = 'Closing Background';
         }
 
-        // 숙소 영문명 매핑 (굵은 세로 텍스트)
-        const propertyNameEn = this.safeGet(this.data, 'property.nameEn');
+        // 숙소 영문명 매핑 (customFields 우선, 굵은 세로 텍스트)
+        const propertyNameEn = this.getPropertyNameEn();
         const closingPropertyName = this.safeSelect('[data-closing-property-name]');
-        if (closingPropertyName && propertyNameEn) {
-            closingPropertyName.textContent = this.sanitizeText(propertyNameEn);
+        if (closingPropertyName) {
+            closingPropertyName.textContent = propertyNameEn;
         }
 
         // 타이틀 매핑 (얇은 세로 텍스트)

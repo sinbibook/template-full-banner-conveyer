@@ -70,11 +70,12 @@ class HeaderFooterMapper extends BaseDataMapper {
 
         const property = this.data.property;
 
-        // Header 로고 텍스트 매핑 (data-logo-text 속성 사용)
+        // Header 로고 텍스트 매핑 (customFields 우선)
+        const propertyNameEn = this.getPropertyNameEn();
         const logoTextElements = this.safeSelectAll('[data-logo-text]');
         logoTextElements.forEach(logoText => {
-            if (logoText && property.nameEn) {
-                logoText.textContent = this.sanitizeText(property.nameEn);
+            if (logoText) {
+                logoText.textContent = propertyNameEn;
             }
         });
 
@@ -86,7 +87,7 @@ class HeaderFooterMapper extends BaseDataMapper {
             if (logoUrl) {
                 logoImage.onerror = () => {};
                 logoImage.src = logoUrl;
-                logoImage.alt = this.sanitizeText(property.name, '로고');
+                logoImage.alt = this.getPropertyName();
             }
         }
     }
@@ -314,7 +315,7 @@ class HeaderFooterMapper extends BaseDataMapper {
             const li = document.createElement('li');
             const a = document.createElement('a');
 
-            a.textContent = this.sanitizeText(room.name, '객실');
+            a.textContent = this.getRoomName(room);
             a.style.cursor = 'pointer';
 
             // 클릭 이벤트 추가
@@ -370,7 +371,7 @@ class HeaderFooterMapper extends BaseDataMapper {
 
     /**
      * Side Header 이미지 배너 매핑
-     * property.images[0].thumbnail 중 isSelected: true인 첫 번째 이미지 사용
+     * customFields.property.images (category: property_thumbnail) 중 첫 번째 이미지 사용
      */
     mapSideImageBanner() {
         if (!this.isDataLoaded) return;
@@ -378,17 +379,9 @@ class HeaderFooterMapper extends BaseDataMapper {
         const banner = this.safeSelect('[data-side-banner-img]');
         if (!banner) return;
 
-        // property.images 경로에서 썸네일 가져오기
-        const propertyImages = this.safeGet(this.data, 'property.images');
-        if (!propertyImages || !Array.isArray(propertyImages) || propertyImages.length === 0) return;
-
-        const thumbnails = this.safeGet(propertyImages[0], 'thumbnail');
-        if (!thumbnails || !Array.isArray(thumbnails) || thumbnails.length === 0) return;
-
-        // isSelected: true이고 sortOrder로 정렬된 첫 번째 이미지 찾기
-        const selectedThumbnail = thumbnails
-            .filter(img => img.isSelected === true)
-            .sort((a, b) => a.sortOrder - b.sortOrder)[0];
+        // customFields에서 property_thumbnail 카테고리 이미지 가져오기
+        const thumbnailImages = this.getPropertyImages('property_thumbnail');
+        const selectedThumbnail = thumbnailImages[0];
 
         if (!selectedThumbnail || !selectedThumbnail.url) return;
 
@@ -404,12 +397,10 @@ class HeaderFooterMapper extends BaseDataMapper {
     // ============================================================================
 
     /**
-     * Footer 로고 매핑
+     * Footer 로고 매핑 (customFields 우선)
      */
     mapFooterLogo() {
         if (!this.isDataLoaded || !this.data.property) return;
-
-        const property = this.data.property;
 
         // Footer 로고 이미지 매핑 (data-footer-logo 속성 사용)
         const footerLogoImage = this.safeSelect('[data-footer-logo]');
@@ -419,14 +410,14 @@ class HeaderFooterMapper extends BaseDataMapper {
             if (logoUrl) {
                 footerLogoImage.onerror = () => {};
                 footerLogoImage.src = logoUrl;
-                footerLogoImage.alt = this.sanitizeText(property.name, '로고');
+                footerLogoImage.alt = this.getPropertyName();
             }
         }
 
-        // Footer 로고 텍스트 매핑
+        // Footer 로고 텍스트 매핑 (customFields 우선)
         const footerLogoText = this.safeSelect('[data-footer-logo-text]');
-        if (footerLogoText && property.nameEn) {
-            footerLogoText.textContent = this.sanitizeText(property.nameEn);
+        if (footerLogoText) {
+            footerLogoText.textContent = this.getPropertyNameEn();
         }
     }
 
@@ -488,11 +479,11 @@ class HeaderFooterMapper extends BaseDataMapper {
             }
         }
 
-        // 저작권 정보 매핑 - 자동 생성 (현재년도 + property.name)
+        // 저작권 정보 매핑 - 자동 생성 (현재년도 + customFields property.name 우선)
         const copyrightElement = this.safeSelect('[data-footer-copyright]');
         if (copyrightElement) {
             const currentYear = new Date().getFullYear();
-            const propertyName = property.name || property.nameEn || 'Property';
+            const propertyName = this.getPropertyName();
             copyrightElement.textContent = `© ${currentYear} ${propertyName}. All rights reserved.`;
         }
     }

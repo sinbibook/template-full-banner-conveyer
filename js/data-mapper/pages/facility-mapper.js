@@ -123,10 +123,10 @@ class FacilityMapper extends BaseDataMapper {
             }
         }
 
-        // 숙소 영문명 매핑
+        // 숙소 영문명 매핑 (customFields 우선)
         const propertyNameEl = document.querySelector('[data-hero-property-name-en]');
         if (propertyNameEl) {
-            propertyNameEl.textContent = this.data.property?.nameEn || 'PROPERTY NAME';
+            propertyNameEl.textContent = this.getPropertyNameEn();
         }
 
         // 시설 타이틀 매핑
@@ -348,10 +348,10 @@ class FacilityMapper extends BaseDataMapper {
         setImage(leftImg, facilityImages[0], './images/pool.jpg');
         setImage(rightImg, facilityImages[1], './images/pool2.jpg');
 
-        // 숙소 영문명 매핑
+        // 숙소 영문명 매핑 (customFields 우선)
         const propertyNameEnEl = document.querySelector('.facility-special-text [data-property-name-en]');
         if (propertyNameEnEl) {
-            propertyNameEnEl.textContent = this.data.property?.nameEn || 'Stay the Nocul';
+            propertyNameEnEl.textContent = this.getPropertyNameEn();
         }
 
         // 설명 텍스트 매핑 (customFields about.title)
@@ -395,11 +395,11 @@ class FacilityMapper extends BaseDataMapper {
         this.mapUsageGuideSection();
         this.mapFacilitySpecialSection();
 
-        // SEO 메타 태그 업데이트
-        const property = this.data.property;
+        // SEO 메타 태그 업데이트 (customFields 우선)
+        const propertyName = this.getPropertyName();
         this.updateMetaTags({
-            title: (facility?.name && property?.name) ? `${facility.name} - ${property.name}` : 'SEO 타이틀',
-            description: facility?.description || property?.description || 'SEO 설명'
+            title: facility?.name ? `${facility.name} - ${propertyName}` : 'SEO 타이틀',
+            description: facility?.description || this.data.property?.description || 'SEO 설명'
         });
 
         // E-commerce 정보 매핑
