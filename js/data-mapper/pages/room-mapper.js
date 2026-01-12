@@ -575,7 +575,7 @@ class RoomMapper extends BaseDataMapper {
         // 객실 크기 (시스템 데이터)
         const roomSize = this.safeSelect('[data-room-size]');
         if (roomSize) {
-            roomSize.textContent = room.size || '-';
+            roomSize.textContent = room.size ? `${room.size}㎡` : '-';
         }
 
         // 침대 타입 (시스템 데이터)
