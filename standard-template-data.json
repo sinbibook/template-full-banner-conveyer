@@ -120,7 +120,7 @@
     ],
     "nameEn": "Property Name (EN)",
     "domain": "도메인",
-    "realtimeBookingId": "지펜션ID",
+    "realtimeBookingId": "실식간 예약창 링크",
     "ybsId": "YBS ID"
   },
   "rooms": [

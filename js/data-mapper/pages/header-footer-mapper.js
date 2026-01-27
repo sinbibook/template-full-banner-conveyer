@@ -119,19 +119,16 @@ class HeaderFooterMapper extends BaseDataMapper {
             return;
         }
 
-        // realtimeBookingId 찾기
+        // realtimeBookingId 찾기 (전체 URL 형태로 저장됨)
         const realtimeBookingId = this.data.property.realtimeBookingId;
 
         if (realtimeBookingId) {
-            // 예약 URL 생성
-            const bookingUrl = `https://www.bookingplay.co.kr/booking/1/${realtimeBookingId}`;
-
             // 모든 BOOK NOW 버튼에 클릭 이벤트 설정
             const reservationButtons = document.querySelectorAll('[data-booking-engine]');
             reservationButtons.forEach(button => {
                 button.setAttribute('data-realtime-booking-id', realtimeBookingId);
                 button.onclick = () => {
-                    window.open(bookingUrl, '_blank');
+                    window.open(realtimeBookingId, '_blank');
                 };
             });
         }
