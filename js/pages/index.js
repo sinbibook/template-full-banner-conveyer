@@ -589,6 +589,11 @@
             return;
         }
 
+        // 기존 observer 파괴
+        if (scrollAnimations && typeof scrollAnimations.destroy === 'function') {
+            scrollAnimations.destroy();
+        }
+
         scrollAnimations = new ScrollAnimations({
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
