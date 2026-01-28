@@ -702,11 +702,7 @@
                     selector: '.rooms-title',
                     options: { delay: 0 }
                 },
-                {
-                    type: 'fadeIn',
-                    selector: '.room-item',
-                    options: { delay: 300 }
-                },
+                // room-item은 스크롤 애니메이션 제거 - 항상 보이도록 설정
                 // Gallery 섹션: 섹션 타이틀은 오른쪽에서, 제목/설명은 위로, 이미지들은 하나씩 페이드인
                 {
                     type: 'slideLeft',
@@ -723,31 +719,7 @@
                     selector: '.gallery-description',
                     options: { delay: 400 }
                 },
-                {
-                    type: 'slideLeft',
-                    selector: '.gallery-item:nth-child(1)',
-                    options: { delay: 600 }
-                },
-                {
-                    type: 'slideRight',
-                    selector: '.gallery-item:nth-child(2)',
-                    options: { delay: 750 }
-                },
-                {
-                    type: 'slideLeft',
-                    selector: '.gallery-item:nth-child(3)',
-                    options: { delay: 900 }
-                },
-                {
-                    type: 'slideRight',
-                    selector: '.gallery-item:nth-child(4)',
-                    options: { delay: 1050 }
-                },
-                {
-                    type: 'slideLeft',
-                    selector: '.gallery-item:nth-child(5)',
-                    options: { delay: 1200 }
-                },
+                // gallery-item들도 스크롤 애니메이션 제거 - 항상 보이도록 설정
                 // 클로징 영역: 타이틀, 설명, 버튼이 순차적으로 아래에서 위로 등장
                 {
                     type: 'slideUp',
@@ -774,14 +746,12 @@
     function initFallbackAnimations() {
         console.log('Using fallback animations for index page');
 
-        // 모든 숨겨진 요소들을 찾아서 Intersection Observer로 직접 관리
+        // 스크롤 애니메이션이 필요한 요소들만 관리 (room-item, gallery-item 제외)
         const elementsToAnimate = [
             { selector: '.rooms-title', className: 'animate-slide-right' },
-            { selector: '.room-item', className: 'animate-fade-in' },
             { selector: '.gallery-section-title', className: 'animate-slide-left' },
             { selector: '.gallery-title', className: 'animate-slide-up' },
-            { selector: '.gallery-description', className: 'animate-slide-up' },
-            { selector: '.gallery-item', className: 'animate-fade-in' }
+            { selector: '.gallery-description', className: 'animate-slide-up' }
         ];
 
         // Intersection Observer 지원 여부 확인
