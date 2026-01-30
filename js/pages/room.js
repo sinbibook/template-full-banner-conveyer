@@ -48,26 +48,52 @@
         }
 
         let currentSlideIndex = 0;
-        let autoSlideTimer;
-        const slideInterval = 4000; // 4초
+        let animationId;
+        let animationStartTime = null;
+        const SLIDE_DURATION = 4000; // 4초
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
-                slide.classList.remove('active', 'next', 'prev');
+                slide.classList.remove('active', 'hidden');
                 if (i === index) {
                     slide.classList.add('active');
-                } else if (i === (index + 1) % slides.length) {
-                    slide.classList.add('next');
-                } else if (i === (index - 1 + slides.length) % slides.length) {
-                    slide.classList.add('prev');
+                } else {
+                    slide.classList.add('hidden');
                 }
             });
 
-            // Progress bar 업데이트
+            // Progress bar 리셋하고 애니메이션 시작
             if (progressBar) {
-                const progress = ((index + 1) / slides.length) * 100;
-                progressBar.style.width = `${progress}%`;
+                progressBar.style.width = '0%';
+                animationStartTime = null;
+                startProgressAnimation();
             }
+        }
+
+        function startProgressAnimation() {
+            function animate(timestamp) {
+                if (!animationStartTime) animationStartTime = timestamp;
+
+                const elapsed = timestamp - animationStartTime;
+                const progress = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
+
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                }
+
+                if (progress >= 100) {
+                    // 슬라이드 전환
+                    nextSlide();
+                    return;
+                }
+
+                animationId = requestAnimationFrame(animate);
+            }
+
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            animationId = requestAnimationFrame(animate);
         }
 
         function nextSlide() {
@@ -80,30 +106,22 @@
             showSlide(currentSlideIndex);
         }
 
-        function startAutoSlide() {
-            autoSlideTimer = setInterval(nextSlide, slideInterval);
-        }
-
-        function stopAutoSlide() {
-            if (autoSlideTimer) {
-                clearInterval(autoSlideTimer);
-            }
-        }
-
         // Event listeners
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
-                stopAutoSlide();
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
                 nextSlide();
-                startAutoSlide();
             });
         }
 
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
-                stopAutoSlide();
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                }
                 prevSlide();
-                startAutoSlide();
             });
         }
 
@@ -120,17 +138,21 @@
 
             if (Math.abs(diff) > 50) {
                 if (diff > 0) {
+                    if (animationId) {
+                        cancelAnimationFrame(animationId);
+                    }
                     nextSlide();
                 } else {
+                    if (animationId) {
+                        cancelAnimationFrame(animationId);
+                    }
                     prevSlide();
                 }
             }
-            startAutoSlide();
         });
 
         // Initialize
         showSlide(0);
-        startAutoSlide();
 
         // Mark as initialized
         slider.dataset.sliderInitialized = 'true';

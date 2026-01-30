@@ -815,32 +815,45 @@
     }
 
     function setupNavigationButtons() {
-        const roomsContainer = document.querySelector('.rooms-container');
-        if (!roomsContainer) return;
+        // 기존 HTML 버튼을 찾아서 이벤트 연결
+        const prevBtn = document.querySelector('#rooms-prev-btn');
+        const nextBtn = document.querySelector('#rooms-next-btn');
 
-        // Create prev button
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'rooms-nav-btn rooms-nav-prev';
-        prevBtn.innerHTML = `
-            <span class="nav-symbol">‹</span>
-            <span class="nav-text">prev</span>
-        `;
+        if (prevBtn && nextBtn) {
+            // Add event listeners to existing HTML buttons
+            prevBtn.addEventListener('click', moveToPrevRoom);
+            nextBtn.addEventListener('click', moveToNextRoom);
+        } else {
+            // 기존 버튼이 없으면 동적으로 생성 (fallback)
+            const roomsSection = document.querySelector('.rooms-section');
+            if (!roomsSection) return;
 
-        // Create next button
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'rooms-nav-btn rooms-nav-next';
-        nextBtn.innerHTML = `
-            <span class="nav-symbol">›</span>
-            <span class="nav-text">next</span>
-        `;
+            // Create prev button
+            const newPrevBtn = document.createElement('button');
+            newPrevBtn.className = 'rooms-nav-btn rooms-nav-prev';
+            newPrevBtn.id = 'rooms-prev-btn';
+            newPrevBtn.innerHTML = `
+                <span class="nav-symbol">‹</span>
+                <span class="nav-text">PREV</span>
+            `;
 
-        // Add event listeners
-        prevBtn.addEventListener('click', moveToPrevRoom);
-        nextBtn.addEventListener('click', moveToNextRoom);
+            // Create next button
+            const newNextBtn = document.createElement('button');
+            newNextBtn.className = 'rooms-nav-btn rooms-nav-next';
+            newNextBtn.id = 'rooms-next-btn';
+            newNextBtn.innerHTML = `
+                <span class="nav-symbol">›</span>
+                <span class="nav-text">NEXT</span>
+            `;
 
-        // Append buttons directly to rooms container
-        roomsContainer.appendChild(prevBtn);
-        roomsContainer.appendChild(nextBtn);
+            // Add event listeners
+            newPrevBtn.addEventListener('click', moveToPrevRoom);
+            newNextBtn.addEventListener('click', moveToNextRoom);
+
+            // Append buttons to rooms section
+            roomsSection.appendChild(newPrevBtn);
+            roomsSection.appendChild(newNextBtn);
+        }
     }
 
     function moveToPrevRoom() {

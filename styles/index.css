@@ -530,12 +530,7 @@
     overflow: hidden;
 }
 
-.rooms-container {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    position: relative;
-}
+/* rooms-container 제거됨 - rooms-grid가 직접 사용됨 */
 
 .rooms-drag-indicator {
     margin-top: 30px;
@@ -607,10 +602,13 @@
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 60vh;
     min-height: 500px;
     overflow: hidden;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding-left: 0;
 }
 
 .rooms-slider {
@@ -690,23 +688,31 @@
 /* Navigation buttons positioned next to image */
 .rooms-nav-btn {
     position: absolute;
-    top: 5%; /* 더 위로 */
+    top: 30%; /* 상단에서 30% 위치 */
+    transform: translateY(-50%);
     background: rgba(83, 83, 83, 0.8); /* color-secondary with opacity */
     border: none;
     border-radius: 50%;
-    width: 50px; /* 더 작게 */
-    height: 50px; /* 더 작게 */
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    z-index: 20;
+    z-index: 100; /* 더 높은 z-index */
+    pointer-events: auto;
+    user-select: none; /* 텍스트 선택 방지 */
 }
 
 .rooms-nav-btn:hover {
     background: rgba(83, 83, 83, 0.7);
-    transform: scale(1.05);
+    transform: translateY(-50%) scale(1.05);
+}
+
+/* 버튼이 겹치지 않도록 강제 위치 고정 */
+.rooms-nav-btn:not(:hover) {
+    transform: translateY(-50%);
 }
 
 /* 더 이상 넘어갈 슬라이드가 없을 때 */
@@ -717,31 +723,35 @@
 
 .rooms-nav-btn.disabled:hover {
     background: rgba(83, 83, 83, 0.5);
-    transform: none;
+    transform: translateY(-50%); /* 위치 고정 유지 */
 }
 
-/* PREV: 원형과 텍스트 */
+/* PREV: 원형과 텍스트 - 고정 위치 */
 .rooms-nav-prev {
-    left: calc(75% + 20px); /* 더 왼쪽으로 */
+    left: calc(75% + 20px);
+    pointer-events: auto;
 }
 
 .rooms-nav-prev .nav-text {
     position: absolute;
-    top: 60px; /* 원형 아래로 */
+    top: 55px;
     left: 50%;
     transform: translateX(-50%);
+    white-space: nowrap;
 }
 
-/* NEXT: 원형과 텍스트 */
+/* NEXT: 원형과 텍스트 - 고정 위치 */
 .rooms-nav-next {
-    left: calc(75% + 80px); /* 더 왼쪽으로 */
+    left: calc(75% + 90px); /* PREV와 더 멀리 떨어뜨림 */
+    pointer-events: auto;
 }
 
 .rooms-nav-next .nav-text {
     position: absolute;
-    top: 60px; /* 원형 아래로 */
+    top: 55px;
     left: 50%;
     transform: translateX(-50%);
+    white-space: nowrap;
 }
 
 .nav-symbol {
@@ -903,12 +913,7 @@
         background: var(--color-primary, #e6f3ff);
     }
 
-    .rooms-container {
-        max-width: 100%;
-        padding: 0 20px;
-        position: relative !important; /* 강제 적용 */
-        overflow: visible;
-    }
+    /* rooms-container 제거됨 */
 
     .rooms-title {
         font-size: 28px !important;
@@ -935,6 +940,9 @@
         min-height: 600px;
         height: auto !important; /* 데스크탑 height 덮어쓰기 */
         overflow: visible !important; /* 데스크탑 overflow 덮어쓰기 */
+        width: 100% !important; /* 모바일에서는 일반 너비 */
+        margin-left: 0 !important; /* 모바일에서는 마진 제거 */
+        padding: 0 20px !important;
     }
 
     /* 하나의 룸만 표시 - 완전히 새로운 스타일로 덮어쓰기 */
