@@ -94,7 +94,13 @@ class DirectionsMapper extends BaseDataMapper {
         // 타이틀 매핑 - customFields hero.title 사용
         const titleElement = this.safeSelect('[data-directions-title]');
         if (titleElement) {
-            titleElement.textContent = this.sanitizeText(heroData?.title, '오시는길 히어로 타이틀');
+            const titleText = this.sanitizeText(heroData?.title, '오시는길 히어로 타이틀');
+            if (titleText && titleText.trim() !== '') {
+                titleElement.textContent = titleText;
+                titleElement.style.display = '';
+            } else {
+                titleElement.style.display = 'none';
+            }
         }
 
         // 주소 매핑 - 새로운 구조 (property.location.address)

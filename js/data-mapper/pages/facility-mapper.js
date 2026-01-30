@@ -214,7 +214,7 @@ class FacilityMapper extends BaseDataMapper {
 
         // 주요특징 매핑
         const featuresContainer = document.querySelector('[data-facility-features]');
-        if (featuresContainer && experience?.features) {
+        if (featuresContainer && experience?.features && experience.features.length > 0) {
             featuresContainer.innerHTML = '';
             experience.features.forEach(feature => {
                 const item = document.createElement('div');
@@ -234,7 +234,7 @@ class FacilityMapper extends BaseDataMapper {
 
         // 추가정보 매핑
         const additionalContainer = document.querySelector('[data-facility-additional-info]');
-        if (additionalContainer && experience?.additionalInfos) {
+        if (additionalContainer && experience?.additionalInfos && experience.additionalInfos.length > 0) {
             additionalContainer.innerHTML = '';
             experience.additionalInfos.forEach(info => {
                 const item = document.createElement('div');
@@ -254,7 +254,7 @@ class FacilityMapper extends BaseDataMapper {
 
         // 이용혜택 매핑
         const benefitsContainer = document.querySelector('[data-facility-benefits]');
-        if (benefitsContainer && experience?.benefits) {
+        if (benefitsContainer && experience?.benefits && experience.benefits.length > 0) {
             benefitsContainer.innerHTML = '';
             experience.benefits.forEach(benefit => {
                 const item = document.createElement('div');
@@ -334,19 +334,53 @@ class FacilityMapper extends BaseDataMapper {
                 imgEl.src = imageData.url;
                 imgEl.alt = imageData.alt || '시설 이미지';
                 imgEl.classList.remove('empty-image-placeholder');
-            } else if (isDemo) {
-                imgEl.src = fallbackUrl;
-                imgEl.alt = '시설 이미지';
-                imgEl.classList.remove('empty-image-placeholder');
             } else {
-                imgEl.src = ImageHelpers.EMPTY_IMAGE_WITH_ICON;
+                // empty placeholder 사용
+                imgEl.src = fallbackUrl;
                 imgEl.alt = '이미지 없음';
                 imgEl.classList.add('empty-image-placeholder');
             }
         };
 
-        setImage(leftImg, facilityImages[0], './images/pool.jpg');
-        setImage(rightImg, facilityImages[1], './images/pool2.jpg');
+        setImage(leftImg, facilityImages[0], ImageHelpers.EMPTY_IMAGE_WITH_ICON);
+        setImage(rightImg, facilityImages[1], ImageHelpers.EMPTY_IMAGE_WITH_ICON);
+
+        // 모바일에서만 간단한 세로 이미지 배치
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            const imageContainer = document.querySelector('.facility-special-images');
+            if (imageContainer) {
+                // 강제 교체: 간단한 이미지 배치
+                const hasImg1 = facilityImages[0]?.url;
+                const hasImg2 = facilityImages[1]?.url;
+                const img1Url = hasImg1 || ImageHelpers.EMPTY_IMAGE_WITH_ICON;
+                const img2Url = hasImg2 || ImageHelpers.EMPTY_IMAGE_WITH_ICON;
+
+                imageContainer.innerHTML = `
+                    <img style="width:100%;height:200px;object-fit:cover;margin-bottom:20px;display:block;">
+                    <img style="width:100%;height:200px;object-fit:cover;display:block;">
+                `;
+
+                const img1 = imageContainer.children[0];
+                const img2 = imageContainer.children[1];
+
+                // ImageHelpers 방식 사용
+                if (hasImg1) {
+                    img1.src = img1Url;
+                    img1.alt = '시설 이미지';
+                } else {
+                    ImageHelpers.applyPlaceholder(img1);
+                }
+
+                if (hasImg2) {
+                    img2.src = img2Url;
+                    img2.alt = '시설 이미지';
+                } else {
+                    ImageHelpers.applyPlaceholder(img2);
+                }
+                imageContainer.style.cssText = 'width:100%;display:block;';
+            }
+        }
 
         // 숙소 영문명 매핑 (customFields 우선)
         const propertyNameEnEl = document.querySelector('.facility-special-text [data-property-name-en]');
@@ -404,6 +438,24 @@ class FacilityMapper extends BaseDataMapper {
 
         // E-commerce 정보 매핑
         this.mapEcommerceRegistration();
+
+        // 배경 텍스트 번호 설정
+        this.setBackgroundNumbers();
+    }
+
+    /**
+     * 배경 텍스트의 번호 동적 설정
+     */
+    setBackgroundNumbers() {
+        if (this.currentFacilityIndex === null) return;
+
+        const facilityNumber = String(this.currentFacilityIndex + 1).padStart(2, '0');
+        const introSection = document.querySelector('.facility-top-intro-section');
+
+        if (introSection) {
+            // CSS 커스텀 속성으로 번호 설정
+            introSection.style.setProperty('--facility-number', `"Offer${facilityNumber}"`);
+        }
     }
 }
 

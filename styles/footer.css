@@ -21,7 +21,7 @@ footer {
 .footer-content::before {
     content: '';
     position: absolute;
-    left: 30%;
+    left: 32%;
     top: 50%;
     transform: translateY(-50%);
     width: 1px;
@@ -37,7 +37,7 @@ footer {
 }
 
 .footer-logo-text {
-    font-family: 'Roustel', sans-serif;
+    font-family: var(--font-en-main);
     font-size: 28px;
     font-weight: normal;
     line-height: 1.2;
@@ -65,7 +65,7 @@ footer {
 .footer-right {
     flex: 0 0 65%;
     min-width: 0;
-    padding-left: 40px;
+    padding-left: 60px;
 }
 
 .footer-contact-info {
@@ -143,6 +143,10 @@ footer {
 
     .footer-content::before {
         display: none;
+    }
+
+    .footer-logo-text {
+        font-size: 18px;
     }
 
     .footer-left {

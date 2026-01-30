@@ -375,11 +375,33 @@ function createConveyorSlider(leftContainer, rightContainer) {
         rightWipeOverlay.style.transition = 'width 0.8s ease-in-out';
         rightWipeOverlay.style.overflow = 'hidden';
 
-        // 컨테이너 설정
+        // 컨테이너 설정 - 높이 강제 고정
+        const isMobile = window.innerWidth <= 768;
+        const fixedHeight = isMobile ? '200px' : '450px';
+
         leftContainer.style.position = 'relative';
         leftContainer.style.overflow = 'hidden';
+        leftContainer.style.height = fixedHeight;
+        leftContainer.style.minHeight = fixedHeight;
+        leftContainer.style.maxHeight = fixedHeight;
+
         rightContainer.style.position = 'relative';
         rightContainer.style.overflow = 'hidden';
+        rightContainer.style.height = fixedHeight;
+        rightContainer.style.minHeight = fixedHeight;
+        rightContainer.style.maxHeight = fixedHeight;
+
+        // 이미지도 높이 강제 고정
+        if (leftImg) {
+            leftImg.style.height = fixedHeight;
+            leftImg.style.minHeight = fixedHeight;
+            leftImg.style.maxHeight = fixedHeight;
+        }
+        if (rightImg) {
+            rightImg.style.height = fixedHeight;
+            rightImg.style.minHeight = fixedHeight;
+            rightImg.style.maxHeight = fixedHeight;
+        }
 
         // 오버레이 추가
         leftContainer.appendChild(leftWipeOverlay);

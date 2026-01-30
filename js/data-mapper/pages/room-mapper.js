@@ -156,7 +156,6 @@ class RoomMapper extends BaseDataMapper {
                     img.src = imgSrc;
                     img.alt = `객실 이미지 ${i + 1}`;
                     img.loading = i === 0 ? 'eager' : 'lazy';
-                    img.style.borderRadius = '20px'; // 이미지 자체에 border-radius 적용
 
                     slide.appendChild(img);
                     sliderContainer.appendChild(slide);
@@ -174,7 +173,6 @@ class RoomMapper extends BaseDataMapper {
                 img.src = ImageHelpers.EMPTY_IMAGE_WITH_ICON;
                 img.alt = '이미지 없음';
                 img.classList.add('empty-image-placeholder');
-                img.style.borderRadius = '20px'; // 이미지 자체에 border-radius 적용
 
                 slide.appendChild(img);
                 sliderContainer.appendChild(slide);
@@ -209,7 +207,6 @@ class RoomMapper extends BaseDataMapper {
             img.alt = this.sanitizeText(image.description, this.getRoomName(room) || '객실 이미지');
             img.loading = index === 0 ? 'eager' : 'lazy';
             img.setAttribute('data-image-fallback', '');
-            img.style.borderRadius = '20px'; // 이미지 자체에 border-radius 적용
 
             slide.appendChild(img);
             sliderContainer.appendChild(slide);
@@ -233,257 +230,12 @@ class RoomMapper extends BaseDataMapper {
 
         // Hero Slider 초기화 (DOM이 완전히 로드된 후)
         setTimeout(() => {
-            this.initializeHeroSlider();
+            if (window.initRoomHeroSlider) {
+                window.initRoomHeroSlider();
+            }
         }, 100);
     }
 
-    /**
-     * Hero Slider 초기화 - 무한 캐러셀
-     */
-    initializeHeroSlider() {
-        const sliderContainer = this.safeSelect('[data-room-slider]');
-        const prevBtn = this.safeSelect('#room-prev-btn');
-        const nextBtn = this.safeSelect('#room-next-btn');
-
-        // 모바일 버튼 - 일관성 있게 safeSelect 사용
-        const prevBtnMobile = this.safeSelect('#room-prev-btn-mobile') || this.safeSelect('.room-nav-prev-mobile');
-        const nextBtnMobile = this.safeSelect('#room-next-btn-mobile') || this.safeSelect('.room-nav-next-mobile');
-        const currentPageSpan = this.safeSelect('.room-current-page');
-        const currentPageSpanMobile = this.safeSelect('.room-current-page-mobile');
-        const progressFill = this.safeSelect('.room-progress-fill');
-
-        if (!sliderContainer || !prevBtn || !nextBtn) return;
-
-        const slides = Array.from(sliderContainer.children);
-        const totalSlides = slides.length;
-
-        if (totalSlides === 0) return;
-
-        let currentIndex = 0;
-        let autoPlayInterval = null;
-        let isTransitioning = false;
-
-        // 클론 생성 (앞뒤로 복사본 추가)
-        const firstClone = slides[0].cloneNode(true);
-        const lastClone = slides[totalSlides - 1].cloneNode(true);
-        firstClone.classList.add('clone');
-        lastClone.classList.add('clone');
-
-        // 슬라이드 초기 설정 - 클래스 기반
-        slides.forEach((slide, index) => {
-            // transition 임시 비활성화 (초기 배치용)
-            slide.style.transition = 'none';
-
-            // 초기 클래스 설정
-            if (index === 0) {
-                slide.classList.add('active');
-            } else if (index === 1) {
-                slide.classList.add('next');
-            } else if (index === totalSlides - 1 && totalSlides > 2) {
-                slide.classList.add('prev');
-            } else {
-                slide.classList.add('hidden', 'hidden-next');
-            }
-        });
-
-        // 초기 위치 설정 후 transition 활성화 및 슬라이더 시작
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                slides.forEach(slide => {
-                    // transition 복구 (CSS에 정의된 값 사용)
-                    slide.style.transition = '';
-                });
-
-                // transition 설정 후 슬라이더 초기화
-                updateSlidePositions();
-                startAutoPlay();
-            });
-        });
-
-        // 슬라이드 위치 업데이트 함수 - CSS 클래스 기반
-        const updateSlidePositions = () => {
-            slides.forEach((slide, index) => {
-                // Remove all state classes
-                slide.classList.remove('active', 'next', 'prev', 'hidden', 'hidden-next', 'hidden-prev');
-
-                // Remove inline styles to rely on CSS classes
-                slide.style.transform = '';
-                slide.style.width = '';
-                slide.style.height = '';
-                slide.style.opacity = '';
-                slide.style.visibility = '';
-                slide.style.zIndex = '';
-                slide.style.backgroundColor = '';
-
-                // Calculate position relative to current index
-                const position = (index - currentIndex + totalSlides) % totalSlides;
-
-                // Apply appropriate class based on position
-                switch (position) {
-                    case 0:
-                        slide.classList.add('active');
-                        break;
-                    case 1:
-                        slide.classList.add('next');
-                        break;
-                    case totalSlides - 1:
-                        slide.classList.add('prev');
-                        break;
-                    default:
-                        slide.classList.add('hidden');
-                        // Determine which hidden position
-                        if (position === totalSlides - 2) {
-                            slide.classList.add('hidden-prev');
-                        } else {
-                            slide.classList.add('hidden-next');
-                        }
-                        break;
-                }
-            });
-        };
-
-        // 다음 슬라이드로 이동
-        const moveNext = () => {
-            if (isTransitioning) return;
-            isTransitioning = true;
-
-            currentIndex = (currentIndex + 1) % totalSlides;
-            updateSlidePositions();
-
-            // 페이지 번호 업데이트 (데스크탑 & 모바일)
-            if (currentPageSpan) {
-                currentPageSpan.textContent = String(currentIndex + 1).padStart(2, '0');
-            }
-            if (currentPageSpanMobile) {
-                currentPageSpanMobile.textContent = String(currentIndex + 1).padStart(2, '0');
-            }
-
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 1000);
-        };
-
-        // 이전 슬라이드로 이동
-        const movePrev = () => {
-            if (isTransitioning) return;
-            isTransitioning = true;
-
-            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-            updateSlidePositions();
-
-            // 페이지 번호 업데이트
-            if (currentPageSpan) {
-                currentPageSpan.textContent = String(currentIndex + 1).padStart(2, '0');
-            }
-
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 1000);
-        };
-
-        // 자동 재생 시작 함수
-        const startAutoPlay = () => {
-            stopAutoPlay();
-            autoPlayInterval = setInterval(moveNext, 3000);
-        };
-
-        // 자동 재생 정지 함수
-        const stopAutoPlay = () => {
-            if (autoPlayInterval) {
-                clearInterval(autoPlayInterval);
-                autoPlayInterval = null;
-            }
-        };
-
-        // 버튼 이벤트
-        prevBtn.addEventListener('click', () => {
-            stopAutoPlay();
-            movePrev();
-            startAutoPlay();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            stopAutoPlay();
-            moveNext();
-            startAutoPlay();
-        });
-
-        // 모바일 버튼 이벤트
-        if (prevBtnMobile) {
-            prevBtnMobile.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                stopAutoPlay();
-                movePrev();
-                startAutoPlay();
-            });
-        }
-
-        if (nextBtnMobile) {
-            nextBtnMobile.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                stopAutoPlay();
-                moveNext();
-                startAutoPlay();
-            });
-        }
-
-        // 호버해도 슬라이더 계속 진행 (호버 일시정지 기능 제거)
-
-        // 모바일 터치 이벤트 (스와이프)
-        let touchStartX = 0;
-        let touchEndX = 0;
-        let touchStartY = 0;
-        let touchEndY = 0;
-
-        sliderContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
-            touchEndX = touchStartX;
-            touchEndY = touchStartY;
-            stopAutoPlay();
-        }, { passive: true });
-
-        sliderContainer.addEventListener('touchmove', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            touchEndY = e.changedTouches[0].screenY;
-
-            const deltaX = Math.abs(touchStartX - touchEndX);
-            const deltaY = Math.abs(touchStartY - touchEndY);
-
-            // 수평 이동이 수직보다 크면 스크롤 방지
-            if (deltaX > deltaY && deltaX > 10) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        sliderContainer.addEventListener('touchend', () => {
-            const deltaX = touchStartX - touchEndX;
-            const deltaY = Math.abs(touchStartY - touchEndY);
-
-            // 가로 스와이프가 세로보다 클 때만 처리
-            if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
-                if (deltaX > 0) {
-                    moveNext();
-                } else {
-                    movePrev();
-                }
-            }
-            startAutoPlay();
-        }, { passive: true });
-
-        // 리사이즈 이벤트 처리
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                updateSlidePositions();
-            }, 250);
-        });
-
-        // 초기 설정은 위의 requestAnimationFrame 체인에서 처리됨
-    }
 
     /**
      * 기본 정보 섹션 매핑 (객실명, 썸네일, 설명)
@@ -495,11 +247,11 @@ class RoomMapper extends BaseDataMapper {
         // 객실명 가져오기 (customFields 우선)
         const roomNameText = this.getRoomName(room);
 
-        // 객실명 매핑
-        const roomName = this.safeSelect('[data-room-name]');
-        if (roomName) {
-            roomName.textContent = roomNameText;
-        }
+        // 객실명 매핑 (모든 [data-room-name] 요소들에 적용)
+        const roomNameElements = document.querySelectorAll('[data-room-name]');
+        roomNameElements.forEach(element => {
+            element.textContent = roomNameText;
+        });
 
         // 모바일 객실명 매핑
         const roomNameMobile = this.safeSelect('[data-room-name-mobile]');
@@ -797,7 +549,7 @@ class RoomMapper extends BaseDataMapper {
         const imageCount = galleryImages.length;
 
         // 갤러리 래퍼 요소 찾기
-        const galleryWrapper = this.safeSelect('.gallery-grid-wrapper');
+        const galleryWrapper = this.safeSelect('[data-room-gallery]');
         if (!galleryWrapper) return;
 
         // 기존 내용 비우기
@@ -807,7 +559,7 @@ class RoomMapper extends BaseDataMapper {
         // 이미지가 없으면 플레이스홀더 표시
         if (imageCount === 0) {
             if (isDemo) {
-                // 데모 모드: fallback 이미지 6개 사용
+                // 데모 모드: index.html 스타일 갤러리
                 const placeholderImages = [
                     './images/exterior.jpg',
                     './images/exterior2.jpg',
@@ -817,40 +569,24 @@ class RoomMapper extends BaseDataMapper {
                     './images/sky.jpg'
                 ];
 
-                // 3-2-1 패턴으로 플레이스홀더 표시
-                const gridPattern = [3, 2, 1];
-                let imageIndex = 0;
-                let delayCount = 0;
-
-                gridPattern.forEach(rowCount => {
-                    const rowDiv = document.createElement('div');
-                    rowDiv.className = `gallery-row row-${rowCount}`;
-
-                    for (let i = 0; i < rowCount && imageIndex < 6; i++) {
+                // 12개 이미지로 무한 스크롤 효과 생성 (6개 이미지를 2번 반복)
+                for (let repeat = 0; repeat < 2; repeat++) {
+                    placeholderImages.forEach((imgSrc, index) => {
                         const itemDiv = document.createElement('div');
-                        itemDiv.className = 'gallery-item animate-fade-up';
-                        itemDiv.setAttribute('data-delay', delayCount);
+                        itemDiv.className = 'gallery-item';
 
                         const img = document.createElement('img');
-                        img.src = placeholderImages[imageIndex];
+                        img.src = imgSrc;
                         img.alt = '갤러리 이미지';
 
                         itemDiv.appendChild(img);
-                        rowDiv.appendChild(itemDiv);
-
-                        imageIndex++;
-                        delayCount += 300;
-                    }
-
-                    galleryWrapper.appendChild(rowDiv);
-                });
+                        galleryWrapper.appendChild(itemDiv);
+                    });
+                }
             } else {
                 // 프로덕션 모드: empty placeholder 1개 생성
-                const rowDiv = document.createElement('div');
-                rowDiv.className = 'gallery-row row-1';
-
                 const itemDiv = document.createElement('div');
-                itemDiv.className = 'gallery-item animate-fade-up';
+                itemDiv.className = 'gallery-item';
 
                 const img = document.createElement('img');
                 img.src = ImageHelpers.EMPTY_IMAGE_WITH_ICON;
@@ -858,47 +594,18 @@ class RoomMapper extends BaseDataMapper {
                 img.classList.add('empty-image-placeholder');
 
                 itemDiv.appendChild(img);
-                rowDiv.appendChild(itemDiv);
-                galleryWrapper.appendChild(rowDiv);
+                galleryWrapper.appendChild(itemDiv);
             }
         } else {
-            // 이미지 개수에 따른 그리드 패턴 결정
-            let gridPattern = [];
-            switch(imageCount) {
-                case 1:
-                    gridPattern = [1]; // 1장
-                    break;
-                case 2:
-                    gridPattern = [2]; // 2장 한 줄
-                    break;
-                case 3:
-                    gridPattern = [3]; // 3장 한 줄
-                    break;
-                case 4:
-                    gridPattern = [2, 2]; // 2장씩 2줄
-                    break;
-                case 5:
-                    gridPattern = [3, 2]; // 3장 + 2장
-                    break;
-                case 6:
-                    gridPattern = [3, 2, 1]; // 3장 + 2장 + 1장
-                    break;
-            }
+            // index.html 스타일 갤러리 - 모든 이미지를 직접 배치
+            // 모든 이미지를 연속으로 배치 (최대 12개까지 반복하여 부드러운 무한 스크롤)
+            const totalImages = Math.min(galleryImages.length, 6);
+            const repeatCount = Math.ceil(12 / totalImages); // 최소 12개가 되도록 반복
 
-            // 이미지 인덱스 추적
-            let imageIndex = 0;
-            let delayCount = 0;
-
-            // 그리드 패턴에 따라 HTML 생성
-            gridPattern.forEach(rowCount => {
-                const rowDiv = document.createElement('div');
-                rowDiv.className = `gallery-row row-${rowCount}`;
-
-                for (let i = 0; i < rowCount && imageIndex < imageCount; i++) {
-                    const image = galleryImages[imageIndex];
+            for (let repeat = 0; repeat < repeatCount; repeat++) {
+                galleryImages.slice(0, totalImages).forEach((image, index) => {
                     const itemDiv = document.createElement('div');
-                    itemDiv.className = 'gallery-item animate-fade-up';
-                    itemDiv.setAttribute('data-delay', delayCount);
+                    itemDiv.className = 'gallery-item';
 
                     const img = document.createElement('img');
                     img.src = image.url;
@@ -906,54 +613,20 @@ class RoomMapper extends BaseDataMapper {
                     img.setAttribute('data-image-fallback', '');
 
                     itemDiv.appendChild(img);
-                    rowDiv.appendChild(itemDiv);
-
-                    imageIndex++;
-                    delayCount += 300; // 각 이미지마다 300ms 딜레이
-                }
-
-                galleryWrapper.appendChild(rowDiv);
-            });
+                    galleryWrapper.appendChild(itemDiv);
+                });
+            }
         }
 
-        // 스크롤 애니메이션 재초기화
-        setTimeout(() => {
-            this.initGalleryAnimations();
-        }, 100);
+        // 연속 슬라이딩 갤러리이므로 추가 애니메이션 불필요
     }
 
     /**
-     * 갤러리 애니메이션 초기화
+     * 갤러리 애니메이션 초기화 (연속 슬라이딩에서는 불필요)
      */
     initGalleryAnimations() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // 새로 생성된 갤러리 아이템들에 대해 관찰 시작
-        const galleryItems = document.querySelectorAll('.gallery-item.animate-fade-up');
-        galleryItems.forEach((item) => {
-            const delay = item.getAttribute('data-delay');
-            if (delay) {
-                item.style.transitionDelay = `${delay / 1000}s`;
-            }
-            observer.observe(item);
-        });
-
-        // 갤러리 제목도 애니메이션 적용
-        const galleryTitle = document.querySelector('.gallery-grid-title.animate-fade-up');
-        if (galleryTitle) {
-            observer.observe(galleryTitle);
-        }
+        // 연속 슬라이딩 갤러리에서는 CSS 애니메이션으로 처리되므로 JavaScript 애니메이션 불필요
+        return;
     }
 
     // ============================================================================
@@ -975,7 +648,6 @@ class RoomMapper extends BaseDataMapper {
 
         // 순차적으로 각 섹션 매핑
         this.mapHeroSlider();
-        this.initializeHeroSlider();
         this.mapBasicInfo();
         this.mapRoomInfoSection();
         this.mapRoomDetails();

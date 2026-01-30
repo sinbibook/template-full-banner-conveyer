@@ -72,9 +72,37 @@
 
 /* Reservation Content Layout */
 .reservation-content-layout {
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Reservation Info Content */
+.reservation-info-content {
+    /* styles for info content container */
+}
+
+/* Reservation Info Box Styles - matching facility-intro-usage */
+.reservation-info-box {
+    margin-bottom: 40px;
+    padding: 50px;
+    background: rgba(101, 131, 153, 0.1);
+    border-radius: 0;
+}
+
+.reservation-info-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-secondary, #658399);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--color-secondary, #658399);
+}
+
+.reservation-info-content-text {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
 }
 
 /* Details Section - container for grid */
@@ -157,7 +185,7 @@
 }
 
 .reservation-panel-title {
-    font-family: 'Roustel', sans-serif;
+    font-family: var(--font-en-main);
     font-size: 36px;
     font-weight: 400;
     color: var(--color-secondary, #658399);
@@ -322,6 +350,10 @@
     border: 1px solid #ddd;
 }
 
+.refund-table td {
+    background: white;
+}
+
 .refund-table tbody tr:nth-child(even) {
     background: transparent;
 }
@@ -409,6 +441,14 @@
         max-width: 100%;
     }
 
+    .reservation-info-box {
+        padding: 25px; /* 모바일에서 padding 25px로 수정 */
+    }
+
+    .reservation-info-title {
+        font-size: 19px; /* 모바일에서 font-size 19px로 수정 */
+    }
+
     .reservation-box {
         min-height: auto;
         padding: 40px 20px;
@@ -444,7 +484,7 @@
     }
 
     .reservation-hero-title {
-        font-size: 28px;
+        font-size: 22px;
     }
 
     .reservation-description {

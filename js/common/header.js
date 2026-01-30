@@ -264,7 +264,6 @@
                             const isNotHeader = !topHeader.contains(e.target);
 
                             if (isOutsideMenu && isNotHeader) {
-                                console.log('Outside click detected, closing menu');
                                 e.preventDefault();
                                 e.stopPropagation();
                                 toggleHeaderMenu();
@@ -276,7 +275,6 @@
                         if (e.key === 'Escape' || e.keyCode === 27) {
                             const headerOpened = document.getElementById('header-opened');
                             if (headerOpened && headerOpened.classList.contains('expanded')) {
-                                console.log('ESC key pressed, closing menu');
                                 e.preventDefault();
                                 e.stopPropagation();
                                 toggleHeaderMenu();

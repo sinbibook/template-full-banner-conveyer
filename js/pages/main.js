@@ -107,12 +107,17 @@
             // full-banner fade 애니메이션
             scrollAnimator.fadeInAnimation('.full-banner', { delay: 200 });
 
-            // Handle typing animation
-            const typingText = document.querySelector('.typing-text');
-            if (typingText) {
-                setTimeout(() => {
-                    typingText.classList.add('typed');
-                }, 2700);
+            // Scroll down functionality
+            const scrollDownBtn = document.querySelector('.scroll-down-section');
+            if (scrollDownBtn) {
+                scrollDownBtn.addEventListener('click', function() {
+                    const scrollTarget = document.querySelector('.content-wrap');
+                    if (scrollTarget) {
+                        scrollTarget.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             }
         }, 500); // MainMapper가 DOM을 생성할 시간을 줌
     });

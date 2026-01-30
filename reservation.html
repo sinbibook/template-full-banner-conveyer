@@ -24,14 +24,10 @@
         <div class="hero-background">
             <img data-main-hero-img>
         </div>
-        <!-- 페이지 제목 하드코딩 fixed -->
-        <div class="page-title">
-            <span class="property-name-kr" data-main-property-name-kr></span>
-            <h1 class="typing-text" data-text="Reservation" style="--text-length: 11;">Reservation</h1>
-        </div>
-        <!-- Scroll Down Icon -->
-        <div class="scroll-down-icon" onclick="scrollToContent()">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Scroll Down Arrow - 하단 중앙에 작은 글씨로 -->
+        <div class="scroll-down-section" onclick="scrollToContent()">
+            <span class="scroll-text">Scroll Down</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7 10L12 15L17 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </div>
@@ -41,17 +37,11 @@
 
         <section class="reservation-info-section">
             <div class="reservation-intro-section">
-                <!-- 숙소 영문명 매핑 fixed -->
-                <div class="logo-line-container animate-element animate-fade-in">
-                    <span class="logo-text-line" data-main-property-name-en></span>
-                    <div class="horizontal-line"></div>
-                </div>
 
                 <div class="hero-content animate-element animate-slide-up">
                     <div class="reservation-content-wrapper">
                         <div class="reservation-title-section">
-                            <!-- CUSTOM FIELD : 이용안내 섹션 타이틀 매핑 -->
-                            <h2 class="reservation-hero-title" data-reservation-title></h2>
+                            <h2 class="reservation-hero-title title-with-circle-and-line">예약안내</h2>
                         </div>
                         <div class="reservation-description-section">
                             <!-- CUSTOM FIELD : 이용안내 섹션 설명 매핑 -->
@@ -63,116 +53,61 @@
 
             <div class="reservation-content-layout">
                 <div class="reservation-info-content">
-                    <div class="reservation-section">
-                        <div class="reservation-section-grid">
-                            <div class="reservation-image-panel">
-                                <div class="reservation-panel-image">
-                                    <img src="images/hero.jpg" alt="이용안내 이미지">
+
+                    <!-- 이용안내 섹션 -->
+                    <div class="reservation-info-box">
+                        <h3 class="reservation-info-title">이용안내</h3>
+                        <div class="reservation-info-content-text" data-usage-guide></div>
+                    </div>
+
+                    <!-- 예약안내 섹션 -->
+                    <div class="reservation-info-box">
+                        <h3 class="reservation-info-title">예약안내</h3>
+                        <div class="reservation-info-content-text" data-reservation-guide></div>
+                    </div>
+
+                    <!-- 입퇴실 안내 섹션 -->
+                    <div class="reservation-info-box">
+                        <h3 class="reservation-info-title">입/퇴실 안내</h3>
+                        <div class="reservation-info-content-text">
+                            <div class="checkin-checkout-times">
+                                <div class="detail-item">
+                                    <span class="detail-label">체크인</span>
+                                    <span class="detail-value" data-checkin-time></span>
                                 </div>
-                                <!-- 하드코딩 Fixed -->
-                                <div class="reservation-panel-title">Usage Guide</div>
+                                <div class="detail-item">
+                                    <span class="detail-label">체크아웃</span>
+                                    <span class="detail-value" data-checkout-time></span>
+                                </div>
                             </div>
-                            <div class="reservation-content-area">
-                                <div class="reservation-box animate-element" data-section="usage-guide">
-                                    <!-- 숙소 이용안내 타이틀 매핑 -->
-                                    <h3 class="reservation-box-title">이용안내</h3>
-                                    <!-- 숙소 이용안내 내용 매핑 -->
-                                    <div class="reservation-box-content reservation-text-content" data-usage-guide></div>
-                                </div>
+                            <div class="operation-info-section">
+                                <div class="operation-info-text" data-operation-info></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="reservation-section">
-                        <div class="reservation-section-grid">
-                            <div class="reservation-image-panel">
-                                <div class="reservation-panel-image">
-                                    <img src="images/shadow.jpg" alt="예약안내 이미지">
-                                </div>
-                                <!-- 하드코딩 Fixed -->
-                                <div class="reservation-panel-title">Reservation Guide</div>
-                            </div>
-                            <div class="reservation-content-area">
-                                <div class="reservation-box animate-element" data-section="reservation-guide">
-                                    <!-- 예약안내 타이틀 매핑 -->
-                                    <h3 class="reservation-box-title">예약안내</h3>
-                                    <!-- 예약안내 내용 매핑 -->
-                                    <div class="reservation-box-content reservation-text-content" data-reservation-guide></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="reservation-section">
-                        <div class="reservation-section-grid">
-                            <div class="reservation-image-panel">
-                                <div class="reservation-panel-image">
-                                    <img src="images/sky.jpg" alt="입퇴실 안내 이미지">
-                                </div>
-                                <!-- 하드코딩 Fixed -->
-                                <div class="reservation-panel-title">Check In/Out</div>
-                            </div>
-                            <div class="reservation-content-area">
-                                <div class="reservation-box animate-element" data-section="checkin-info">
-                                    <!-- 숙소 입퇴실 안내 타이틀 매핑 -->
-                                    <h3 class="reservation-box-title">입/퇴실 안내</h3>
-                                    <!-- 숙소 입퇴실 안내 내용 매핑 -->
-                                    <div class="reservation-box-content">
-                                        <div class="checkin-checkout-times">
-                                            <div class="detail-item">
-                                                <span class="detail-label">체크인</span>
-                                                <span class="detail-value" data-checkin-time></span>
-                                            </div>
-                                            <div class="detail-item">
-                                                <span class="detail-label">체크아웃</span>
-                                                <span class="detail-value" data-checkout-time></span>
-                                            </div>
-                                        </div>
-                                        <div class="operation-info-section">
-                                            <div class="reservation-text-content operation-info-text" data-operation-info></div>
-                                        </div>
-                                    </div>
+                    <!-- 환불/취소수수료 섹션 -->
+                    <div class="reservation-info-box">
+                        <h3 class="reservation-info-title">환불/취소수수료</h3>
+                        <div class="reservation-info-content-text">
+                            <div class="refund-table-section">
+                                <h4 class="refund-section-title">환불 규정표</h4>
+                                <div class="refund-table-wrapper">
+                                    <table class="refund-table">
+                                        <thead>
+                                            <tr>
+                                                <th>취소 시점</th>
+                                                <th>환불율</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="refund-table-body">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="reservation-section">
-                        <div class="reservation-section-grid">
-                            <div class="reservation-image-panel">
-                                <div class="reservation-panel-image">
-                                    <img src="images/flower.jpg" alt="환불 안내 이미지">
-                                </div>
-                                <!-- 하드코딩 Fixed -->
-                                <div class="reservation-panel-title">Refund Policy</div>
-                            </div>
-                            <div class="reservation-content-area">
-                                <div class="reservation-box refund-box animate-element" data-section="refund-policy">
-                                    <!-- 숙소 환불/취소수수료 타이틀 매핑 -->
-                                    <h3 class="reservation-box-title">환불/취소수수료</h3>
-                                <div class="refund-content">
-                                    <div class="refund-table-section">
-                                        <h4 class="refund-section-title">환불 규정표</h4>
-                                        <div class="refund-table-wrapper">
-                                            <!-- 환불 정책 테이블 매핑 -->
-                                            <table class="refund-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>취소 시점</th>
-                                                        <th>환불율</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="refund-table-body">
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="refund-text-section">
-                                        <h4 class="refund-section-title">취소 및 환불 안내</h4>
-                                        <!-- 환불 정책 안내문 텍스트 매핑 : 없을 시 display : none -->
-                                        <div class="refund-notes reservation-text-content" data-refund-notes></div>
-                                    </div>
-                                </div>
+                            <div class="refund-text-section">
+                                <h4 class="refund-section-title">취소 및 환불 안내</h4>
+                                <div class="refund-notes" data-refund-notes></div>
                             </div>
                         </div>
                     </div>
@@ -218,18 +153,6 @@
     <!-- Page-specific script -->
     <script src="js/pages/reservation.js"></script>
 
-    <script>
-        // 타이핑 애니메이션 초기화
-        document.addEventListener('DOMContentLoaded', function() {
-            // 타이핑 애니메이션 완료 후 처리
-            const typingText = document.querySelector('.typing-text');
-            if (typingText) {
-                setTimeout(() => {
-                    typingText.classList.add('typed');
-                }, 3200); // 1.2s delay + 2s animation
-            }
-        });
-    </script>
 
 </body>
 </html>

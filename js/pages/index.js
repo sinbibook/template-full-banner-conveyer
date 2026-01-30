@@ -365,8 +365,11 @@
     function animateImageSwap() {
         isTransitioning = true;
 
-        // 인덱스 증가
-        currentEssenceSlide = (currentEssenceSlide + 1) % essenceImages.length;
+        // 모바일에서는 순서대로 이미지 변경
+        if (window.innerWidth <= 768) {
+            mobileSequentialImageChange();
+            return;
+        }
 
         // Get current images (정확한 선택자 사용)
         const thumb1Img = document.querySelector('.essence-thumb[data-slide="0"] img');
@@ -376,7 +379,7 @@
         // Get containers (올바른 컨테이너 선택)
         const thumb1Container = document.querySelector('.essence-thumb[data-slide="0"] .essence-thumb-container');
         const thumb2Container = document.querySelector('.essence-thumb[data-slide="1"] .essence-thumb-container');
-        const mainContainer = document.querySelector('.essence-slider-container'); // 썸네일과 동일한 레벨
+        const mainContainer = document.querySelector('.essence-slider-container');
 
         // 필수 요소들이 있는지 확인
         if (!thumb1Img || !thumb2Img || !mainImg || !thumb1Container || !thumb2Container || !mainContainer) {
@@ -384,180 +387,187 @@
             return;
         }
 
+        // 이미지 배열이 준비되지 않았으면 현재 DOM에서 추출
+        if (essenceImages.length === 0) {
+            essenceImages = [
+                thumb1Img.src,
+                thumb2Img.src,
+                mainImg.src
+            ];
+        }
 
-        // Store current image sources for wipe overlay
+        // 인덱스 증가
+        currentEssenceSlide = (currentEssenceSlide + 1) % 3; // 항상 3개 이미지로 고정
+
+        // Store current image sources
         const currentThumb1Src = thumb1Img.src;
         const currentThumb2Src = thumb2Img.src;
         const currentMainSrc = mainImg.src;
 
-        // 컨베이어 벨트 방식: 오른쪽→왼쪽 이동
-        // 현재 메인 이미지 → 썸네일2로 이동
-        // 현재 썸네일2 → 썸네일1로 이동
-        // 현재 썸네일1 → 메인으로 이동 (다시 큰 이미지)
+        // 컨베이어 벨트 로직: 현재 표시된 이미지들을 배열로 관리
+        let currentDisplayed = [currentThumb1Src, currentThumb2Src, currentMainSrc];
 
-        // essenceImages 배열을 사용한 순환 (확실한 3개 이미지 보장)
-        if (essenceImages.length < 3) {
+        // 다음 이미지 세트 계산 (한 칸씩 이동)
+        const nextDisplayed = [
+            currentDisplayed[2], // 메인 → 썸네일1
+            currentDisplayed[0], // 썸네일1 → 썸네일2
+            currentDisplayed[1]  // 썸네일2 → 메인
+        ];
+
+        // 새로운 이미지 소스들
+        const newThumb1Src = nextDisplayed[0];
+        const newThumb2Src = nextDisplayed[1];
+        const newMainSrc = nextDisplayed[2];
+
+        // 실제 메인 컨테이너 찾기
+        const actualMainContainer = mainImg.parentElement;
+
+        // 모든 컨테이너에 적절한 스타일 설정
+        [thumb1Container, thumb2Container, actualMainContainer].forEach(container => {
+            container.style.overflow = 'hidden';
+            container.style.position = 'relative';
+        });
+
+        // 먼저 실제 이미지를 즉시 교체 (깜박임 제거)
+        thumb1Img.src = newThumb1Src;
+        thumb2Img.src = newThumb2Src;
+        mainImg.src = newMainSrc;
+
+        // wipe 효과를 위한 오버레이 생성 (이전 이미지로)
+        const wipeOverlay1 = document.createElement('div');
+        wipeOverlay1.style.cssText = `
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('${currentThumb1Src}') center/cover;
+            border-radius: 0;
+            z-index: 15;
+            transition: width 0.8s ease-in-out;
+        `;
+
+        const wipeOverlay2 = document.createElement('div');
+        wipeOverlay2.style.cssText = `
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('${currentThumb2Src}') center/cover;
+            border-radius: 0;
+            z-index: 15;
+            transition: width 0.8s ease-in-out;
+        `;
+
+        const wipeOverlayMain = document.createElement('div');
+        wipeOverlayMain.style.cssText = `
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('${currentMainSrc}') center/cover;
+            border-radius: 0;
+            z-index: 15;
+            transition: width 0.8s ease-in-out;
+        `;
+
+        // 오버레이 추가
+        thumb1Container.appendChild(wipeOverlay1);
+        thumb2Container.appendChild(wipeOverlay2);
+        actualMainContainer.appendChild(wipeOverlayMain);
+
+        // wipe 애니메이션 시작
+        requestAnimationFrame(() => {
+            wipeOverlay1.style.width = '0';
+            wipeOverlay2.style.width = '0';
+            wipeOverlayMain.style.width = '0';
+        });
+
+        // 애니메이션 완료 후 정리
+        setTimeout(() => {
+            // 오버레이 제거
+            if (thumb1Container.contains(wipeOverlay1)) thumb1Container.removeChild(wipeOverlay1);
+            if (thumb2Container.contains(wipeOverlay2)) thumb2Container.removeChild(wipeOverlay2);
+            if (actualMainContainer.contains(wipeOverlayMain)) actualMainContainer.removeChild(wipeOverlayMain);
+
+            isTransitioning = false;
+        }, 850); // 0.8초 애니메이션 + 여유시간
+    }
+
+
+
+    function mobileSequentialImageChange() {
+        // 모바일에서 세 개의 이미지를 순서대로 wipe 효과로 변경
+        const mainImg = document.querySelector('.essence-slider-container [data-essence-image]');
+        const mainContainer = document.querySelector('.essence-slider-container');
+
+        // 이미지 배열 다시 수집 (사용자 업로드 이미지 포함)
+        if (!essenceImages || essenceImages.length === 0) {
+            // window.essenceImageData에서 사용자 업로드 이미지 가져오기
+            if (window.essenceImageData && window.essenceImageData.images) {
+                essenceImages = window.essenceImageData.images;
+            } else {
+                // DOM에서 현재 이미지들 추출
+                const thumb1Img = document.querySelector('.essence-thumb[data-slide="0"] img');
+                const thumb2Img = document.querySelector('.essence-thumb[data-slide="1"] img');
+                if (thumb1Img && thumb2Img && mainImg) {
+                    essenceImages = [thumb1Img.src, thumb2Img.src, mainImg.src];
+                }
+            }
+        }
+
+        if (!mainImg || !mainContainer || !essenceImages || essenceImages.length === 0) {
             isTransitioning = false;
             return;
         }
 
-        // 컨베이어 벨트 방식: 썸네일2 → 메인으로 이동이 핵심
-        // 썸네일1 → 썸네일2, 메인 → 썸네일1, 썸네일2 → 메인
-        const newThumb1Src = currentMainSrc;     // 메인이 썸네일1로 이동
-        const newThumb2Src = currentThumb1Src;   // 썸네일1이 썸네일2로 이동
-        const newMainSrc = currentThumb2Src;     // 썸네일2가 메인으로 이동 (핵심 이동)
+        // 다음 이미지 인덱스 계산 (배열 길이에 맞춤)
+        currentEssenceSlide = (currentEssenceSlide + 1) % essenceImages.length;
 
+        // 현재 이미지 저장
+        const currentSrc = mainImg.src;
+        const newSrc = essenceImages[currentEssenceSlide];
 
-        // Create new images for underneath
-        const newThumb1Img = document.createElement('img');
-        newThumb1Img.src = newThumb1Src;
-        newThumb1Img.style.position = 'absolute';
-        newThumb1Img.style.top = '0';
-        newThumb1Img.style.left = '0';
-        newThumb1Img.style.width = '100%';
-        newThumb1Img.style.height = '100%';
-        newThumb1Img.style.objectFit = 'cover';
-        newThumb1Img.style.borderRadius = '100px 100px 0 0';
-        newThumb1Img.style.maxWidth = '100%';
-        newThumb1Img.style.maxHeight = '100%';
-
-        const newThumb2Img = document.createElement('img');
-        newThumb2Img.src = newThumb2Src;
-        newThumb2Img.style.position = 'absolute';
-        newThumb2Img.style.top = '0';
-        newThumb2Img.style.left = '0';
-        newThumb2Img.style.width = '100%';
-        newThumb2Img.style.height = '100%';
-        newThumb2Img.style.objectFit = 'cover';
-        newThumb2Img.style.borderRadius = '100px 100px 0 0';
-        newThumb2Img.style.maxWidth = '100%';
-        newThumb2Img.style.maxHeight = '100%';
-
-        const newMainImg = document.createElement('img');
-        newMainImg.src = newMainSrc;
-        newMainImg.style.position = 'absolute';
-        newMainImg.style.top = '0';
-        newMainImg.style.left = '0';
-        newMainImg.style.width = '100%';
-        newMainImg.style.height = '100%';
-        newMainImg.style.objectFit = 'cover';
-        newMainImg.style.borderRadius = '275px 275px 0 0';
-        newMainImg.style.maxWidth = '100%';
-        newMainImg.style.maxHeight = '100%';
-        newMainImg.style.overflow = 'hidden';
-        newMainImg.style.display = 'block';
-        newMainImg.style.contain = 'layout style paint'; // CSS containment
-        newMainImg.style.zIndex = '1';
-
-        // Ensure containers have proper overflow settings
-        thumb1Container.style.overflow = 'hidden';
-        thumb2Container.style.overflow = 'hidden';
+        // 컨테이너 설정
         mainContainer.style.overflow = 'hidden';
         mainContainer.style.position = 'relative';
 
-        // 메인 이미지의 모든 상위 컨테이너도 overflow 설정
-        const essenceSlides = document.querySelector('.essence-slides');
-        if (essenceSlides) {
-            essenceSlides.style.overflow = 'hidden';
-            essenceSlides.style.position = 'relative';
-        }
+        // 새 이미지로 즉시 교체
+        mainImg.src = newSrc;
 
-        // Insert new images underneath
-        thumb1Container.insertBefore(newThumb1Img, thumb1Img);
-        thumb2Container.insertBefore(newThumb2Img, thumb2Img);
+        // wipe 효과를 위한 오버레이 생성 (이전 이미지로)
+        const wipeOverlay = document.createElement('div');
+        wipeOverlay.style.cssText = `
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('${currentSrc}') center/cover;
+            border-radius: 0;
+            z-index: 15;
+            transition: width 0.8s ease-in-out;
+        `;
 
-        // 메인 이미지는 실제 이미지가 있는 .essence-slide에 삽입
-        const actualMainContainer = mainImg.parentElement; // .essence-slide
+        // 오버레이 추가
+        mainContainer.appendChild(wipeOverlay);
 
-        // 컨테이너 overflow 강제 설정 (썸네일과 동일하게)
-        actualMainContainer.style.overflow = 'hidden';
-        actualMainContainer.style.position = 'relative';
-        actualMainContainer.style.width = '100%';
-        actualMainContainer.style.height = '100%';
-        // 돔 모양 클리핑: border-radius 275px 275px 0 0과 동일한 효과
-        actualMainContainer.style.clipPath = 'inset(0 0 0 0 round 275px 275px 0 0)';
-        actualMainContainer.style.isolation = 'isolate';
+        // wipe 애니메이션 시작
+        requestAnimationFrame(() => {
+            wipeOverlay.style.width = '0';
+        });
 
-        actualMainContainer.insertBefore(newMainImg, mainImg);
-
-        // Create wipe overlays
-        const wipeOverlay1 = document.createElement('div');
-        wipeOverlay1.style.position = 'absolute';
-        wipeOverlay1.style.top = '0';
-        wipeOverlay1.style.right = '0';
-        wipeOverlay1.style.width = '100%';
-        wipeOverlay1.style.height = '100%';
-        wipeOverlay1.style.background = `url('${currentThumb1Src}') center/cover`;
-        wipeOverlay1.style.borderRadius = '100px 100px 0 0';
-        wipeOverlay1.style.zIndex = '10';
-        wipeOverlay1.style.transition = 'width 0.8s ease-in-out';
-
-        const wipeOverlay2 = document.createElement('div');
-        wipeOverlay2.style.position = 'absolute';
-        wipeOverlay2.style.top = '0';
-        wipeOverlay2.style.right = '0';
-        wipeOverlay2.style.width = '100%';
-        wipeOverlay2.style.height = '100%';
-        wipeOverlay2.style.background = `url('${currentThumb2Src}') center/cover`;
-        wipeOverlay2.style.borderRadius = '100px 100px 0 0';
-        wipeOverlay2.style.zIndex = '10';
-        wipeOverlay2.style.transition = 'width 0.8s ease-in-out';
-
-        const wipeOverlayMain = document.createElement('div');
-        wipeOverlayMain.style.position = 'absolute';
-        wipeOverlayMain.style.top = '0';
-        wipeOverlayMain.style.right = '0';
-        wipeOverlayMain.style.width = '100%';
-        wipeOverlayMain.style.height = '100%';
-        wipeOverlayMain.style.background = `url('${currentMainSrc}') center/cover`;
-        wipeOverlayMain.style.borderRadius = '275px 275px 0 0';
-        wipeOverlayMain.style.zIndex = '10';
-        wipeOverlayMain.style.transition = 'width 0.8s ease-in-out';
-        wipeOverlayMain.style.contain = 'layout style paint';
-        wipeOverlayMain.style.maxWidth = '100%';
-        wipeOverlayMain.style.maxHeight = '100%';
-        wipeOverlayMain.style.overflow = 'hidden';
-
-        // Add overlays
-        thumb1Container.appendChild(wipeOverlay1);
-        thumb2Container.appendChild(wipeOverlay2);
-        actualMainContainer.appendChild(wipeOverlayMain); // 실제 메인 컨테이너에 추가
-
-        // Start wipe animation (메인 이미지 와이프를 더 강조)
+        // 애니메이션 완료 후 정리
         setTimeout(() => {
-            // 썸네일들은 약간 빠르게
-            wipeOverlay1.style.width = '0';
-            wipeOverlay2.style.width = '0';
-
-            // 메인 이미지 와이프는 약간 늦게 시작 (더 눈에 띄게)
-            setTimeout(() => {
-                wipeOverlayMain.style.width = '0';
-            }, 100);
-        }, 50);
-
-        // Clean up after animation (순차적으로 처리)
-        setTimeout(() => {
-            // 1. 먼저 실제 이미지 교체
-            thumb1Img.src = newThumb1Src;
-            thumb2Img.src = newThumb2Src;
-            mainImg.src = newMainSrc;
-
-            // 2. 약간의 딜레이 후 overlay와 임시 이미지 제거
-            setTimeout(() => {
-                // Remove temporary elements safely
-                if (thumb1Container.contains(newThumb1Img)) thumb1Container.removeChild(newThumb1Img);
-                if (thumb2Container.contains(newThumb2Img)) thumb2Container.removeChild(newThumb2Img);
-                if (actualMainContainer.contains(newMainImg)) actualMainContainer.removeChild(newMainImg);
-                if (thumb1Container.contains(wipeOverlay1)) thumb1Container.removeChild(wipeOverlay1);
-                if (thumb2Container.contains(wipeOverlay2)) thumb2Container.removeChild(wipeOverlay2);
-                if (actualMainContainer.contains(wipeOverlayMain)) actualMainContainer.removeChild(wipeOverlayMain);
-
-                isTransitioning = false;
-            }, 50);
-        }, 900); // wipe 애니메이션(800ms) + 여유시간
+            // 오버레이 제거
+            if (mainContainer.contains(wipeOverlay)) {
+                mainContainer.removeChild(wipeOverlay);
+            }
+            isTransitioning = false;
+        }, 850); // 0.8초 애니메이션 + 여유시간
     }
-
-
 
     function nextEssenceSlide() {
         showEssenceSlide(currentEssenceSlide + 1);
@@ -654,19 +664,19 @@
         } else {
             // 데스크탑: 기존 세밀한 애니메이션
             animations = [
-                // 히어로 영역: 숙소명, 타이틀, 설명이 순차적으로 오른쪽에서 등장
+                // 히어로 영역: 숙소명, 타이틀, 설명이 순차적으로 아래에서 등장
                 {
-                    type: 'slideLeft',
+                    type: 'slideUp',
                     selector: '.hero-property-name',
                     options: { delay: 0 }
                 },
                 {
-                    type: 'slideLeft',
+                    type: 'slideUp',
                     selector: '.hero-title',
                     options: { delay: 600 }
                 },
                 {
-                    type: 'slideLeft',
+                    type: 'slideUp',
                     selector: '.hero-description',
                     options: { delay: 1200 }
                 },
@@ -720,7 +730,7 @@
                     options: { delay: 400 }
                 },
                 // gallery-item들도 스크롤 애니메이션 제거 - 항상 보이도록 설정
-                // 클로징 영역: 타이틀, 설명, 버튼이 순차적으로 아래에서 위로 등장
+                // 클로징 영역: 타이틀, 설명이 순차적으로 아래에서 위로 등장
                 {
                     type: 'slideUp',
                     selector: '.closing-title',
@@ -730,11 +740,6 @@
                     type: 'slideUp',
                     selector: '.closing-description',
                     options: { delay: 600 }
-                },
-                {
-                    type: 'slideUp',
-                    selector: '.closing-button',
-                    options: { delay: 1200 }
                 }
             ];
         }
@@ -744,7 +749,6 @@
 
     // ScrollAnimations 클래스가 로드되지 않았을 때의 대체 애니메이션
     function initFallbackAnimations() {
-        console.log('Using fallback animations for index page');
 
         // 스크롤 애니메이션이 필요한 요소들만 관리 (room-item, gallery-item 제외)
         const elementsToAnimate = [
@@ -785,6 +789,136 @@
         });
     }
 
+    // New Rooms Slider functionality - Hero slider style with active classes
+    let currentRoomIndex = 0;
+    let totalRooms = 0;
+    let roomItems = [];
+
+    function initRoomsSlider() {
+        const roomsGrid = document.querySelector('.rooms-grid');
+        if (!roomsGrid) return;
+
+        // Get room items (no DOM restructuring needed)
+        roomItems = Array.from(roomsGrid.querySelectorAll('.room-item'));
+        totalRooms = roomItems.length;
+
+        if (totalRooms === 0) return;
+
+        // Initialize positions with active classes (hero slider style)
+        updateRoomPositions();
+
+        // Add navigation arrows to the active (center) room only
+        setupNavigationButtons();
+
+        // Set initial button states
+        updateNavigationButtons();
+    }
+
+    function setupNavigationButtons() {
+        const roomsContainer = document.querySelector('.rooms-container');
+        if (!roomsContainer) return;
+
+        // Create prev button
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'rooms-nav-btn rooms-nav-prev';
+        prevBtn.innerHTML = `
+            <span class="nav-symbol">‹</span>
+            <span class="nav-text">prev</span>
+        `;
+
+        // Create next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'rooms-nav-btn rooms-nav-next';
+        nextBtn.innerHTML = `
+            <span class="nav-symbol">›</span>
+            <span class="nav-text">next</span>
+        `;
+
+        // Add event listeners
+        prevBtn.addEventListener('click', moveToPrevRoom);
+        nextBtn.addEventListener('click', moveToNextRoom);
+
+        // Append buttons directly to rooms container
+        roomsContainer.appendChild(prevBtn);
+        roomsContainer.appendChild(nextBtn);
+    }
+
+    function moveToPrevRoom() {
+        if (currentRoomIndex === 0) return; // Don't move if at first room
+        currentRoomIndex = (currentRoomIndex - 1 + totalRooms) % totalRooms;
+        updateRoomPositions();
+    }
+
+    function moveToNextRoom() {
+        if (currentRoomIndex === totalRooms - 1) return; // Don't move if at last room
+        currentRoomIndex = (currentRoomIndex + 1) % totalRooms;
+        updateRoomPositions();
+    }
+
+    function updateNavigationButtons() {
+        const prevBtn = document.querySelector('.rooms-nav-prev');
+        const nextBtn = document.querySelector('.rooms-nav-next');
+
+        if (!prevBtn || !nextBtn) return;
+
+        // Remove disabled class from both buttons
+        prevBtn.classList.remove('disabled');
+        nextBtn.classList.remove('disabled');
+
+        // Add disabled class if at first/last room
+        if (currentRoomIndex === 0) {
+            prevBtn.classList.add('disabled');
+        }
+        if (currentRoomIndex === totalRooms - 1) {
+            nextBtn.classList.add('disabled');
+        }
+    }
+
+    function updateRoomPositions() {
+        if (!roomItems.length) return;
+
+        // First fade out current room
+        roomItems.forEach(room => {
+            if (room.classList.contains('active')) {
+                room.style.opacity = '0';
+            }
+        });
+
+        // After fade out, switch rooms and fade in
+        setTimeout(() => {
+            // Remove all state classes from all rooms
+            roomItems.forEach(room => {
+                room.classList.remove('active', 'next', 'prev', 'hidden');
+            });
+
+            // Apply active class system like hero slider
+            roomItems.forEach((room, index) => {
+                // Calculate position relative to current index
+                const position = (index - currentRoomIndex + totalRooms) % totalRooms;
+
+                // Apply appropriate class based on position
+                if (position === 0) {
+                    room.classList.add('active');
+                    // Fade in the new active room
+                    setTimeout(() => {
+                        room.style.opacity = '1';
+                    }, 50);
+                } else if (position === 1) {
+                    room.classList.add('next');
+                } else if (position === totalRooms - 1) {
+                    room.classList.add('prev');
+                } else {
+                    room.classList.add('hidden');
+                }
+            });
+
+            // Update navigation button states
+            updateNavigationButtons();
+        }, 300); // Wait for fade out
+    }
+
+    // Drag functionality removed - using navigation buttons only
+
     // Initialize all components when DOM is loaded
     let isInitialized = false;
 
@@ -795,6 +929,7 @@
         // 초기화 순서 보장
         setTimeout(() => {
             initHeroSlider();
+            initRoomsSlider();
         }, 100);
 
         initSignatureThumbnails();
@@ -806,6 +941,7 @@
     // 전역 노출 (preview-handler와 mapper에서 사용)
     window.initHeroSlider = initHeroSlider;
     window.initEssenceSlider = initEssenceSlider;
+    window.initRoomsSlider = initRoomsSlider;
     window.initScrollAnimations = initScrollAnimations;
 
     // Try multiple initialization strategies for better compatibility
@@ -825,9 +961,103 @@
         }
     });
 
-    // IndexMapper 완료 후 히어로 슬라이더 재초기화
+    // Initialize infinite gallery slider
+    function initInfiniteGallery() {
+        const galleryGrid = document.querySelector('.gallery-grid');
+        if (!galleryGrid) return;
+
+        const originalItems = galleryGrid.querySelectorAll('.gallery-item');
+        if (originalItems.length === 0) return;
+
+        // Clone items to create infinite effect
+        const itemsToClone = Math.ceil(window.innerWidth / 320) + originalItems.length;
+
+        for (let i = 0; i < itemsToClone; i++) {
+            const itemToClone = originalItems[i % originalItems.length];
+            const clonedItem = itemToClone.cloneNode(true);
+            galleryGrid.appendChild(clonedItem);
+        }
+    }
+
+    // Gallery Auto Slider
+    function initGalleryAutoSlider() {
+        const galleryGrid = document.querySelector('.gallery-grid');
+        if (!galleryGrid) return;
+
+        const galleryItems = galleryGrid.querySelectorAll('.gallery-item');
+        if (galleryItems.length <= 1) return;
+
+        let currentIndex = 0;
+        let autoSlideInterval;
+        const slideInterval = 4000; // 4초마다 자동 슬라이드
+
+        function scrollToItem(index) {
+            if (!galleryItems[index]) return;
+
+            const itemWidth = galleryItems[index].offsetWidth + 20; // gap 포함
+            const scrollPosition = index * itemWidth;
+
+            galleryGrid.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % galleryItems.length;
+            scrollToItem(currentIndex);
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, slideInterval);
+        }
+
+        function stopAutoSlide() {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        }
+
+        // 마우스 오버 시 자동 슬라이드 정지
+        galleryGrid.addEventListener('mouseenter', stopAutoSlide);
+        galleryGrid.addEventListener('mouseleave', startAutoSlide);
+
+        // 터치 시작 시 자동 슬라이드 정지
+        galleryGrid.addEventListener('touchstart', stopAutoSlide);
+        galleryGrid.addEventListener('touchend', () => {
+            // 터치 후 3초 뒤 다시 시작
+            setTimeout(startAutoSlide, 3000);
+        });
+
+        // 스크롤 이벤트로 현재 위치 추적
+        galleryGrid.addEventListener('scroll', () => {
+            const scrollLeft = galleryGrid.scrollLeft;
+            const itemWidth = galleryItems[0].offsetWidth + 20;
+            currentIndex = Math.round(scrollLeft / itemWidth);
+        });
+
+        // 갤러리가 화면에 보일 때 자동 슬라이드 시작
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startAutoSlide();
+                } else {
+                    stopAutoSlide();
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        observer.observe(galleryGrid);
+    }
+
+    // IndexMapper 완료 후 히어로 슬라이더와 갤러리 재초기화
     window.addEventListener('mapperReady', function() {
         initHeroSlider();
+        initGalleryAutoSlider();
+        setTimeout(initInfiniteGallery, 500); // 갤러리 이미지 로드 후 복제
     });
 
 })();

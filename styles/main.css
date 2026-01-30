@@ -61,15 +61,6 @@
 }
 
 /* �t� � (Prologue) */
-.page-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 3;
-    text-align: center;
-    opacity: 1;
-}
 
 /* page-title h1 스타일은 common.css에서 관리 */
 
@@ -138,11 +129,8 @@
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
-    /* 전체 컨테이너에 그라데이션 적용 */
-    background: linear-gradient(to bottom,
-        var(--color-primary) 0%,
-        var(--color-secondary) 50%,
-        var(--color-secondary) 100%);
+    /* 전체 컨테이너에 단색 배경 적용 */
+    background: var(--color-primary);
 }
 
 /* 소개 블록 - 배경 제거 */
@@ -156,6 +144,7 @@
     background: transparent;
 }
 
+
 /* 개별 블록 배경 스타일 제거 - 컨테이너 레벨에서 그라데이션 적용 */
 
 .about-block:last-child {
@@ -166,16 +155,6 @@
     position: relative;
 }
 
-.about-content::after {
-    content: '';
-    display: block;
-    width: 100vw;
-    height: 100px;
-    background: var(--color-secondary);
-    opacity: 0.8;
-    position: relative;
-    left: 0;
-}
 
 /* 짝수 번째 about-block - 반대 레이아웃 */
 .about-block:nth-child(even) .about-image {
@@ -258,7 +237,6 @@
     justify-content: center;
     opacity: 0;
     transition: opacity 0.8s ease, transform 0.8s ease;
-    z-index: 1;
 }
 
 /* 홀수 블록 텍스트 - 오른쪽에서 나타남 */
@@ -275,14 +253,14 @@
     top: -50px;
     width: 1px;
     height: calc(100% + 100px);
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(51, 51, 51, 0.3);
 }
 
 .about-title {
     font-family: var(--font-ko-main);
     font-size: 26px;
     font-weight: 700;
-    color: #ffffff;
+    color: #333;
     margin: 0 0 20px 0;
     line-height: 1.3;
     opacity: 1;
@@ -293,7 +271,7 @@
 .about-description {
     font-family: var(--font-ko-sub);
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.95);
+    color: #333;
     line-height: 1.8;
     margin: 0;
     opacity: 1;
@@ -303,11 +281,11 @@
 
 /* 모든 블록 어두운 색상 텍스트로 통일 */
 .about-block .about-title {
-    color: var(--color-primary);
+    color: #333;
 }
 
 .about-block .about-description {
-    color: var(--color-primary);
+    color: #333;
 }
 
 .hero-title {
@@ -478,7 +456,7 @@
     /* main-container 스타일은 common.css로 이동 */
 
     .hero-title {
-        font-size: 28px;
+        font-size: 22px;
     }
 
     .hero-description {

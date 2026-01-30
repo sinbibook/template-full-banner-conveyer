@@ -82,7 +82,7 @@ html.menu-open {
 }
 
 .logo-text {
-    font-family: 'Roustel', sans-serif;
+    font-family: var(--font-en-main);
     font-size: 28px;
     font-weight: normal;
     color: white;
@@ -111,12 +111,10 @@ html.menu-open {
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    gap: 5px;
-    padding: 5px 3px 3px 3px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid white;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     user-select: none;
@@ -200,18 +198,86 @@ html.menu-open {
     position: absolute;
 }
 
-/* Circular Button Base Styles */
-.circular-reservation-btn,
-.circular-ybs-btn {
-    width: 80px;
-    height: 80px;
-    position: relative;
+
+/* Simple YBS Button */
+.simple-ybs-btn {
+    padding: 12px 28px;
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 50px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-    z-index: 1;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    order: 1;
+    display: none; /* 기본 숨김 - ybsId 있을 때만 JS로 표시 */
+}
+
+.simple-ybs-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.ybs-text {
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: var(--font-en-main);
+}
+
+.top-header.scrolled .simple-ybs-btn {
+    background: var(--color-secondary, #658399);
+    border-color: var(--color-secondary, #658399);
+}
+
+.top-header.scrolled .simple-ybs-btn .ybs-text {
+    color: white;
+}
+
+.top-header.scrolled .simple-ybs-btn:hover {
+    background: var(--color-secondary, #658399);
+    opacity: 0.8;
+}
+
+/* Simple Reservation Button */
+.simple-reservation-btn {
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    order: 2;
+}
+
+.simple-reservation-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.reservation-text {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: var(--font-en-main);
+}
+
+.top-header.scrolled .simple-reservation-btn {
+    background: var(--color-secondary, #658399);
+    border-color: var(--color-secondary, #658399);
+}
+
+.top-header.scrolled .simple-reservation-btn .reservation-text {
+    color: white;
+}
+
+.top-header.scrolled .simple-reservation-btn:hover {
+    background: var(--color-secondary, #658399);
+    opacity: 0.8;
 }
 
 /* Desktop button ordering */
@@ -221,12 +287,11 @@ html.menu-open {
     gap: 20px;
 }
 
-.circular-ybs-btn {
+.simple-ybs-btn {
     order: 1;
-    display: none; /* 기본 숨김 - ybsId 있을 때만 JS로 표시 */
 }
 
-.circular-reservation-btn {
+.simple-reservation-btn {
     order: 2;
 }
 
@@ -234,63 +299,6 @@ html.menu-open {
     order: 3;
 }
 
-.circular-reservation-btn:hover,
-.circular-ybs-btn:hover {
-    transform: scale(1.05);
-}
-
-.circular-reservation-btn .rotating-text,
-.circular-ybs-btn .rotating-text {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    animation: rotate 10s linear infinite;
-}
-
-.circular-reservation-btn text,
-.circular-ybs-btn text {
-    fill: white;
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 3.5px;
-    text-transform: uppercase;
-}
-
-.circular-reservation-btn .btn-center,
-.circular-ybs-btn .btn-center {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.circular-reservation-btn .btn-center svg {
-    width: 24px;
-    height: 24px;
-}
-
-.circular-reservation-btn:hover .btn-center,
-.circular-ybs-btn:hover .btn-center {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
 
 /* Old Reservation Button (for mobile menu) */
 .reservation-btn {
@@ -305,6 +313,7 @@ html.menu-open {
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    font-family: var(--font-en-main);
 }
 
 .reservation-btn:hover {
@@ -313,25 +322,7 @@ html.menu-open {
     transform: translateY(-2px);
 }
 
-.top-header.scrolled .circular-reservation-btn text,
-.top-header.scrolled .circular-ybs-btn text {
-    fill: var(--color-secondary, #658399);
-    opacity: 0.8;
-}
 
-.top-header.scrolled .circular-reservation-btn .btn-center,
-.top-header.scrolled .circular-ybs-btn .btn-center {
-    background: var(--color-secondary, #658399);
-    color: white;
-    border-color: var(--color-secondary, #658399);
-}
-
-.top-header.scrolled .circular-reservation-btn:hover .btn-center,
-.top-header.scrolled .circular-ybs-btn:hover .btn-center {
-    background: var(--color-secondary, #658399);
-    opacity: 0.8;
-    border-color: var(--color-secondary, #658399);
-}
 
 .top-header.scrolled .header-buttons .reservation-btn {
     background: var(--color-secondary, #658399);
@@ -398,7 +389,7 @@ body .header-opened.expanded {
 }
 
 .side-logo-text {
-    font-family: 'Roustel', sans-serif;
+    font-family: var(--font-en-main);
     font-size: 24px;
     font-weight: normal;
     color: white;
@@ -424,7 +415,7 @@ body .header-opened.expanded {
 }
 
 .dropdown-section-title {
-    font-family: 'Roustel', sans-serif;
+    font-family: var(--font-en-main);
     font-size: 18px;
     font-weight: normal;
     color: white;
@@ -518,12 +509,18 @@ body .header-opened.expanded {
     }
 
     .logo-text {
-        font-size: 24px;
+        font-size: 18px;
     }
 
     .reservation-btn {
         padding: 10px 20px;
         font-size: 12px;
+    }
+
+    /* 모바일에서는 simple 버튼들 숨기기 */
+    .simple-ybs-btn,
+    .simple-reservation-btn {
+        display: none;
     }
 
     /* 모바일에서는 헤더에 메뉴 버튼만 표시 */

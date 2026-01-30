@@ -18,19 +18,15 @@
 </head>
 <body>
 
-    <section class="page-hero-section animate-hero">
+    <section class="page-hero-section">
         <!-- CUSTOM FIELD : 메인 소개 섹션 이미지 매핑 1장 -->
         <div class="hero-background">
             <img data-main-hero-img>
         </div>
-        <!-- 페이지 제목 하드코딩 fixed -->
-        <div class="page-title">
-            <span class="property-name-kr" data-main-property-name-kr></span>
-            <h1 class="typing-text" data-text="Location" style="--text-length: 8;">Location</h1>
-        </div>
-        <!-- Scroll Down Icon -->
-        <div class="scroll-down-icon" onclick="scrollToContent()">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Scroll Down Arrow - 하단 중앙에 작은 글씨로 -->
+        <div class="scroll-down-section" onclick="scrollToContent()">
+            <span class="scroll-text">Scroll Down</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7 10L12 15L17 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </div>
@@ -38,15 +34,10 @@
 
     <main class="directions-content scroll-target">
         <div class="main-container">
-            <div class="logo-line-container animate-element">
-                <!-- 숙소 영문명 매핑 fixed -->
-                <span class="logo-text-line" data-main-property-name-en></span>
-                <div class="horizontal-line"></div>
-            </div>
 
             <!-- CUSTOM FIELD : 메인 소개 섹션 타이틀 매핑 -->
             <div class="hero-content animate-element">
-                <h2 class="hero-title" data-directions-title></h2>
+                <h2 class="hero-title title-with-circle-and-line" data-directions-title></h2>
             </div>
 
             <!-- 지도 섹션 -->
@@ -119,18 +110,6 @@
         });
     </script>
 
-    <script>
-        // 타이핑 애니메이션 초기화
-        document.addEventListener('DOMContentLoaded', function() {
-            // 타이핑 애니메이션 완료 후 처리
-            const typingText = document.querySelector('.typing-text');
-            if (typingText) {
-                setTimeout(() => {
-                    typingText.classList.add('typed');
-                }, 3200); // 1.2s delay + 2s animation
-            }
-        });
-    </script>
 
 </body>
 </html>

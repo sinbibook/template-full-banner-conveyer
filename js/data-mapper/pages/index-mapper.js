@@ -80,7 +80,6 @@ class IndexMapper extends BaseDataMapper {
      * 직접적인 애니메이션 등록 (fallback)
      */
     initDirectAnimations() {
-        console.log('Index Mapper: Using direct animations');
 
         const animationPairs = [
             { selector: '.room-item', className: 'animate-fade-in' },
