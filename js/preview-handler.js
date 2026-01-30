@@ -44,9 +44,9 @@ class PreviewHandler {
      */
     getDefaultFonts() {
         return {
-            koMain: "'Aritaburi', sans-serif",
-            koSub: "'Aritaburi', sans-serif",
-            enMain: "'Amandine', serif"
+            koMain: "'Escoredream', sans-serif",
+            koSub: "'ImHyeMin', sans-serif",
+            enMain: "'Bruno Ace', sans-serif"
         };
     }
 
@@ -55,8 +55,8 @@ class PreviewHandler {
      */
     getDefaultColors() {
         return {
-            primary: '#e6f3ff',
-            secondary: '#658399'
+            primary: '#faf9f5',
+            secondary: '#535353'
         };
     }
 
