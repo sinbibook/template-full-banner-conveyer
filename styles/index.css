@@ -852,11 +852,10 @@
 .room-content {
     position: absolute;
     bottom: 40px;
-    left: 40px;
     right: 40px;
     z-index: 3;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-end;
     box-sizing: border-box;
 }
@@ -868,10 +867,9 @@
     padding: 0;
     letter-spacing: 1px;
     line-height: 1.2;
-    text-align: left;
+    text-align: right;
     display: block;
     word-wrap: break-word;
-    flex: 1;
 }
 
 .room-description {
@@ -895,7 +893,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     flex-shrink: 0;
-    margin-left: 20px;
+    margin-left: 0;
     backdrop-filter: blur(10px);
 }
 
