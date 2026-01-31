@@ -789,146 +789,55 @@
         });
     }
 
-    // New Rooms Slider functionality - Hero slider style with active classes
-    let currentRoomIndex = 0;
-    let totalRooms = 0;
-    let roomItems = [];
-
+    // Initialize rooms slider
     function initRoomsSlider() {
         const roomsGrid = document.querySelector('.rooms-grid');
         if (!roomsGrid) return;
 
-        // Get room items (no DOM restructuring needed)
-        roomItems = Array.from(roomsGrid.querySelectorAll('.room-item'));
-        totalRooms = roomItems.length;
-
-        if (totalRooms === 0) return;
-
-        // Initialize positions with active classes (hero slider style)
-        updateRoomPositions();
-
-        // Add navigation arrows to the active (center) room only
-        setupNavigationButtons();
-
-        // Set initial button states
-        updateNavigationButtons();
+        // Simple drag scroll functionality
+        setupDragScroll();
     }
 
-    function setupNavigationButtons() {
-        // 기존 HTML 버튼을 찾아서 이벤트 연결
-        const prevBtn = document.querySelector('#rooms-prev-btn');
-        const nextBtn = document.querySelector('#rooms-next-btn');
 
-        if (prevBtn && nextBtn) {
-            // Add event listeners to existing HTML buttons
-            prevBtn.addEventListener('click', moveToPrevRoom);
-            nextBtn.addEventListener('click', moveToNextRoom);
-        } else {
-            // 기존 버튼이 없으면 동적으로 생성 (fallback)
-            const roomsSection = document.querySelector('.rooms-section');
-            if (!roomsSection) return;
+    function setupDragScroll() {
+        const roomsGrid = document.querySelector('.rooms-grid');
+        if (!roomsGrid) return;
 
-            // Create prev button
-            const newPrevBtn = document.createElement('button');
-            newPrevBtn.className = 'rooms-nav-btn rooms-nav-prev';
-            newPrevBtn.id = 'rooms-prev-btn';
-            newPrevBtn.innerHTML = `
-                <span class="nav-symbol">‹</span>
-                <span class="nav-text">PREV</span>
-            `;
+        let isDown = false;
+        let startX;
+        let scrollLeft;
 
-            // Create next button
-            const newNextBtn = document.createElement('button');
-            newNextBtn.className = 'rooms-nav-btn rooms-nav-next';
-            newNextBtn.id = 'rooms-next-btn';
-            newNextBtn.innerHTML = `
-                <span class="nav-symbol">›</span>
-                <span class="nav-text">NEXT</span>
-            `;
-
-            // Add event listeners
-            newPrevBtn.addEventListener('click', moveToPrevRoom);
-            newNextBtn.addEventListener('click', moveToNextRoom);
-
-            // Append buttons to rooms section
-            roomsSection.appendChild(newPrevBtn);
-            roomsSection.appendChild(newNextBtn);
-        }
-    }
-
-    function moveToPrevRoom() {
-        if (currentRoomIndex === 0) return; // Don't move if at first room
-        currentRoomIndex = (currentRoomIndex - 1 + totalRooms) % totalRooms;
-        updateRoomPositions();
-    }
-
-    function moveToNextRoom() {
-        if (currentRoomIndex === totalRooms - 1) return; // Don't move if at last room
-        currentRoomIndex = (currentRoomIndex + 1) % totalRooms;
-        updateRoomPositions();
-    }
-
-    function updateNavigationButtons() {
-        const prevBtn = document.querySelector('.rooms-nav-prev');
-        const nextBtn = document.querySelector('.rooms-nav-next');
-
-        if (!prevBtn || !nextBtn) return;
-
-        // Remove disabled class from both buttons
-        prevBtn.classList.remove('disabled');
-        nextBtn.classList.remove('disabled');
-
-        // Add disabled class if at first/last room
-        if (currentRoomIndex === 0) {
-            prevBtn.classList.add('disabled');
-        }
-        if (currentRoomIndex === totalRooms - 1) {
-            nextBtn.classList.add('disabled');
-        }
-    }
-
-    function updateRoomPositions() {
-        if (!roomItems.length) return;
-
-        // First fade out current room
-        roomItems.forEach(room => {
-            if (room.classList.contains('active')) {
-                room.style.opacity = '0';
-            }
+        roomsGrid.addEventListener('mousedown', (e) => {
+            isDown = true;
+            roomsGrid.style.cursor = 'grabbing';
+            startX = e.pageX - roomsGrid.offsetLeft;
+            scrollLeft = roomsGrid.scrollLeft;
+            e.preventDefault(); // 텍스트 선택 방지
         });
 
-        // After fade out, switch rooms and fade in
-        setTimeout(() => {
-            // Remove all state classes from all rooms
-            roomItems.forEach(room => {
-                room.classList.remove('active', 'next', 'prev', 'hidden');
-            });
+        roomsGrid.addEventListener('mouseleave', () => {
+            isDown = false;
+            roomsGrid.style.cursor = 'grab';
+        });
 
-            // Apply active class system like hero slider
-            roomItems.forEach((room, index) => {
-                // Calculate position relative to current index
-                const position = (index - currentRoomIndex + totalRooms) % totalRooms;
+        roomsGrid.addEventListener('mouseup', () => {
+            isDown = false;
+            roomsGrid.style.cursor = 'grab';
+        });
 
-                // Apply appropriate class based on position
-                if (position === 0) {
-                    room.classList.add('active');
-                    // Fade in the new active room
-                    setTimeout(() => {
-                        room.style.opacity = '1';
-                    }, 50);
-                } else if (position === 1) {
-                    room.classList.add('next');
-                } else if (position === totalRooms - 1) {
-                    room.classList.add('prev');
-                } else {
-                    room.classList.add('hidden');
-                }
-            });
+        roomsGrid.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - roomsGrid.offsetLeft;
+            const walk = (x - startX) * 2; // 스크롤 속도 조절
+            roomsGrid.scrollLeft = scrollLeft - walk;
+        });
 
-            // Update navigation button states
-            updateNavigationButtons();
-        }, 300); // Wait for fade out
+        // 기본 커서 설정
+        roomsGrid.style.cursor = 'grab';
     }
+
+
 
     // Drag functionality removed - using navigation buttons only
 
@@ -982,8 +891,10 @@
         const originalItems = galleryGrid.querySelectorAll('.gallery-item');
         if (originalItems.length === 0) return;
 
-        // Clone items to create infinite effect
-        const itemsToClone = Math.ceil(window.innerWidth / 320) + originalItems.length;
+        // Clone items to create infinite effect - generate more for large screens
+        const minClones = 20; // 최소 20개 클론 보장
+        const calculatedClones = Math.ceil(window.innerWidth / 250) * 2 + originalItems.length;
+        const itemsToClone = Math.max(minClones, calculatedClones);
 
         for (let i = 0; i < itemsToClone; i++) {
             const itemToClone = originalItems[i % originalItems.length];

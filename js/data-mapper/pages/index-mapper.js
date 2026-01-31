@@ -529,7 +529,6 @@ class IndexMapper extends BaseDataMapper {
 
             // 객실명 가져오기 (customFields 우선)
             const roomName = this.getRoomName(room);
-            const isShortText = roomName.length <= 7; // 7글자 이하면 줄 표시
 
             // 룸 이미지 (customFields 우선, thumbnail 카테고리)
             const thumbnailImages = this.getRoomImages(room, 'roomtype_thumbnail');
@@ -550,7 +549,6 @@ class IndexMapper extends BaseDataMapper {
             }
 
             roomItem.innerHTML = `
-                <div class="room-number${isShortText ? ' short-text' : ''}">${roomName}</div>
                 <div class="room-image">
                     <img alt="${roomName}" loading="lazy" class="${imageClass}">
                 </div>
@@ -565,6 +563,15 @@ class IndexMapper extends BaseDataMapper {
 
             // src는 직접 할당 (data URI 깨짐 방지)
             roomItem.querySelector('.room-image img').src = roomImage;
+
+            // 전체 박스 클릭 이벤트 추가
+            roomItem.addEventListener('click', (e) => {
+                // 버튼 클릭인 경우 이벤트 전파 방지
+                if (e.target.classList.contains('room-view-btn')) {
+                    return;
+                }
+                navigateTo('room', room.id);
+            });
 
             roomsContainer.appendChild(roomItem);
         });
